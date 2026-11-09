@@ -1,0 +1,271 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Member": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Method": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Relationship": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Class",
+      "attributes": {
+        "name": "Class",
+        "stereotype": "",
+        "isInterface": "",
+        "isAbstract": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "stereotype": {
+          "type": "string"
+        },
+        "isInterface": {
+          "type": "string"
+        },
+        "isAbstract": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Member",
+      "attributes": {
+        "name": "Member",
+        "visibility": "",
+        "type": "",
+        "classifier": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "classifier": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Method",
+      "attributes": {
+        "name": "Method",
+        "visibility": "",
+        "returnType": "",
+        "parameters": "",
+        "classifier": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": "string"
+        },
+        "returnType": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "string"
+        },
+        "classifier": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Relationship",
+      "attributes": {
+        "name": "Relationship",
+        "kind": "",
+        "label": "",
+        "srcCard": "",
+        "dstCard": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "srcCard": {
+          "type": "string"
+        },
+        "dstCard": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 660,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "src": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Class": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Member": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Method": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Relationship": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Namespace": {
+            "min": -1,
+            "max": 1
+          }
+        },
+        "dst": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Class": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Member": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Method": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Relationship": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Namespace": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "@meta:Namespace",
+      "attributes": {
+        "name": "Namespace"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 800,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Class": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Namespace": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1
+      }
+    },
+    {
+      "id": "@meta:Node",
+      "attributes": {
+        "name": "Node",
+        "label": "",
+        "shape": "",
+        "icon": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "shape": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Node": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    }
+  ]
+}

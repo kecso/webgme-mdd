@@ -1,0 +1,195 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": "",
+        "orientation": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "orientation": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Branch": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Commit": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Merge": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Branch",
+      "attributes": {
+        "name": "Branch"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Commit",
+      "attributes": {
+        "name": "Commit",
+        "commitId": "",
+        "tag": "",
+        "commitType": "",
+        "msg": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "commitId": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "commitType": {
+          "type": "string"
+        },
+        "msg": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "branch": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Branch": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Commit": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Merge": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "@meta:Merge",
+      "attributes": {
+        "name": "Merge"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "into": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Branch": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Commit": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Merge": {
+            "min": -1,
+            "max": 1
+          }
+        },
+        "from": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Branch": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Commit": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Merge": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    }
+  ]
+}

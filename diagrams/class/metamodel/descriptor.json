@@ -1,0 +1,84 @@
+{
+  "id": "class",
+  "name": "Class Diagram",
+  "keywords": [
+    "classDiagram"
+  ],
+  "status": "stable",
+  "domains": [
+    "object-oriented-design",
+    "uml",
+    "software-architecture",
+    "domain-modeling"
+  ],
+  "capabilities": [
+    "Classes with members and methods",
+    "Visibility (+/#/-/~), stereotypes, generics",
+    "Relationships: inheritance, composition, aggregation, association, dependency, realization",
+    "Cardinality annotations",
+    "Namespaces / packages"
+  ],
+  "syntaxHighlights": [
+    "classDiagram",
+    "class Animal { +String name +eat() }",
+    "Animal <|-- Dog",
+    "Owner \"1\" --> \"*\" Animal : owns"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Class": {
+      "attrs": [
+        "name",
+        "stereotype",
+        "isInterface",
+        "isAbstract"
+      ]
+    },
+    "Member": {
+      "attrs": [
+        "name",
+        "visibility",
+        "type",
+        "classifier"
+      ]
+    },
+    "Method": {
+      "attrs": [
+        "name",
+        "visibility",
+        "returnType",
+        "parameters",
+        "classifier"
+      ]
+    },
+    "Relationship": {
+      "attrs": [
+        "name",
+        "kind",
+        "label",
+        "srcCard",
+        "dstCard"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    },
+    "Namespace": {
+      "attrs": [
+        "name"
+      ],
+      "contains": [
+        "Class",
+        "Namespace"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

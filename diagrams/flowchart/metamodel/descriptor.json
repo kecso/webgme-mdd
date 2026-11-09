@@ -1,0 +1,72 @@
+{
+  "id": "flowchart",
+  "name": "Flowchart",
+  "keywords": [
+    "flowchart",
+    "graph"
+  ],
+  "status": "stable",
+  "domains": [
+    "process-modeling",
+    "algorithms",
+    "workflows",
+    "ci-cd",
+    "business-process"
+  ],
+  "capabilities": [
+    "Directed graphs with ranked layout (TD/TB/LR/RL/BT)",
+    "Many node shapes (rect, diamond, stadium, cylinder, hexagon, etc.)",
+    "Labeled edges, dotted/thick styles, link clicks",
+    "Subgraphs / clusters",
+    "Styling classes and inline styles"
+  ],
+  "syntaxHighlights": [
+    "flowchart TD",
+    "A[Process] --> B{Decision?}",
+    "B -->|Yes| C([End])",
+    "subgraph id[Title] ... end"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "direction",
+        "title"
+      ]
+    },
+    "Node": {
+      "attrs": [
+        "name",
+        "label",
+        "shape",
+        "styleClass"
+      ]
+    },
+    "Edge": {
+      "attrs": [
+        "name",
+        "label",
+        "lineStyle",
+        "arrowStyle"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    },
+    "Subgraph": {
+      "attrs": [
+        "name",
+        "label",
+        "direction"
+      ],
+      "contains": [
+        "Node",
+        "Edge",
+        "Subgraph"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

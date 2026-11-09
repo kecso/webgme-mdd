@@ -1,0 +1,70 @@
+{
+  "id": "state",
+  "name": "State Diagram",
+  "keywords": [
+    "stateDiagram",
+    "stateDiagram-v2"
+  ],
+  "status": "stable",
+  "domains": [
+    "finite-state-machines",
+    "embedded-systems",
+    "ui-state",
+    "protocol-state",
+    "uml"
+  ],
+  "capabilities": [
+    "States, transitions with events/guards/actions",
+    "Composite (nested) states",
+    "Choice, fork/join, history (shallow/deep)",
+    "Notes, concurrency (--)"
+  ],
+  "syntaxHighlights": [
+    "stateDiagram-v2",
+    "[*] --> Idle",
+    "Idle --> Busy : start",
+    "state Busy { ... }"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "State": {
+      "attrs": [
+        "name",
+        "kind",
+        "label"
+      ],
+      "contains": [
+        "State",
+        "Transition"
+      ]
+    },
+    "Transition": {
+      "attrs": [
+        "name",
+        "event",
+        "guard",
+        "action"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    },
+    "Note": {
+      "attrs": [
+        "name",
+        "text"
+      ],
+      "pointers": [
+        "target"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

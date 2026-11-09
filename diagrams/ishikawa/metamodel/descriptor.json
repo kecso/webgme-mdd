@@ -1,0 +1,50 @@
+{
+  "id": "ishikawa",
+  "name": "Ishikawa (Fishbone)",
+  "keywords": [
+    "ishikawa",
+    "ishikawa-beta",
+    "fishbone"
+  ],
+  "status": "stable",
+  "domains": [
+    "quality-management",
+    "root-cause-analysis",
+    "manufacturing",
+    "continuous-improvement"
+  ],
+  "capabilities": [
+    "Effect spine with cause categories",
+    "Nested causes"
+  ],
+  "syntaxHighlights": [
+    "ishikawa-beta",
+    "Effect",
+    "Category",
+    "  Cause"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "effect"
+      ]
+    },
+    "Category": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Cause": {
+      "attrs": [
+        "name"
+      ],
+      "contains": [
+        "Cause"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

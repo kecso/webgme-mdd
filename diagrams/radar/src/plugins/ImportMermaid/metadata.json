@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid Radar Chart text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a radar definition",
+      "value": "radar-beta\n  title Capability coverage\n  axis syn[\"Syntax\"], meta[\"Metamodel\"], plug[\"Plugins\"], dom[\"Domains\"]\n  curve this{\"WebGME-MDD\"{4, 5, 4, 5}}",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+architecture-beta
+  group web(cloud)[Web]
+  service ui(server)[Catalog] in web
+  service gme(server)[WebGME] in web
+  service db(database)[MongoDB]
+  ui:R --> L:gme
+  gme:R --> L:db

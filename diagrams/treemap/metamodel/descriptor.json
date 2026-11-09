@@ -1,0 +1,44 @@
+{
+  "id": "treemap",
+  "name": "Treemap",
+  "keywords": [
+    "treemap",
+    "treemap-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "hierarchies",
+    "disk-usage",
+    "budget-breakdown",
+    "portfolio"
+  ],
+  "capabilities": [
+    "Nested hierarchical areas",
+    "Numeric values drive area"
+  ],
+  "syntaxHighlights": [
+    "treemap-beta",
+    "\"Root\"",
+    "  \"Child\": 10"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Node": {
+      "attrs": [
+        "name",
+        "label",
+        "value"
+      ],
+      "contains": [
+        "Node"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

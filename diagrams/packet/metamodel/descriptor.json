@@ -1,0 +1,40 @@
+{
+  "id": "packet",
+  "name": "Packet Diagram",
+  "keywords": [
+    "packet",
+    "packet-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "networking",
+    "protocols",
+    "binary-layouts"
+  ],
+  "capabilities": [
+    "Bit-field packet layouts",
+    "Start-end bit ranges with labels"
+  ],
+  "syntaxHighlights": [
+    "packet-beta",
+    "0-15: \"Source Port\""
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Field": {
+      "attrs": [
+        "name",
+        "startBit",
+        "endBit",
+        "label"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

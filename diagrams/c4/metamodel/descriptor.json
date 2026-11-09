@@ -1,0 +1,90 @@
+{
+  "id": "c4",
+  "name": "C4 Architecture",
+  "keywords": [
+    "C4Context",
+    "C4Container",
+    "C4Component",
+    "C4Dynamic",
+    "C4Deployment"
+  ],
+  "status": "stable",
+  "domains": [
+    "software-architecture",
+    "system-context",
+    "enterprise-architecture"
+  ],
+  "capabilities": [
+    "C4 levels: Context, Container, Component, Dynamic, Deployment",
+    "Persons, systems, containers, DBs, queues, boundaries",
+    "Typed relations with technology labels"
+  ],
+  "syntaxHighlights": [
+    "C4Context",
+    "Person(user, \"User\", \"...\")",
+    "System(sys, \"App\", \"...\")",
+    "Rel(user, sys, \"Uses\")"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "level",
+        "title"
+      ]
+    },
+    "Person": {
+      "attrs": [
+        "name",
+        "alias",
+        "description",
+        "external"
+      ]
+    },
+    "System": {
+      "attrs": [
+        "name",
+        "alias",
+        "description",
+        "external",
+        "kind"
+      ]
+    },
+    "Container": {
+      "attrs": [
+        "name",
+        "alias",
+        "technology",
+        "description",
+        "kind"
+      ]
+    },
+    "Boundary": {
+      "attrs": [
+        "name",
+        "alias",
+        "kind"
+      ],
+      "contains": [
+        "Person",
+        "System",
+        "Container",
+        "Boundary"
+      ]
+    },
+    "Relation": {
+      "attrs": [
+        "name",
+        "label",
+        "technology",
+        "bidirectional"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

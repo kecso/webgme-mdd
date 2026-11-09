@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid C4 Architecture text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a C4Context definition",
+      "value": "C4Context\n  title Housing WebGME Context\n  Person(modeler, \"Modeler\", \"Creates metamodels\")\n  System(webgme, \"WebGME MDD\", \"Hosts Mermaid DSMLs\")\n  System_Ext(mermaid, \"Mermaid\", \"Text diagram engine\")\n  Rel(modeler, webgme, \"Models with\")\n  Rel(webgme, mermaid, \"Imports/exports\")",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

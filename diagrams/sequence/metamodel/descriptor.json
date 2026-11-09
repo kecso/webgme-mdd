@@ -1,0 +1,82 @@
+{
+  "id": "sequence",
+  "name": "Sequence Diagram",
+  "keywords": [
+    "sequenceDiagram"
+  ],
+  "status": "stable",
+  "domains": [
+    "software-interaction",
+    "protocols",
+    "api-design",
+    "uml",
+    "distributed-systems"
+  ],
+  "capabilities": [
+    "Participants and actors with aliases",
+    "Sync/async/dashed messages",
+    "Activation boxes",
+    "Notes, loops, alt/opt/par/critical/break fragments",
+    "Autonumber, create/destroy participants"
+  ],
+  "syntaxHighlights": [
+    "sequenceDiagram",
+    "participant A as Client",
+    "A->>+B: request",
+    "B-->>-A: response",
+    "alt ok ... else ... end"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "autonumber",
+        "title"
+      ]
+    },
+    "Participant": {
+      "attrs": [
+        "name",
+        "alias",
+        "kind"
+      ]
+    },
+    "Message": {
+      "attrs": [
+        "name",
+        "label",
+        "arrowType",
+        "activate"
+      ],
+      "pointers": [
+        "from",
+        "to"
+      ]
+    },
+    "Fragment": {
+      "attrs": [
+        "name",
+        "kind",
+        "label"
+      ],
+      "contains": [
+        "Message",
+        "Fragment",
+        "Note"
+      ]
+    },
+    "Note": {
+      "attrs": [
+        "name",
+        "text",
+        "placement"
+      ],
+      "pointers": [
+        "overStart",
+        "overEnd"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

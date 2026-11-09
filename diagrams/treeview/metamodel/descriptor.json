@@ -1,0 +1,39 @@
+{
+  "id": "treeview",
+  "name": "Tree View",
+  "keywords": [
+    "treeView"
+  ],
+  "status": "experimental",
+  "domains": [
+    "hierarchies",
+    "file-systems",
+    "org-charts",
+    "taxonomies"
+  ],
+  "capabilities": [
+    "Indented hierarchical trees"
+  ],
+  "syntaxHighlights": [
+    "treeView"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Node": {
+      "attrs": [
+        "name",
+        "label"
+      ],
+      "contains": [
+        "Node"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

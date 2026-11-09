@@ -1,0 +1,51 @@
+{
+  "id": "timeline",
+  "name": "Timeline",
+  "keywords": [
+    "timeline"
+  ],
+  "status": "stable",
+  "domains": [
+    "roadmapping",
+    "history",
+    "product-planning",
+    "storytelling"
+  ],
+  "capabilities": [
+    "Sections with time periods and events",
+    "Multi-event periods"
+  ],
+  "syntaxHighlights": [
+    "timeline",
+    "title History",
+    "section 2024",
+    "2024 : event"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Section": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Period": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "Event": {
+      "attrs": [
+        "name",
+        "text"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

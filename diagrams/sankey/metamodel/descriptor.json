@@ -1,0 +1,49 @@
+{
+  "id": "sankey",
+  "name": "Sankey Diagram",
+  "keywords": [
+    "sankey",
+    "sankey-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "flow-analysis",
+    "energy",
+    "budget",
+    "conversion-funnels"
+  ],
+  "capabilities": [
+    "Weighted source-target flows",
+    "CSV-like link rows"
+  ],
+  "syntaxHighlights": [
+    "sankey-beta",
+    "Source,Target,Value"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Node": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "Link": {
+      "attrs": [
+        "name",
+        "value"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

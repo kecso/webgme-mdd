@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid Gantt Chart text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a gantt definition",
+      "value": "gantt\n  title Housing sprint\n  dateFormat YYYY-MM-DD\n  section Meta\n  Survey diagrams :done, a1, 2026-11-01, 3d\n  Draft metamodels :active, a2, after a1, 5d\n  section Plugins\n  Import/Export :a3, after a2, 4d",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

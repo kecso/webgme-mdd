@@ -1,0 +1,63 @@
+{
+  "id": "architecture",
+  "name": "Architecture Diagram",
+  "keywords": [
+    "architecture",
+    "architecture-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "cloud-architecture",
+    "infrastructure",
+    "service-topology"
+  ],
+  "capabilities": [
+    "Groups, services, edges",
+    "Icons for cloud resources",
+    "Directional service links"
+  ],
+  "syntaxHighlights": [
+    "architecture-beta",
+    "group api",
+    "service db",
+    "api:L --> R:db"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Group": {
+      "attrs": [
+        "name",
+        "icon"
+      ],
+      "contains": [
+        "Service",
+        "Group"
+      ]
+    },
+    "Service": {
+      "attrs": [
+        "name",
+        "icon",
+        "inGroup"
+      ]
+    },
+    "Edge": {
+      "attrs": [
+        "name",
+        "srcSide",
+        "dstSide"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

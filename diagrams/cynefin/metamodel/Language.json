@@ -1,0 +1,116 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Domain": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Item": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Domain",
+      "attributes": {
+        "name": "Domain",
+        "kind": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Item",
+      "attributes": {
+        "name": "Item",
+        "label": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "domain": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Domain": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Item": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    }
+  ]
+}

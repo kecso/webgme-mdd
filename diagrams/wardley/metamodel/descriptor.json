@@ -1,0 +1,47 @@
+{
+  "id": "wardley",
+  "name": "Wardley Map",
+  "keywords": [
+    "wardley",
+    "wardley-beta"
+  ],
+  "status": "experimental",
+  "domains": [
+    "strategy",
+    "technology-evolution",
+    "value-chain-mapping"
+  ],
+  "capabilities": [
+    "Value chain vs evolution axes",
+    "Components and dependencies"
+  ],
+  "syntaxHighlights": [
+    "wardley-beta"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Component": {
+      "attrs": [
+        "name",
+        "visibility",
+        "evolution"
+      ]
+    },
+    "Dependency": {
+      "attrs": [
+        "name"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

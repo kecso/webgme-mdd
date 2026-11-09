@@ -1,0 +1,21 @@
+{
+  "components": {
+    "plugins": {
+      "ImportMermaid": {
+        "src": "src/plugins/ImportMermaid",
+        "test": "test/plugins/ImportMermaid"
+      },
+      "ExportMermaid": {
+        "src": "src/plugins/ExportMermaid",
+        "test": "test/plugins/ExportMermaid"
+      },
+      "ApplyLanguageMeta": {
+        "src": "src/plugins/ApplyLanguageMeta",
+        "test": "test/plugins/ApplyLanguageMeta"
+      }
+    }
+  },
+  "dependencies": {
+    "plugins": {}
+  }
+}

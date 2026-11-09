@@ -1,0 +1,11 @@
+requirementDiagram
+  requirement safety {
+    id: 1
+    text: System shall fail safe
+    risk: high
+    verifymethod: test
+  }
+  element controller {
+    type: simulation
+  }
+  controller - satisfies -> safety

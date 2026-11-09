@@ -1,0 +1,46 @@
+{
+  "id": "mindmap",
+  "name": "Mindmap",
+  "keywords": [
+    "mindmap"
+  ],
+  "status": "stable",
+  "domains": [
+    "knowledge-management",
+    "brainstorming",
+    "education",
+    "ideation"
+  ],
+  "capabilities": [
+    "Hierarchical radial/outline mind maps",
+    "Icons and class styling",
+    "Markdown-ish indentation"
+  ],
+  "syntaxHighlights": [
+    "mindmap",
+    "root((idea))",
+    "  Branch",
+    "    Leaf"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Node": {
+      "attrs": [
+        "name",
+        "label",
+        "shape",
+        "icon"
+      ],
+      "contains": [
+        "Node"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

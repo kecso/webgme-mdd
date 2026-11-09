@@ -1,0 +1,44 @@
+{
+  "id": "railroad",
+  "name": "Railroad Diagram",
+  "keywords": [
+    "railroad"
+  ],
+  "status": "experimental",
+  "domains": [
+    "grammar-design",
+    "parsers",
+    "language-engineering",
+    "ebnf"
+  ],
+  "capabilities": [
+    "Railroad/syntax diagrams from IR, EBNF, ABNF, PEG flavors"
+  ],
+  "syntaxHighlights": [
+    "railroad"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "flavor"
+      ]
+    },
+    "Rule": {
+      "attrs": [
+        "name",
+        "expression"
+      ]
+    },
+    "Term": {
+      "attrs": [
+        "name",
+        "kind",
+        "value"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

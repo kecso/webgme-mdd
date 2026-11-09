@@ -1,0 +1,62 @@
+{
+  "id": "gitgraph",
+  "name": "Git Graph",
+  "keywords": [
+    "gitGraph"
+  ],
+  "status": "stable",
+  "domains": [
+    "version-control",
+    "devex-education",
+    "release-engineering"
+  ],
+  "capabilities": [
+    "Commits, branches, checkout, merge, cherry-pick",
+    "Commit tags/types/ids",
+    "Orientation options"
+  ],
+  "syntaxHighlights": [
+    "gitGraph",
+    "commit",
+    "branch develop",
+    "checkout main",
+    "merge develop"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "orientation"
+      ]
+    },
+    "Branch": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Commit": {
+      "attrs": [
+        "name",
+        "commitId",
+        "tag",
+        "commitType",
+        "msg"
+      ],
+      "pointers": [
+        "branch"
+      ]
+    },
+    "Merge": {
+      "attrs": [
+        "name"
+      ],
+      "pointers": [
+        "into",
+        "from"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

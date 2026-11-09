@@ -1,0 +1,13 @@
+node_modules/
+npm-debug.log
+yarn-error.log
+blob-local-storage/
+dist/
+.DS_Store
+*.log
+.vite/
+coverage/
+.mongo/
+data/db/
+agent-tools/
+.cursor/

@@ -1,0 +1,59 @@
+{
+  "id": "er",
+  "name": "Entity Relationship Diagram",
+  "keywords": [
+    "erDiagram"
+  ],
+  "status": "stable",
+  "domains": [
+    "database-design",
+    "data-modeling",
+    "information-architecture"
+  ],
+  "capabilities": [
+    "Entities with typed attributes and keys",
+    "Cardinality relationships (one/zero/many)",
+    "Identifying vs non-identifying relationships",
+    "Attribute keys PK/FK/UK"
+  ],
+  "syntaxHighlights": [
+    "erDiagram",
+    "CUSTOMER ||--o{ ORDER : places",
+    "CUSTOMER { string name PK }"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Entity": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Attribute": {
+      "attrs": [
+        "name",
+        "dataType",
+        "key",
+        "comment"
+      ]
+    },
+    "Relationship": {
+      "attrs": [
+        "name",
+        "label",
+        "srcCard",
+        "dstCard"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

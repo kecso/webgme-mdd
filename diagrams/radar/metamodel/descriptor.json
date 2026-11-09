@@ -1,0 +1,46 @@
+{
+  "id": "radar",
+  "name": "Radar Chart",
+  "keywords": [
+    "radar",
+    "radar-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "skills-assessment",
+    "maturity-models",
+    "comparative-metrics"
+  ],
+  "capabilities": [
+    "Polar axes with numeric series",
+    "Multiple overlays"
+  ],
+  "syntaxHighlights": [
+    "radar-beta",
+    "axis a[\"A\"], b[\"B\"]",
+    "curve c{1,2,3}"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Axis": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "Curve": {
+      "attrs": [
+        "name",
+        "label",
+        "values"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

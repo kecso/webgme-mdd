@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid Mindmap text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a mindmap definition",
+      "value": "mindmap\n  root((WebGME-MDD))\n    Diagrams\n      Flowchart\n      Sequence\n      Class\n    Plugins\n      Import\n      Export\n    Domains\n      Software\n      Systems",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

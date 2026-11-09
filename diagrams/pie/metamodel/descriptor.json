@@ -1,0 +1,39 @@
+{
+  "id": "pie",
+  "name": "Pie Chart",
+  "keywords": [
+    "pie"
+  ],
+  "status": "stable",
+  "domains": [
+    "data-visualization",
+    "analytics",
+    "reporting"
+  ],
+  "capabilities": [
+    "Titled pie slices with numeric values",
+    "Optional showData"
+  ],
+  "syntaxHighlights": [
+    "pie title Pets",
+    "\"Dogs\" : 386"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "showData"
+      ]
+    },
+    "Slice": {
+      "attrs": [
+        "name",
+        "label",
+        "value"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "webgme-mdd",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mermaid diagram survey + WebGME DSML monorepo (metamodels, import/export plugins)",
+  "workspaces": [
+    "packages/*",
+    "diagrams/*",
+    "catalog"
+  ],
+  "scripts": {
+    "generate": "node scripts/generate-diagram-projects.js",
+    "validate": "node scripts/validate-catalog.js",
+    "meta": "node scripts/print-meta-summary.js",
+    "catalog": "npm run dev --workspace=catalog",
+    "catalog:build": "npm run build --workspace=catalog",
+    "test": "npm run validate"
+  },
+  "keywords": [
+    "webgme",
+    "mermaid",
+    "mdd",
+    "metamodel",
+    "dsml"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "id": "eventmodeling",
+  "name": "Event Modeling",
+  "keywords": [
+    "eventmodeling",
+    "eventmodeling-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "event-driven-architecture",
+    "cqrs",
+    "domain-driven-design",
+    "event-sourcing"
+  ],
+  "capabilities": [
+    "Events, commands, views/swimlanes",
+    "Timeline of system behavior"
+  ],
+  "syntaxHighlights": [
+    "eventmodeling-beta"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Swimlane": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Command": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "Event": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "View": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "Flow": {
+      "attrs": [
+        "name"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

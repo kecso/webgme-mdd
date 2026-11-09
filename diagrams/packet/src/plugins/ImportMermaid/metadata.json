@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid Packet Diagram text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a packet definition",
+      "value": "packet-beta\n  0-15: \"Source Port\"\n  16-31: \"Dest Port\"\n  32-63: \"Sequence Number\"",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

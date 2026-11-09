@@ -1,0 +1,54 @@
+{
+  "id": "gantt",
+  "name": "Gantt Chart",
+  "keywords": [
+    "gantt"
+  ],
+  "status": "stable",
+  "domains": [
+    "project-management",
+    "scheduling",
+    "program-planning"
+  ],
+  "capabilities": [
+    "Sections and tasks with dates/durations",
+    "Dependencies (after)",
+    "Milestones, done/active/crit statuses",
+    "Excludes / weekends, date formats"
+  ],
+  "syntaxHighlights": [
+    "gantt",
+    "dateFormat YYYY-MM-DD",
+    "section Build",
+    "Design :a1, 2026-01-01, 7d"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "dateFormat",
+        "axisFormat",
+        "excludes"
+      ]
+    },
+    "Section": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Task": {
+      "attrs": [
+        "name",
+        "taskId",
+        "status",
+        "start",
+        "end",
+        "duration",
+        "after"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

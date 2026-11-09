@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid Event Modeling text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a eventmodeling definition",
+      "value": "eventmodeling-beta\n  // Draft sample — syntax evolving in Mermaid\n  title Import pipeline\n  Modeler: Upload source\n  System: MermaidParsed\n  System: ModelUpdated",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

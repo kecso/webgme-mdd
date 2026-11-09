@@ -1,0 +1,463 @@
+{
+  "generatedAt": "2026-11-09T20:27:59.893Z",
+  "count": 30,
+  "diagrams": [
+    {
+      "id": "flowchart",
+      "name": "Flowchart",
+      "status": "stable",
+      "keywords": [
+        "flowchart",
+        "graph"
+      ],
+      "domains": [
+        "process-modeling",
+        "algorithms",
+        "workflows",
+        "ci-cd",
+        "business-process"
+      ],
+      "path": "diagrams/flowchart"
+    },
+    {
+      "id": "sequence",
+      "name": "Sequence Diagram",
+      "status": "stable",
+      "keywords": [
+        "sequenceDiagram"
+      ],
+      "domains": [
+        "software-interaction",
+        "protocols",
+        "api-design",
+        "uml",
+        "distributed-systems"
+      ],
+      "path": "diagrams/sequence"
+    },
+    {
+      "id": "class",
+      "name": "Class Diagram",
+      "status": "stable",
+      "keywords": [
+        "classDiagram"
+      ],
+      "domains": [
+        "object-oriented-design",
+        "uml",
+        "software-architecture",
+        "domain-modeling"
+      ],
+      "path": "diagrams/class"
+    },
+    {
+      "id": "state",
+      "name": "State Diagram",
+      "status": "stable",
+      "keywords": [
+        "stateDiagram",
+        "stateDiagram-v2"
+      ],
+      "domains": [
+        "finite-state-machines",
+        "embedded-systems",
+        "ui-state",
+        "protocol-state",
+        "uml"
+      ],
+      "path": "diagrams/state"
+    },
+    {
+      "id": "er",
+      "name": "Entity Relationship Diagram",
+      "status": "stable",
+      "keywords": [
+        "erDiagram"
+      ],
+      "domains": [
+        "database-design",
+        "data-modeling",
+        "information-architecture"
+      ],
+      "path": "diagrams/er"
+    },
+    {
+      "id": "journey",
+      "name": "User Journey",
+      "status": "stable",
+      "keywords": [
+        "journey"
+      ],
+      "domains": [
+        "ux-design",
+        "product-design",
+        "customer-experience",
+        "service-design"
+      ],
+      "path": "diagrams/journey"
+    },
+    {
+      "id": "gantt",
+      "name": "Gantt Chart",
+      "status": "stable",
+      "keywords": [
+        "gantt"
+      ],
+      "domains": [
+        "project-management",
+        "scheduling",
+        "program-planning"
+      ],
+      "path": "diagrams/gantt"
+    },
+    {
+      "id": "pie",
+      "name": "Pie Chart",
+      "status": "stable",
+      "keywords": [
+        "pie"
+      ],
+      "domains": [
+        "data-visualization",
+        "analytics",
+        "reporting"
+      ],
+      "path": "diagrams/pie"
+    },
+    {
+      "id": "quadrant",
+      "name": "Quadrant Chart",
+      "status": "stable",
+      "keywords": [
+        "quadrantChart"
+      ],
+      "domains": [
+        "strategy",
+        "prioritization",
+        "product-portfolio",
+        "marketing-analysis"
+      ],
+      "path": "diagrams/quadrant"
+    },
+    {
+      "id": "requirement",
+      "name": "Requirement Diagram",
+      "status": "stable",
+      "keywords": [
+        "requirementDiagram"
+      ],
+      "domains": [
+        "systems-engineering",
+        "requirements-management",
+        "mbse",
+        "safety-critical"
+      ],
+      "path": "diagrams/requirement"
+    },
+    {
+      "id": "gitgraph",
+      "name": "Git Graph",
+      "status": "stable",
+      "keywords": [
+        "gitGraph"
+      ],
+      "domains": [
+        "version-control",
+        "devex-education",
+        "release-engineering"
+      ],
+      "path": "diagrams/gitgraph"
+    },
+    {
+      "id": "c4",
+      "name": "C4 Architecture",
+      "status": "stable",
+      "keywords": [
+        "C4Context",
+        "C4Container",
+        "C4Component",
+        "C4Dynamic",
+        "C4Deployment"
+      ],
+      "domains": [
+        "software-architecture",
+        "system-context",
+        "enterprise-architecture"
+      ],
+      "path": "diagrams/c4"
+    },
+    {
+      "id": "mindmap",
+      "name": "Mindmap",
+      "status": "stable",
+      "keywords": [
+        "mindmap"
+      ],
+      "domains": [
+        "knowledge-management",
+        "brainstorming",
+        "education",
+        "ideation"
+      ],
+      "path": "diagrams/mindmap"
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "status": "stable",
+      "keywords": [
+        "timeline"
+      ],
+      "domains": [
+        "roadmapping",
+        "history",
+        "product-planning",
+        "storytelling"
+      ],
+      "path": "diagrams/timeline"
+    },
+    {
+      "id": "kanban",
+      "name": "Kanban",
+      "status": "stable",
+      "keywords": [
+        "kanban"
+      ],
+      "domains": [
+        "agile",
+        "project-management",
+        "work-tracking"
+      ],
+      "path": "diagrams/kanban"
+    },
+    {
+      "id": "sankey",
+      "name": "Sankey Diagram",
+      "status": "beta",
+      "keywords": [
+        "sankey",
+        "sankey-beta"
+      ],
+      "domains": [
+        "flow-analysis",
+        "energy",
+        "budget",
+        "conversion-funnels"
+      ],
+      "path": "diagrams/sankey"
+    },
+    {
+      "id": "xychart",
+      "name": "XY Chart",
+      "status": "beta",
+      "keywords": [
+        "xychart",
+        "xychart-beta"
+      ],
+      "domains": [
+        "data-visualization",
+        "analytics",
+        "timeseries"
+      ],
+      "path": "diagrams/xychart"
+    },
+    {
+      "id": "block",
+      "name": "Block Diagram",
+      "status": "beta",
+      "keywords": [
+        "block",
+        "block-beta"
+      ],
+      "domains": [
+        "system-structure",
+        "hardware-blocks",
+        "modular-architecture"
+      ],
+      "path": "diagrams/block"
+    },
+    {
+      "id": "packet",
+      "name": "Packet Diagram",
+      "status": "beta",
+      "keywords": [
+        "packet",
+        "packet-beta"
+      ],
+      "domains": [
+        "networking",
+        "protocols",
+        "binary-layouts"
+      ],
+      "path": "diagrams/packet"
+    },
+    {
+      "id": "architecture",
+      "name": "Architecture Diagram",
+      "status": "beta",
+      "keywords": [
+        "architecture",
+        "architecture-beta"
+      ],
+      "domains": [
+        "cloud-architecture",
+        "infrastructure",
+        "service-topology"
+      ],
+      "path": "diagrams/architecture"
+    },
+    {
+      "id": "radar",
+      "name": "Radar Chart",
+      "status": "beta",
+      "keywords": [
+        "radar",
+        "radar-beta"
+      ],
+      "domains": [
+        "skills-assessment",
+        "maturity-models",
+        "comparative-metrics"
+      ],
+      "path": "diagrams/radar"
+    },
+    {
+      "id": "treemap",
+      "name": "Treemap",
+      "status": "beta",
+      "keywords": [
+        "treemap",
+        "treemap-beta"
+      ],
+      "domains": [
+        "hierarchies",
+        "disk-usage",
+        "budget-breakdown",
+        "portfolio"
+      ],
+      "path": "diagrams/treemap"
+    },
+    {
+      "id": "ishikawa",
+      "name": "Ishikawa (Fishbone)",
+      "status": "stable",
+      "keywords": [
+        "ishikawa",
+        "ishikawa-beta",
+        "fishbone"
+      ],
+      "domains": [
+        "quality-management",
+        "root-cause-analysis",
+        "manufacturing",
+        "continuous-improvement"
+      ],
+      "path": "diagrams/ishikawa"
+    },
+    {
+      "id": "usecase",
+      "name": "Use Case Diagram",
+      "status": "beta",
+      "keywords": [
+        "usecase",
+        "usecase-beta"
+      ],
+      "domains": [
+        "requirements",
+        "uml",
+        "product-scope",
+        "systems-analysis"
+      ],
+      "path": "diagrams/usecase"
+    },
+    {
+      "id": "eventmodeling",
+      "name": "Event Modeling",
+      "status": "beta",
+      "keywords": [
+        "eventmodeling",
+        "eventmodeling-beta"
+      ],
+      "domains": [
+        "event-driven-architecture",
+        "cqrs",
+        "domain-driven-design",
+        "event-sourcing"
+      ],
+      "path": "diagrams/eventmodeling"
+    },
+    {
+      "id": "venn",
+      "name": "Venn Diagram",
+      "status": "experimental",
+      "keywords": [
+        "venn"
+      ],
+      "domains": [
+        "set-theory",
+        "overlap-analysis",
+        "classification"
+      ],
+      "path": "diagrams/venn"
+    },
+    {
+      "id": "treeview",
+      "name": "Tree View",
+      "status": "experimental",
+      "keywords": [
+        "treeView"
+      ],
+      "domains": [
+        "hierarchies",
+        "file-systems",
+        "org-charts",
+        "taxonomies"
+      ],
+      "path": "diagrams/treeview"
+    },
+    {
+      "id": "wardley",
+      "name": "Wardley Map",
+      "status": "experimental",
+      "keywords": [
+        "wardley",
+        "wardley-beta"
+      ],
+      "domains": [
+        "strategy",
+        "technology-evolution",
+        "value-chain-mapping"
+      ],
+      "path": "diagrams/wardley"
+    },
+    {
+      "id": "cynefin",
+      "name": "Cynefin Framework",
+      "status": "experimental",
+      "keywords": [
+        "cynefin"
+      ],
+      "domains": [
+        "decision-making",
+        "complexity-science",
+        "organizational-strategy"
+      ],
+      "path": "diagrams/cynefin"
+    },
+    {
+      "id": "railroad",
+      "name": "Railroad Diagram",
+      "status": "experimental",
+      "keywords": [
+        "railroad"
+      ],
+      "domains": [
+        "grammar-design",
+        "parsers",
+        "language-engineering",
+        "ebnf"
+      ],
+      "path": "diagrams/railroad"
+    }
+  ]
+}

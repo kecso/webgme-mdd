@@ -1,0 +1,61 @@
+{
+  "id": "requirement",
+  "name": "Requirement Diagram",
+  "keywords": [
+    "requirementDiagram"
+  ],
+  "status": "stable",
+  "domains": [
+    "systems-engineering",
+    "requirements-management",
+    "mbse",
+    "safety-critical"
+  ],
+  "capabilities": [
+    "Requirement / element nodes with SysML-like fields",
+    "Relationships: contains, copies, derives, satisfies, verifies, refines, traces"
+  ],
+  "syntaxHighlights": [
+    "requirementDiagram",
+    "requirement req1 { id: 1 text: ... }",
+    "element e1 { type: simulation }",
+    "e1 - satisfies -> req1"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Requirement": {
+      "attrs": [
+        "name",
+        "reqId",
+        "text",
+        "risk",
+        "verifymethod",
+        "type"
+      ]
+    },
+    "Element": {
+      "attrs": [
+        "name",
+        "elementType",
+        "docRef"
+      ]
+    },
+    "Relationship": {
+      "attrs": [
+        "name",
+        "kind"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

@@ -1,0 +1,44 @@
+{
+  "id": "venn",
+  "name": "Venn Diagram",
+  "keywords": [
+    "venn"
+  ],
+  "status": "experimental",
+  "domains": [
+    "set-theory",
+    "overlap-analysis",
+    "classification"
+  ],
+  "capabilities": [
+    "Set overlaps and intersection labels"
+  ],
+  "syntaxHighlights": [
+    "venn"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Set": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "Intersection": {
+      "attrs": [
+        "name",
+        "label"
+      ],
+      "pointers": [
+        "sets"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

@@ -1,0 +1,47 @@
+{
+  "id": "journey",
+  "name": "User Journey",
+  "keywords": [
+    "journey"
+  ],
+  "status": "stable",
+  "domains": [
+    "ux-design",
+    "product-design",
+    "customer-experience",
+    "service-design"
+  ],
+  "capabilities": [
+    "Titled journeys with sections",
+    "Tasks scored 1-5 with actors",
+    "Multi-actor task assignment"
+  ],
+  "syntaxHighlights": [
+    "journey",
+    "title My day",
+    "section Morning",
+    "Make tea: 5: Me"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Section": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Task": {
+      "attrs": [
+        "name",
+        "score",
+        "actors"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

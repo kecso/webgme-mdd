@@ -1,0 +1,8 @@
+classDiagram
+  class Animal {
+    +String name
+    +eat()
+  }
+  Animal <|-- Dog
+  Animal <|-- Cat
+  Owner "1" --> "*" Animal : owns

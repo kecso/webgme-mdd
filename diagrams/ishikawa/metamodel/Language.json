@@ -1,0 +1,98 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": "",
+        "effect": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "effect": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Category": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Category",
+      "attributes": {
+        "name": "Category"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Cause",
+      "attributes": {
+        "name": "Cause"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Cause": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+sequenceDiagram
+  actor U as User
+  participant API
+  participant DB
+  U->>+API: GET /items
+  API->>+DB: query
+  DB-->>-API: rows
+  API-->>-U: 200 OK

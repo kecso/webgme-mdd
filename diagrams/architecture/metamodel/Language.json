@@ -1,0 +1,177 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Edge": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Group",
+      "attributes": {
+        "name": "Group",
+        "icon": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Service": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Group": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Service",
+      "attributes": {
+        "name": "Service",
+        "icon": "",
+        "inGroup": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "inGroup": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Edge",
+      "attributes": {
+        "name": "Edge",
+        "srcSide": "",
+        "dstSide": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "srcSide": {
+          "type": "string"
+        },
+        "dstSide": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "src": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Group": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Service": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Edge": {
+            "min": -1,
+            "max": 1
+          }
+        },
+        "dst": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Group": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Service": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Edge": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    }
+  ]
+}

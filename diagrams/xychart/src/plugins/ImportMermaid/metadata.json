@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid XY Chart text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a xychart definition",
+      "value": "xychart-beta\n  title \"Diagrams by status\"\n  x-axis [stable, beta, experimental]\n  y-axis \"Count\" 0 --> 20\n  bar [16, 10, 4]",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

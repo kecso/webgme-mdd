@@ -1,0 +1,126 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": "",
+        "dateFormat": "",
+        "axisFormat": "",
+        "excludes": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "dateFormat": {
+          "type": "string"
+        },
+        "axisFormat": {
+          "type": "string"
+        },
+        "excludes": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Section": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Task": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Section",
+      "attributes": {
+        "name": "Section"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Task",
+      "attributes": {
+        "name": "Task",
+        "taskId": "",
+        "status": "",
+        "start": "",
+        "end": "",
+        "duration": "",
+        "after": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "taskId": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "after": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "title": "",
+        "direction": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Actor": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Boundary": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Link": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Actor",
+      "attributes": {
+        "name": "Actor",
+        "label": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:UseCase",
+      "attributes": {
+        "name": "UseCase",
+        "label": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Boundary",
+      "attributes": {
+        "name": "Boundary",
+        "label": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:UseCase": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Link",
+      "attributes": {
+        "name": "Link",
+        "kind": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 660,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "src": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Actor": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:UseCase": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Boundary": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Link": {
+            "min": -1,
+            "max": 1
+          }
+        },
+        "dst": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Actor": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:UseCase": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Boundary": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Link": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    }
+  ]
+}

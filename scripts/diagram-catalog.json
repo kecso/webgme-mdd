@@ -1,0 +1,684 @@
+{
+  "mermaidVersionSurveyed": "11.x / 12.x (docs + live examples, Nov 2026)",
+  "sources": [
+    "https://mermaid.js.org/intro/",
+    "https://mermaid.js.org/syntax/all-examples",
+    "https://diagramgen.app/mermaid-cheat-sheet/",
+    "https://www.drawio.com/docs/manual/mermaid/mermaid-supported-diagram-types/"
+  ],
+  "webgmeJsonSpec": "https://github.com/deepforge-dev/webgme-json-importer",
+  "diagrams": [
+    {
+      "id": "flowchart",
+      "name": "Flowchart",
+      "keywords": ["flowchart", "graph"],
+      "status": "stable",
+      "domains": ["process-modeling", "algorithms", "workflows", "ci-cd", "business-process"],
+      "capabilities": [
+        "Directed graphs with ranked layout (TD/TB/LR/RL/BT)",
+        "Many node shapes (rect, diamond, stadium, cylinder, hexagon, etc.)",
+        "Labeled edges, dotted/thick styles, link clicks",
+        "Subgraphs / clusters",
+        "Styling classes and inline styles"
+      ],
+      "syntaxHighlights": [
+        "flowchart TD",
+        "A[Process] --> B{Decision?}",
+        "B -->|Yes| C([End])",
+        "subgraph id[Title] ... end"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "direction", "title"] },
+        "Node": { "attrs": ["name", "label", "shape", "styleClass"] },
+        "Edge": { "attrs": ["name", "label", "lineStyle", "arrowStyle"], "pointers": ["src", "dst"] },
+        "Subgraph": { "attrs": ["name", "label", "direction"], "contains": ["Node", "Edge", "Subgraph"] }
+      },
+      "sample": "flowchart TD\n  Start([Start]) --> Decide{Ready?}\n  Decide -->|Yes| Work[Do work]\n  Decide -->|No| Start\n  Work --> Done([Done])"
+    },
+    {
+      "id": "sequence",
+      "name": "Sequence Diagram",
+      "keywords": ["sequenceDiagram"],
+      "status": "stable",
+      "domains": ["software-interaction", "protocols", "api-design", "uml", "distributed-systems"],
+      "capabilities": [
+        "Participants and actors with aliases",
+        "Sync/async/dashed messages",
+        "Activation boxes",
+        "Notes, loops, alt/opt/par/critical/break fragments",
+        "Autonumber, create/destroy participants"
+      ],
+      "syntaxHighlights": [
+        "sequenceDiagram",
+        "participant A as Client",
+        "A->>+B: request",
+        "B-->>-A: response",
+        "alt ok ... else ... end"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "autonumber", "title"] },
+        "Participant": { "attrs": ["name", "alias", "kind"] },
+        "Message": { "attrs": ["name", "label", "arrowType", "activate"], "pointers": ["from", "to"] },
+        "Fragment": { "attrs": ["name", "kind", "label"], "contains": ["Message", "Fragment", "Note"] },
+        "Note": { "attrs": ["name", "text", "placement"], "pointers": ["overStart", "overEnd"] }
+      },
+      "sample": "sequenceDiagram\n  actor U as User\n  participant API\n  participant DB\n  U->>+API: GET /items\n  API->>+DB: query\n  DB-->>-API: rows\n  API-->>-U: 200 OK"
+    },
+    {
+      "id": "class",
+      "name": "Class Diagram",
+      "keywords": ["classDiagram"],
+      "status": "stable",
+      "domains": ["object-oriented-design", "uml", "software-architecture", "domain-modeling"],
+      "capabilities": [
+        "Classes with members and methods",
+        "Visibility (+/#/-/~), stereotypes, generics",
+        "Relationships: inheritance, composition, aggregation, association, dependency, realization",
+        "Cardinality annotations",
+        "Namespaces / packages"
+      ],
+      "syntaxHighlights": [
+        "classDiagram",
+        "class Animal { +String name +eat() }",
+        "Animal <|-- Dog",
+        "Owner \"1\" --> \"*\" Animal : owns"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Class": { "attrs": ["name", "stereotype", "isInterface", "isAbstract"] },
+        "Member": { "attrs": ["name", "visibility", "type", "classifier"] },
+        "Method": { "attrs": ["name", "visibility", "returnType", "parameters", "classifier"] },
+        "Relationship": { "attrs": ["name", "kind", "label", "srcCard", "dstCard"], "pointers": ["src", "dst"] },
+        "Namespace": { "attrs": ["name"], "contains": ["Class", "Namespace"] }
+      },
+      "sample": "classDiagram\n  class Animal {\n    +String name\n    +eat()\n  }\n  Animal <|-- Dog\n  Animal <|-- Cat\n  Owner \"1\" --> \"*\" Animal : owns"
+    },
+    {
+      "id": "state",
+      "name": "State Diagram",
+      "keywords": ["stateDiagram", "stateDiagram-v2"],
+      "status": "stable",
+      "domains": ["finite-state-machines", "embedded-systems", "ui-state", "protocol-state", "uml"],
+      "capabilities": [
+        "States, transitions with events/guards/actions",
+        "Composite (nested) states",
+        "Choice, fork/join, history (shallow/deep)",
+        "Notes, concurrency (--)"
+      ],
+      "syntaxHighlights": [
+        "stateDiagram-v2",
+        "[*] --> Idle",
+        "Idle --> Busy : start",
+        "state Busy { ... }"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "State": { "attrs": ["name", "kind", "label"], "contains": ["State", "Transition"] },
+        "Transition": { "attrs": ["name", "event", "guard", "action"], "pointers": ["src", "dst"] },
+        "Note": { "attrs": ["name", "text"], "pointers": ["target"] }
+      },
+      "sample": "stateDiagram-v2\n  [*] --> Idle\n  Idle --> Busy : start\n  Busy --> Idle : done\n  Busy --> Failed : error\n  Failed --> Idle : reset\n  Idle --> [*]"
+    },
+    {
+      "id": "er",
+      "name": "Entity Relationship Diagram",
+      "keywords": ["erDiagram"],
+      "status": "stable",
+      "domains": ["database-design", "data-modeling", "information-architecture"],
+      "capabilities": [
+        "Entities with typed attributes and keys",
+        "Cardinality relationships (one/zero/many)",
+        "Identifying vs non-identifying relationships",
+        "Attribute keys PK/FK/UK"
+      ],
+      "syntaxHighlights": [
+        "erDiagram",
+        "CUSTOMER ||--o{ ORDER : places",
+        "CUSTOMER { string name PK }"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Entity": { "attrs": ["name"] },
+        "Attribute": { "attrs": ["name", "dataType", "key", "comment"] },
+        "Relationship": { "attrs": ["name", "label", "srcCard", "dstCard"], "pointers": ["src", "dst"] }
+      },
+      "sample": "erDiagram\n  CUSTOMER ||--o{ ORDER : places\n  ORDER ||--|{ LINE-ITEM : contains\n  CUSTOMER {\n    string id PK\n    string name\n  }\n  ORDER {\n    string id PK\n    date created\n  }"
+    },
+    {
+      "id": "journey",
+      "name": "User Journey",
+      "keywords": ["journey"],
+      "status": "stable",
+      "domains": ["ux-design", "product-design", "customer-experience", "service-design"],
+      "capabilities": [
+        "Titled journeys with sections",
+        "Tasks scored 1-5 with actors",
+        "Multi-actor task assignment"
+      ],
+      "syntaxHighlights": [
+        "journey",
+        "title My day",
+        "section Morning",
+        "Make tea: 5: Me"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Section": { "attrs": ["name"] },
+        "Task": { "attrs": ["name", "score", "actors"] }
+      },
+      "sample": "journey\n  title Morning commute\n  section Home\n    Wake up: 3: Me\n    Pack bag: 4: Me\n  section Transit\n    Board train: 2: Me\n    Read docs: 5: Me"
+    },
+    {
+      "id": "gantt",
+      "name": "Gantt Chart",
+      "keywords": ["gantt"],
+      "status": "stable",
+      "domains": ["project-management", "scheduling", "program-planning"],
+      "capabilities": [
+        "Sections and tasks with dates/durations",
+        "Dependencies (after)",
+        "Milestones, done/active/crit statuses",
+        "Excludes / weekends, date formats"
+      ],
+      "syntaxHighlights": [
+        "gantt",
+        "dateFormat YYYY-MM-DD",
+        "section Build",
+        "Design :a1, 2026-01-01, 7d"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "dateFormat", "axisFormat", "excludes"] },
+        "Section": { "attrs": ["name"] },
+        "Task": { "attrs": ["name", "taskId", "status", "start", "end", "duration", "after"] }
+      },
+      "sample": "gantt\n  title Housing sprint\n  dateFormat YYYY-MM-DD\n  section Meta\n  Survey diagrams :done, a1, 2026-11-01, 3d\n  Draft metamodels :active, a2, after a1, 5d\n  section Plugins\n  Import/Export :a3, after a2, 4d"
+    },
+    {
+      "id": "pie",
+      "name": "Pie Chart",
+      "keywords": ["pie"],
+      "status": "stable",
+      "domains": ["data-visualization", "analytics", "reporting"],
+      "capabilities": ["Titled pie slices with numeric values", "Optional showData"],
+      "syntaxHighlights": ["pie title Pets", "\"Dogs\" : 386"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "showData"] },
+        "Slice": { "attrs": ["name", "label", "value"] }
+      },
+      "sample": "pie showData\n  title Diagram coverage\n  \"Stable\" : 16\n  \"Beta\" : 10\n  \"Experimental\" : 4"
+    },
+    {
+      "id": "quadrant",
+      "name": "Quadrant Chart",
+      "keywords": ["quadrantChart"],
+      "status": "stable",
+      "domains": ["strategy", "prioritization", "product-portfolio", "marketing-analysis"],
+      "capabilities": [
+        "2x2 grid with axis labels",
+        "Named quadrant regions",
+        "Points with [x,y] in 0..1"
+      ],
+      "syntaxHighlights": [
+        "quadrantChart",
+        "x-axis Low --> High",
+        "Campaign A: [0.3, 0.6]"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "xAxisLeft", "xAxisRight", "yAxisBottom", "yAxisTop"] },
+        "Quadrant": { "attrs": ["name", "label", "index"] },
+        "Point": { "attrs": ["name", "label", "x", "y"] }
+      },
+      "sample": "quadrantChart\n  title Feature priority\n  x-axis Low Reach --> High Reach\n  y-axis Low Impact --> High Impact\n  quadrant-1 Expand\n  quadrant-2 Promote\n  quadrant-3 Revisit\n  quadrant-4 Monitor\n  Import plugin: [0.7, 0.8]\n  Docs site: [0.55, 0.6]"
+    },
+    {
+      "id": "requirement",
+      "name": "Requirement Diagram",
+      "keywords": ["requirementDiagram"],
+      "status": "stable",
+      "domains": ["systems-engineering", "requirements-management", "mbse", "safety-critical"],
+      "capabilities": [
+        "Requirement / element nodes with SysML-like fields",
+        "Relationships: contains, copies, derives, satisfies, verifies, refines, traces"
+      ],
+      "syntaxHighlights": [
+        "requirementDiagram",
+        "requirement req1 { id: 1 text: ... }",
+        "element e1 { type: simulation }",
+        "e1 - satisfies -> req1"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Requirement": { "attrs": ["name", "reqId", "text", "risk", "verifymethod", "type"] },
+        "Element": { "attrs": ["name", "elementType", "docRef"] },
+        "Relationship": { "attrs": ["name", "kind"], "pointers": ["src", "dst"] }
+      },
+      "sample": "requirementDiagram\n  requirement safety {\n    id: 1\n    text: System shall fail safe\n    risk: high\n    verifymethod: test\n  }\n  element controller {\n    type: simulation\n  }\n  controller - satisfies -> safety"
+    },
+    {
+      "id": "gitgraph",
+      "name": "Git Graph",
+      "keywords": ["gitGraph"],
+      "status": "stable",
+      "domains": ["version-control", "devex-education", "release-engineering"],
+      "capabilities": [
+        "Commits, branches, checkout, merge, cherry-pick",
+        "Commit tags/types/ids",
+        "Orientation options"
+      ],
+      "syntaxHighlights": [
+        "gitGraph",
+        "commit",
+        "branch develop",
+        "checkout main",
+        "merge develop"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "orientation"] },
+        "Branch": { "attrs": ["name"] },
+        "Commit": { "attrs": ["name", "commitId", "tag", "commitType", "msg"], "pointers": ["branch"] },
+        "Merge": { "attrs": ["name"], "pointers": ["into", "from"] }
+      },
+      "sample": "gitGraph\n  commit id: \"init\"\n  branch feature\n  checkout feature\n  commit id: \"wip\"\n  checkout main\n  commit id: \"hotfix\"\n  merge feature"
+    },
+    {
+      "id": "c4",
+      "name": "C4 Architecture",
+      "keywords": ["C4Context", "C4Container", "C4Component", "C4Dynamic", "C4Deployment"],
+      "status": "stable",
+      "domains": ["software-architecture", "system-context", "enterprise-architecture"],
+      "capabilities": [
+        "C4 levels: Context, Container, Component, Dynamic, Deployment",
+        "Persons, systems, containers, DBs, queues, boundaries",
+        "Typed relations with technology labels"
+      ],
+      "syntaxHighlights": [
+        "C4Context",
+        "Person(user, \"User\", \"...\")",
+        "System(sys, \"App\", \"...\")",
+        "Rel(user, sys, \"Uses\")"
+      ],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "level", "title"] },
+        "Person": { "attrs": ["name", "alias", "description", "external"] },
+        "System": { "attrs": ["name", "alias", "description", "external", "kind"] },
+        "Container": { "attrs": ["name", "alias", "technology", "description", "kind"] },
+        "Boundary": { "attrs": ["name", "alias", "kind"], "contains": ["Person", "System", "Container", "Boundary"] },
+        "Relation": { "attrs": ["name", "label", "technology", "bidirectional"], "pointers": ["src", "dst"] }
+      },
+      "sample": "C4Context\n  title Housing WebGME Context\n  Person(modeler, \"Modeler\", \"Creates metamodels\")\n  System(webgme, \"WebGME MDD\", \"Hosts Mermaid DSMLs\")\n  System_Ext(mermaid, \"Mermaid\", \"Text diagram engine\")\n  Rel(modeler, webgme, \"Models with\")\n  Rel(webgme, mermaid, \"Imports/exports\")"
+    },
+    {
+      "id": "mindmap",
+      "name": "Mindmap",
+      "keywords": ["mindmap"],
+      "status": "stable",
+      "domains": ["knowledge-management", "brainstorming", "education", "ideation"],
+      "capabilities": ["Hierarchical radial/outline mind maps", "Icons and class styling", "Markdown-ish indentation"],
+      "syntaxHighlights": ["mindmap", "root((idea))", "  Branch", "    Leaf"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Node": { "attrs": ["name", "label", "shape", "icon"], "contains": ["Node"] }
+      },
+      "sample": "mindmap\n  root((WebGME-MDD))\n    Diagrams\n      Flowchart\n      Sequence\n      Class\n    Plugins\n      Import\n      Export\n    Domains\n      Software\n      Systems"
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "keywords": ["timeline"],
+      "status": "stable",
+      "domains": ["roadmapping", "history", "product-planning", "storytelling"],
+      "capabilities": ["Sections with time periods and events", "Multi-event periods"],
+      "syntaxHighlights": ["timeline", "title History", "section 2024", "2024 : event"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Section": { "attrs": ["name"] },
+        "Period": { "attrs": ["name", "label"] },
+        "Event": { "attrs": ["name", "text"] }
+      },
+      "sample": "timeline\n  title Mermaid to WebGME\n  section Research\n    Survey : Catalog diagrams\n  section Build\n    Metamodels : Draft JSON\n    Plugins : Import Export"
+    },
+    {
+      "id": "kanban",
+      "name": "Kanban",
+      "keywords": ["kanban"],
+      "status": "stable",
+      "domains": ["agile", "project-management", "work-tracking"],
+      "capabilities": ["Columns with ticket cards", "Metadata on tickets"],
+      "syntaxHighlights": ["kanban", "Todo", "  [task]"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Column": { "attrs": ["name"] },
+        "Ticket": { "attrs": ["name", "label", "assigned", "meta"] }
+      },
+      "sample": "kanban\n  Todo\n    [Catalog diagrams]\n  Doing\n    [Draft metamodels]\n  Done\n    [Repo scaffold]"
+    },
+    {
+      "id": "sankey",
+      "name": "Sankey Diagram",
+      "keywords": ["sankey", "sankey-beta"],
+      "status": "beta",
+      "domains": ["flow-analysis", "energy", "budget", "conversion-funnels"],
+      "capabilities": ["Weighted source-target flows", "CSV-like link rows"],
+      "syntaxHighlights": ["sankey-beta", "Source,Target,Value"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Node": { "attrs": ["name", "label"] },
+        "Link": { "attrs": ["name", "value"], "pointers": ["src", "dst"] }
+      },
+      "sample": "sankey-beta\n\nResearch,Metamodels,40\nResearch,Docs,20\nMetamodels,Plugins,30\nDocs,Catalog,20\nPlugins,WebGME,30"
+    },
+    {
+      "id": "xychart",
+      "name": "XY Chart",
+      "keywords": ["xychart", "xychart-beta"],
+      "status": "beta",
+      "domains": ["data-visualization", "analytics", "timeseries"],
+      "capabilities": ["Bar and line series", "Categorical or numeric axes", "Titles and axis labels"],
+      "syntaxHighlights": ["xychart-beta", "x-axis [...]", "bar [...]", "line [...]"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "xAxis", "yAxis"] },
+        "Series": { "attrs": ["name", "kind", "values"] }
+      },
+      "sample": "xychart-beta\n  title \"Diagrams by status\"\n  x-axis [stable, beta, experimental]\n  y-axis \"Count\" 0 --> 20\n  bar [16, 10, 4]"
+    },
+    {
+      "id": "block",
+      "name": "Block Diagram",
+      "keywords": ["block", "block-beta"],
+      "status": "beta",
+      "domains": ["system-structure", "hardware-blocks", "modular-architecture"],
+      "capabilities": ["Nested blocks/columns/spaces", "Edges between blocks", "Width/composite layouts"],
+      "syntaxHighlights": ["block-beta", "columns 3", "A B C", "A --> B"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "columns"] },
+        "Block": { "attrs": ["name", "label", "width", "kind"], "contains": ["Block"] },
+        "Edge": { "attrs": ["name", "label"], "pointers": ["src", "dst"] }
+      },
+      "sample": "block-beta\n  columns 3\n  Catalog Catalog Catalog\n  Meta Meta Plugins\n  Catalog --> Meta\n  Meta --> Plugins"
+    },
+    {
+      "id": "packet",
+      "name": "Packet Diagram",
+      "keywords": ["packet", "packet-beta"],
+      "status": "beta",
+      "domains": ["networking", "protocols", "binary-layouts"],
+      "capabilities": ["Bit-field packet layouts", "Start-end bit ranges with labels"],
+      "syntaxHighlights": ["packet-beta", "0-15: \"Source Port\""],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Field": { "attrs": ["name", "startBit", "endBit", "label"] }
+      },
+      "sample": "packet-beta\n  0-15: \"Source Port\"\n  16-31: \"Dest Port\"\n  32-63: \"Sequence Number\""
+    },
+    {
+      "id": "architecture",
+      "name": "Architecture Diagram",
+      "keywords": ["architecture", "architecture-beta"],
+      "status": "beta",
+      "domains": ["cloud-architecture", "infrastructure", "service-topology"],
+      "capabilities": ["Groups, services, edges", "Icons for cloud resources", "Directional service links"],
+      "syntaxHighlights": ["architecture-beta", "group api", "service db", "api:L --> R:db"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Group": { "attrs": ["name", "icon"], "contains": ["Service", "Group"] },
+        "Service": { "attrs": ["name", "icon", "inGroup"] },
+        "Edge": { "attrs": ["name", "srcSide", "dstSide"], "pointers": ["src", "dst"] }
+      },
+      "sample": "architecture-beta\n  group web(cloud)[Web]\n  service ui(server)[Catalog] in web\n  service gme(server)[WebGME] in web\n  service db(database)[MongoDB]\n  ui:R --> L:gme\n  gme:R --> L:db"
+    },
+    {
+      "id": "radar",
+      "name": "Radar Chart",
+      "keywords": ["radar", "radar-beta"],
+      "status": "beta",
+      "domains": ["skills-assessment", "maturity-models", "comparative-metrics"],
+      "capabilities": ["Polar axes with numeric series", "Multiple overlays"],
+      "syntaxHighlights": ["radar-beta", "axis a[\"A\"], b[\"B\"]", "curve c{1,2,3}"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Axis": { "attrs": ["name", "label"] },
+        "Curve": { "attrs": ["name", "label", "values"] }
+      },
+      "sample": "radar-beta\n  title Capability coverage\n  axis syn[\"Syntax\"], meta[\"Metamodel\"], plug[\"Plugins\"], dom[\"Domains\"]\n  curve this{\"WebGME-MDD\"{4, 5, 4, 5}}"
+    },
+    {
+      "id": "treemap",
+      "name": "Treemap",
+      "keywords": ["treemap", "treemap-beta"],
+      "status": "beta",
+      "domains": ["hierarchies", "disk-usage", "budget-breakdown", "portfolio"],
+      "capabilities": ["Nested hierarchical areas", "Numeric values drive area"],
+      "syntaxHighlights": ["treemap-beta", "\"Root\"", "  \"Child\": 10"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Node": { "attrs": ["name", "label", "value"], "contains": ["Node"] }
+      },
+      "sample": "treemap-beta\n\"webgme-mdd\"\n  \"diagrams\": 24\n  \"docs\": 6\n  \"plugins\": 8"
+    },
+    {
+      "id": "ishikawa",
+      "name": "Ishikawa (Fishbone)",
+      "keywords": ["ishikawa", "ishikawa-beta", "fishbone"],
+      "status": "stable",
+      "domains": ["quality-management", "root-cause-analysis", "manufacturing", "continuous-improvement"],
+      "capabilities": ["Effect spine with cause categories", "Nested causes"],
+      "syntaxHighlights": ["ishikawa-beta", "Effect", "Category", "  Cause"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "effect"] },
+        "Category": { "attrs": ["name"] },
+        "Cause": { "attrs": ["name"], "contains": ["Cause"] }
+      },
+      "sample": "ishikawa-beta\n  Incomplete metamodel\n  Syntax\n    Missing constructs\n    Ambiguous edges\n  Process\n    No import plugin\n  Tools\n    WebGME seed missing"
+    },
+    {
+      "id": "usecase",
+      "name": "Use Case Diagram",
+      "keywords": ["usecase", "usecase-beta"],
+      "status": "beta",
+      "domains": ["requirements", "uml", "product-scope", "systems-analysis"],
+      "capabilities": ["Actors and use cases", "Include/extend/generalization links", "System boundaries"],
+      "syntaxHighlights": ["usecase-beta", "actor User", "User --> (Login)"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "direction"] },
+        "Actor": { "attrs": ["name", "label"] },
+        "UseCase": { "attrs": ["name", "label"] },
+        "Boundary": { "attrs": ["name", "label"], "contains": ["UseCase"] },
+        "Link": { "attrs": ["name", "kind"], "pointers": ["src", "dst"] }
+      },
+      "sample": "usecase-beta\n  direction LR\n  actor Modeler\n  (Import Mermaid)\n  (Export Mermaid)\n  (Edit Metamodel)\n  Modeler --> (Import Mermaid)\n  Modeler --> (Export Mermaid)\n  Modeler --> (Edit Metamodel)"
+    },
+    {
+      "id": "eventmodeling",
+      "name": "Event Modeling",
+      "keywords": ["eventmodeling", "eventmodeling-beta"],
+      "status": "beta",
+      "domains": ["event-driven-architecture", "cqrs", "domain-driven-design", "event-sourcing"],
+      "capabilities": ["Events, commands, views/swimlanes", "Timeline of system behavior"],
+      "syntaxHighlights": ["eventmodeling-beta"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Swimlane": { "attrs": ["name"] },
+        "Command": { "attrs": ["name", "label"] },
+        "Event": { "attrs": ["name", "label"] },
+        "View": { "attrs": ["name", "label"] },
+        "Flow": { "attrs": ["name"], "pointers": ["src", "dst"] }
+      },
+      "sample": "eventmodeling-beta\n  // Draft sample — syntax evolving in Mermaid\n  title Import pipeline\n  Modeler: Upload source\n  System: MermaidParsed\n  System: ModelUpdated"
+    },
+    {
+      "id": "venn",
+      "name": "Venn Diagram",
+      "keywords": ["venn"],
+      "status": "experimental",
+      "domains": ["set-theory", "overlap-analysis", "classification"],
+      "capabilities": ["Set overlaps and intersection labels"],
+      "syntaxHighlights": ["venn"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Set": { "attrs": ["name", "label"] },
+        "Intersection": { "attrs": ["name", "label"], "pointers": ["sets"] }
+      },
+      "sample": "%% Venn support varies by Mermaid build\nvenn\n  title Domains\n  A Software\n  B Systems\n  C Data"
+    },
+    {
+      "id": "treeview",
+      "name": "Tree View",
+      "keywords": ["treeView"],
+      "status": "experimental",
+      "domains": ["hierarchies", "file-systems", "org-charts", "taxonomies"],
+      "capabilities": ["Indented hierarchical trees"],
+      "syntaxHighlights": ["treeView"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Node": { "attrs": ["name", "label"], "contains": ["Node"] }
+      },
+      "sample": "treeView\n  webgme-mdd\n    diagrams\n      flowchart\n      sequence\n    docs\n      findings"
+    },
+    {
+      "id": "wardley",
+      "name": "Wardley Map",
+      "keywords": ["wardley", "wardley-beta"],
+      "status": "experimental",
+      "domains": ["strategy", "technology-evolution", "value-chain-mapping"],
+      "capabilities": ["Value chain vs evolution axes", "Components and dependencies"],
+      "syntaxHighlights": ["wardley-beta"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Component": { "attrs": ["name", "visibility", "evolution"] },
+        "Dependency": { "attrs": ["name"], "pointers": ["src", "dst"] }
+      },
+      "sample": "%% Wardley support varies by Mermaid build\nwardley-beta\n  title Diagram tooling evolution\n  component Business [0.9, 0.2]\n  component WebGME [0.6, 0.55]\n  component Mermaid [0.5, 0.7]"
+    },
+    {
+      "id": "cynefin",
+      "name": "Cynefin Framework",
+      "keywords": ["cynefin"],
+      "status": "experimental",
+      "domains": ["decision-making", "complexity-science", "organizational-strategy"],
+      "capabilities": ["Clear/Complicated/Complex/Chaotic/Confused domains placement"],
+      "syntaxHighlights": ["cynefin"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title"] },
+        "Domain": { "attrs": ["name", "kind"] },
+        "Item": { "attrs": ["name", "label"], "pointers": ["domain"] }
+      },
+      "sample": "%% Cynefin support varies by Mermaid build\ncynefin\n  title Modeling choices\n  clear: Flowchart\n  complicated: Class ER\n  complex: Architecture EventModeling\n  chaotic: Experimental diagrams"
+    },
+    {
+      "id": "railroad",
+      "name": "Railroad Diagram",
+      "keywords": ["railroad"],
+      "status": "experimental",
+      "domains": ["grammar-design", "parsers", "language-engineering", "ebnf"],
+      "capabilities": ["Railroad/syntax diagrams from IR, EBNF, ABNF, PEG flavors"],
+      "syntaxHighlights": ["railroad"],
+      "metaConcepts": {
+        "Diagram": { "attrs": ["name", "title", "flavor"] },
+        "Rule": { "attrs": ["name", "expression"] },
+        "Term": { "attrs": ["name", "kind", "value"] }
+      },
+      "sample": "%% Railroad flavors (IR/EBNF/ABNF/PEG) vary by Mermaid build\nrailroad\n  Diagram ::= Header Statement+\n  Header ::= Keyword"
+    }
+  ],
+  "domainIndex": {
+    "process-modeling": ["flowchart"],
+    "algorithms": ["flowchart"],
+    "workflows": ["flowchart"],
+    "ci-cd": ["flowchart"],
+    "business-process": ["flowchart"],
+    "software-interaction": ["sequence"],
+    "protocols": ["sequence", "packet", "state"],
+    "api-design": ["sequence"],
+    "uml": ["sequence", "class", "state", "usecase"],
+    "distributed-systems": ["sequence"],
+    "object-oriented-design": ["class"],
+    "software-architecture": ["class", "c4", "architecture", "block"],
+    "domain-modeling": ["class", "er", "eventmodeling"],
+    "finite-state-machines": ["state"],
+    "embedded-systems": ["state"],
+    "ui-state": ["state"],
+    "protocol-state": ["state"],
+    "database-design": ["er"],
+    "data-modeling": ["er"],
+    "information-architecture": ["er", "treemap", "treeview"],
+    "ux-design": ["journey"],
+    "product-design": ["journey", "quadrant"],
+    "customer-experience": ["journey"],
+    "service-design": ["journey"],
+    "project-management": ["gantt", "kanban"],
+    "scheduling": ["gantt"],
+    "program-planning": ["gantt"],
+    "data-visualization": ["pie", "xychart", "radar", "sankey", "treemap"],
+    "analytics": ["pie", "xychart", "sankey"],
+    "reporting": ["pie"],
+    "strategy": ["quadrant", "wardley", "cynefin"],
+    "prioritization": ["quadrant"],
+    "product-portfolio": ["quadrant", "treemap"],
+    "marketing-analysis": ["quadrant"],
+    "systems-engineering": ["requirement", "c4"],
+    "requirements-management": ["requirement", "usecase"],
+    "mbse": ["requirement"],
+    "safety-critical": ["requirement"],
+    "version-control": ["gitgraph"],
+    "devex-education": ["gitgraph"],
+    "release-engineering": ["gitgraph"],
+    "system-context": ["c4"],
+    "enterprise-architecture": ["c4"],
+    "knowledge-management": ["mindmap"],
+    "brainstorming": ["mindmap"],
+    "education": ["mindmap"],
+    "ideation": ["mindmap"],
+    "roadmapping": ["timeline"],
+    "history": ["timeline"],
+    "product-planning": ["timeline"],
+    "storytelling": ["timeline"],
+    "agile": ["kanban"],
+    "work-tracking": ["kanban"],
+    "flow-analysis": ["sankey"],
+    "energy": ["sankey"],
+    "budget": ["sankey", "treemap"],
+    "conversion-funnels": ["sankey"],
+    "timeseries": ["xychart"],
+    "system-structure": ["block"],
+    "hardware-blocks": ["block"],
+    "modular-architecture": ["block"],
+    "networking": ["packet"],
+    "binary-layouts": ["packet"],
+    "cloud-architecture": ["architecture"],
+    "infrastructure": ["architecture"],
+    "service-topology": ["architecture"],
+    "skills-assessment": ["radar"],
+    "maturity-models": ["radar"],
+    "comparative-metrics": ["radar"],
+    "hierarchies": ["treemap", "treeview", "mindmap"],
+    "disk-usage": ["treemap"],
+    "budget-breakdown": ["treemap"],
+    "portfolio": ["treemap"],
+    "quality-management": ["ishikawa"],
+    "root-cause-analysis": ["ishikawa"],
+    "manufacturing": ["ishikawa"],
+    "continuous-improvement": ["ishikawa"],
+    "requirements": ["usecase", "requirement"],
+    "product-scope": ["usecase"],
+    "systems-analysis": ["usecase"],
+    "event-driven-architecture": ["eventmodeling"],
+    "cqrs": ["eventmodeling"],
+    "domain-driven-design": ["eventmodeling"],
+    "event-sourcing": ["eventmodeling"],
+    "set-theory": ["venn"],
+    "overlap-analysis": ["venn"],
+    "classification": ["venn"],
+    "file-systems": ["treeview"],
+    "org-charts": ["treeview"],
+    "taxonomies": ["treeview"],
+    "technology-evolution": ["wardley"],
+    "value-chain-mapping": ["wardley"],
+    "decision-making": ["cynefin"],
+    "complexity-science": ["cynefin"],
+    "organizational-strategy": ["cynefin"],
+    "grammar-design": ["railroad"],
+    "parsers": ["railroad"],
+    "language-engineering": ["railroad"],
+    "ebnf": ["railroad"]
+  }
+}

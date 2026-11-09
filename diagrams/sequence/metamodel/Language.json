@@ -1,0 +1,276 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "autonumber": "",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "autonumber": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Participant": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Participant",
+      "attributes": {
+        "name": "Participant",
+        "alias": "",
+        "kind": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Message",
+      "attributes": {
+        "name": "Message",
+        "label": "",
+        "arrowType": "",
+        "activate": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "arrowType": {
+          "type": "string"
+        },
+        "activate": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "from": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Participant": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Message": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Fragment": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Note": {
+            "min": -1,
+            "max": 1
+          }
+        },
+        "to": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Participant": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Message": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Fragment": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Note": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "@meta:Fragment",
+      "attributes": {
+        "name": "Fragment",
+        "kind": "",
+        "label": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Message": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Fragment": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Note": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "@meta:Note",
+      "attributes": {
+        "name": "Note",
+        "text": "",
+        "placement": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "placement": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 660,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "overStart": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Participant": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Message": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Fragment": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Note": {
+            "min": -1,
+            "max": 1
+          }
+        },
+        "overEnd": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Participant": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Message": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Fragment": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Note": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    }
+  ]
+}

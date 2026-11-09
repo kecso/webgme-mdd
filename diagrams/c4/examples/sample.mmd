@@ -1,0 +1,7 @@
+C4Context
+  title Housing WebGME Context
+  Person(modeler, "Modeler", "Creates metamodels")
+  System(webgme, "WebGME MDD", "Hosts Mermaid DSMLs")
+  System_Ext(mermaid, "Mermaid", "Text diagram engine")
+  Rel(modeler, webgme, "Models with")
+  Rel(webgme, mermaid, "Imports/exports")

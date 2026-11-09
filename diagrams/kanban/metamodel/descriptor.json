@@ -1,0 +1,45 @@
+{
+  "id": "kanban",
+  "name": "Kanban",
+  "keywords": [
+    "kanban"
+  ],
+  "status": "stable",
+  "domains": [
+    "agile",
+    "project-management",
+    "work-tracking"
+  ],
+  "capabilities": [
+    "Columns with ticket cards",
+    "Metadata on tickets"
+  ],
+  "syntaxHighlights": [
+    "kanban",
+    "Todo",
+    "  [task]"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Column": {
+      "attrs": [
+        "name"
+      ]
+    },
+    "Ticket": {
+      "attrs": [
+        "name",
+        "label",
+        "assigned",
+        "meta"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

@@ -1,0 +1,11 @@
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ LINE-ITEM : contains
+  CUSTOMER {
+    string id PK
+    string name
+  }
+  ORDER {
+    string id PK
+    date created
+  }

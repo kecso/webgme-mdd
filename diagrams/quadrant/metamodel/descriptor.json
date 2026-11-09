@@ -1,0 +1,53 @@
+{
+  "id": "quadrant",
+  "name": "Quadrant Chart",
+  "keywords": [
+    "quadrantChart"
+  ],
+  "status": "stable",
+  "domains": [
+    "strategy",
+    "prioritization",
+    "product-portfolio",
+    "marketing-analysis"
+  ],
+  "capabilities": [
+    "2x2 grid with axis labels",
+    "Named quadrant regions",
+    "Points with [x,y] in 0..1"
+  ],
+  "syntaxHighlights": [
+    "quadrantChart",
+    "x-axis Low --> High",
+    "Campaign A: [0.3, 0.6]"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "xAxisLeft",
+        "xAxisRight",
+        "yAxisBottom",
+        "yAxisTop"
+      ]
+    },
+    "Quadrant": {
+      "attrs": [
+        "name",
+        "label",
+        "index"
+      ]
+    },
+    "Point": {
+      "attrs": [
+        "name",
+        "label",
+        "x",
+        "y"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

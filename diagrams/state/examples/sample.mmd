@@ -1,0 +1,7 @@
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Busy : start
+  Busy --> Idle : done
+  Busy --> Failed : error
+  Failed --> Idle : reset
+  Idle --> [*]

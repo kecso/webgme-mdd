@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid Requirement Diagram text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a requirementDiagram definition",
+      "value": "requirementDiagram\n  requirement safety {\n    id: 1\n    text: System shall fail safe\n    risk: high\n    verifymethod: test\n  }\n  element controller {\n    type: simulation\n  }\n  controller - satisfies -> safety",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

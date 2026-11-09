@@ -1,0 +1,44 @@
+{
+  "id": "cynefin",
+  "name": "Cynefin Framework",
+  "keywords": [
+    "cynefin"
+  ],
+  "status": "experimental",
+  "domains": [
+    "decision-making",
+    "complexity-science",
+    "organizational-strategy"
+  ],
+  "capabilities": [
+    "Clear/Complicated/Complex/Chaotic/Confused domains placement"
+  ],
+  "syntaxHighlights": [
+    "cynefin"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "Domain": {
+      "attrs": [
+        "name",
+        "kind"
+      ]
+    },
+    "Item": {
+      "attrs": [
+        "name",
+        "label"
+      ],
+      "pointers": [
+        "domain"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

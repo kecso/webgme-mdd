@@ -1,0 +1,15 @@
+{
+  "id": "ExportMermaid",
+  "name": "Export Mermaid",
+  "version": "0.1.0",
+  "description": "Export model to Mermaid State Diagram text",
+  "icon": {
+    "class": "glyphicon glyphicon-export",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": false,
+  "configStructure": []
+}

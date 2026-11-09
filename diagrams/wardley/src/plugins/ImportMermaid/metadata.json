@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid Wardley Map text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a wardley definition",
+      "value": "%% Wardley support varies by Mermaid build\nwardley-beta\n  title Diagram tooling evolution\n  component Business [0.9, 0.2]\n  component WebGME [0.6, 0.55]\n  component Mermaid [0.5, 0.7]",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

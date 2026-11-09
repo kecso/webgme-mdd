@@ -1,0 +1,24 @@
+{
+  "id": "ImportMermaid",
+  "name": "Import Mermaid",
+  "version": "0.1.0",
+  "description": "Import Mermaid User Journey text into the model",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "Paste a journey definition",
+      "value": "journey\n  title Morning commute\n  section Home\n    Wake up: 3: Me\n    Pack bag: 4: Me\n  section Transit\n    Board train: 2: Me\n    Read docs: 5: Me",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

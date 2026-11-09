@@ -1,0 +1,44 @@
+{
+  "id": "xychart",
+  "name": "XY Chart",
+  "keywords": [
+    "xychart",
+    "xychart-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "data-visualization",
+    "analytics",
+    "timeseries"
+  ],
+  "capabilities": [
+    "Bar and line series",
+    "Categorical or numeric axes",
+    "Titles and axis labels"
+  ],
+  "syntaxHighlights": [
+    "xychart-beta",
+    "x-axis [...]",
+    "bar [...]",
+    "line [...]"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "xAxis",
+        "yAxis"
+      ]
+    },
+    "Series": {
+      "attrs": [
+        "name",
+        "kind",
+        "values"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

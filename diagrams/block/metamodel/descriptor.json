@@ -1,0 +1,57 @@
+{
+  "id": "block",
+  "name": "Block Diagram",
+  "keywords": [
+    "block",
+    "block-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "system-structure",
+    "hardware-blocks",
+    "modular-architecture"
+  ],
+  "capabilities": [
+    "Nested blocks/columns/spaces",
+    "Edges between blocks",
+    "Width/composite layouts"
+  ],
+  "syntaxHighlights": [
+    "block-beta",
+    "columns 3",
+    "A B C",
+    "A --> B"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "columns"
+      ]
+    },
+    "Block": {
+      "attrs": [
+        "name",
+        "label",
+        "width",
+        "kind"
+      ],
+      "contains": [
+        "Block"
+      ]
+    },
+    "Edge": {
+      "attrs": [
+        "name",
+        "label"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

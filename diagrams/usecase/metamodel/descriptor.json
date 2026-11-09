@@ -1,0 +1,67 @@
+{
+  "id": "usecase",
+  "name": "Use Case Diagram",
+  "keywords": [
+    "usecase",
+    "usecase-beta"
+  ],
+  "status": "beta",
+  "domains": [
+    "requirements",
+    "uml",
+    "product-scope",
+    "systems-analysis"
+  ],
+  "capabilities": [
+    "Actors and use cases",
+    "Include/extend/generalization links",
+    "System boundaries"
+  ],
+  "syntaxHighlights": [
+    "usecase-beta",
+    "actor User",
+    "User --> (Login)"
+  ],
+  "metaConcepts": {
+    "Diagram": {
+      "attrs": [
+        "name",
+        "title",
+        "direction"
+      ]
+    },
+    "Actor": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "UseCase": {
+      "attrs": [
+        "name",
+        "label"
+      ]
+    },
+    "Boundary": {
+      "attrs": [
+        "name",
+        "label"
+      ],
+      "contains": [
+        "UseCase"
+      ]
+    },
+    "Link": {
+      "attrs": [
+        "name",
+        "kind"
+      ],
+      "pointers": [
+        "src",
+        "dst"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.mmd"
+}

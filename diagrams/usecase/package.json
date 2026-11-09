@@ -1,0 +1,28 @@
+{
+  "name": "@webgme-mdd/usecase",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WebGME DSML project for Mermaid Use Case Diagram",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node ./node_modules/mocha/bin/mocha --recursive test",
+    "plugin": "node ./node_modules/webgme-engine/src/bin/run_plugin.js",
+    "seed:meta": "node ../../scripts/print-meta-summary.js usecase"
+  },
+  "keywords": [
+    "webgme",
+    "mermaid",
+    "usecase",
+    "mdd"
+  ],
+  "peerDependencies": {
+    "webgme": "^2.23.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "webgme": "^2.23.0"
+  },
+  "dependencies": {
+    "@webgme-mdd/shared": "*"
+  }
+}

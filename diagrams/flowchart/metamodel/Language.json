@@ -1,0 +1,193 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Diagram": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Diagram",
+      "attributes": {
+        "name": "Diagram",
+        "direction": "",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1
+      }
+    },
+    {
+      "id": "@meta:Node",
+      "attributes": {
+        "name": "Node",
+        "label": "",
+        "shape": "",
+        "styleClass": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "shape": {
+          "type": "string"
+        },
+        "styleClass": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      }
+    },
+    {
+      "id": "@meta:Edge",
+      "attributes": {
+        "name": "Edge",
+        "label": "",
+        "lineStyle": "",
+        "arrowStyle": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "lineStyle": {
+          "type": "string"
+        },
+        "arrowStyle": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "pointer_meta": {
+        "src": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Node": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Edge": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Subgraph": {
+            "min": -1,
+            "max": 1
+          }
+        },
+        "dst": {
+          "min": 0,
+          "max": 1,
+          "@meta:Diagram": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Node": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Edge": {
+            "min": -1,
+            "max": 1
+          },
+          "@meta:Subgraph": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "@meta:Subgraph",
+      "attributes": {
+        "name": "Subgraph",
+        "label": "",
+        "direction": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:Node": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Edge": {
+          "min": -1,
+          "max": -1
+        },
+        "@meta:Subgraph": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    }
+  ]
+}

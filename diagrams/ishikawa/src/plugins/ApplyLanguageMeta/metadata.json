@@ -1,0 +1,15 @@
+{
+  "id": "ApplyLanguageMeta",
+  "name": "Apply Language Meta",
+  "version": "0.1.0",
+  "description": "Create/update META nodes from metamodel/Language.json (webgme-json style)",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": []
+}
