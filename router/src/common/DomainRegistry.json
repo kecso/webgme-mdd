@@ -1,0 +1,477 @@
+{
+  "generatedFrom": "scripts/diagram-catalog.json",
+  "notes": [
+    "projectId / seedName / libraryRootHash are placeholders until real WebGME domain seeds exist.",
+    "importPluginId is the diagram-package plugin id; router invokes it after ensuring the library."
+  ],
+  "domains": [
+    {
+      "id": "flowchart",
+      "name": "Flowchart",
+      "keywords": [
+        "flowchart",
+        "graph"
+      ],
+      "libraryName": "Mermaid_Flowchart",
+      "seedName": "mermaid-flowchart",
+      "projectId": "TODO.owner.mermaid-flowchart",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/flowchart"
+    },
+    {
+      "id": "sequence",
+      "name": "Sequence Diagram",
+      "keywords": [
+        "sequenceDiagram"
+      ],
+      "libraryName": "Mermaid_Sequence",
+      "seedName": "mermaid-sequence",
+      "projectId": "TODO.owner.mermaid-sequence",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/sequence"
+    },
+    {
+      "id": "class",
+      "name": "Class Diagram",
+      "keywords": [
+        "classDiagram"
+      ],
+      "libraryName": "Mermaid_Class",
+      "seedName": "mermaid-class",
+      "projectId": "TODO.owner.mermaid-class",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/class"
+    },
+    {
+      "id": "state",
+      "name": "State Diagram",
+      "keywords": [
+        "stateDiagram",
+        "stateDiagram-v2"
+      ],
+      "libraryName": "Mermaid_State",
+      "seedName": "mermaid-state",
+      "projectId": "TODO.owner.mermaid-state",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/state"
+    },
+    {
+      "id": "er",
+      "name": "Entity Relationship Diagram",
+      "keywords": [
+        "erDiagram"
+      ],
+      "libraryName": "Mermaid_Er",
+      "seedName": "mermaid-er",
+      "projectId": "TODO.owner.mermaid-er",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/er"
+    },
+    {
+      "id": "journey",
+      "name": "User Journey",
+      "keywords": [
+        "journey"
+      ],
+      "libraryName": "Mermaid_Journey",
+      "seedName": "mermaid-journey",
+      "projectId": "TODO.owner.mermaid-journey",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/journey"
+    },
+    {
+      "id": "gantt",
+      "name": "Gantt Chart",
+      "keywords": [
+        "gantt"
+      ],
+      "libraryName": "Mermaid_Gantt",
+      "seedName": "mermaid-gantt",
+      "projectId": "TODO.owner.mermaid-gantt",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/gantt"
+    },
+    {
+      "id": "pie",
+      "name": "Pie Chart",
+      "keywords": [
+        "pie"
+      ],
+      "libraryName": "Mermaid_Pie",
+      "seedName": "mermaid-pie",
+      "projectId": "TODO.owner.mermaid-pie",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/pie"
+    },
+    {
+      "id": "quadrant",
+      "name": "Quadrant Chart",
+      "keywords": [
+        "quadrantChart"
+      ],
+      "libraryName": "Mermaid_Quadrant",
+      "seedName": "mermaid-quadrant",
+      "projectId": "TODO.owner.mermaid-quadrant",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/quadrant"
+    },
+    {
+      "id": "requirement",
+      "name": "Requirement Diagram",
+      "keywords": [
+        "requirementDiagram"
+      ],
+      "libraryName": "Mermaid_Requirement",
+      "seedName": "mermaid-requirement",
+      "projectId": "TODO.owner.mermaid-requirement",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/requirement"
+    },
+    {
+      "id": "gitgraph",
+      "name": "Git Graph",
+      "keywords": [
+        "gitGraph"
+      ],
+      "libraryName": "Mermaid_Gitgraph",
+      "seedName": "mermaid-gitgraph",
+      "projectId": "TODO.owner.mermaid-gitgraph",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/gitgraph"
+    },
+    {
+      "id": "c4",
+      "name": "C4 Architecture",
+      "keywords": [
+        "C4Context",
+        "C4Container",
+        "C4Component",
+        "C4Dynamic",
+        "C4Deployment"
+      ],
+      "libraryName": "Mermaid_C4",
+      "seedName": "mermaid-c4",
+      "projectId": "TODO.owner.mermaid-c4",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/c4"
+    },
+    {
+      "id": "mindmap",
+      "name": "Mindmap",
+      "keywords": [
+        "mindmap"
+      ],
+      "libraryName": "Mermaid_Mindmap",
+      "seedName": "mermaid-mindmap",
+      "projectId": "TODO.owner.mermaid-mindmap",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/mindmap"
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "keywords": [
+        "timeline"
+      ],
+      "libraryName": "Mermaid_Timeline",
+      "seedName": "mermaid-timeline",
+      "projectId": "TODO.owner.mermaid-timeline",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/timeline"
+    },
+    {
+      "id": "kanban",
+      "name": "Kanban",
+      "keywords": [
+        "kanban"
+      ],
+      "libraryName": "Mermaid_Kanban",
+      "seedName": "mermaid-kanban",
+      "projectId": "TODO.owner.mermaid-kanban",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/kanban"
+    },
+    {
+      "id": "sankey",
+      "name": "Sankey Diagram",
+      "keywords": [
+        "sankey",
+        "sankey-beta"
+      ],
+      "libraryName": "Mermaid_Sankey",
+      "seedName": "mermaid-sankey",
+      "projectId": "TODO.owner.mermaid-sankey",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/sankey"
+    },
+    {
+      "id": "xychart",
+      "name": "XY Chart",
+      "keywords": [
+        "xychart",
+        "xychart-beta"
+      ],
+      "libraryName": "Mermaid_Xychart",
+      "seedName": "mermaid-xychart",
+      "projectId": "TODO.owner.mermaid-xychart",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/xychart"
+    },
+    {
+      "id": "block",
+      "name": "Block Diagram",
+      "keywords": [
+        "block",
+        "block-beta"
+      ],
+      "libraryName": "Mermaid_Block",
+      "seedName": "mermaid-block",
+      "projectId": "TODO.owner.mermaid-block",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/block"
+    },
+    {
+      "id": "packet",
+      "name": "Packet Diagram",
+      "keywords": [
+        "packet",
+        "packet-beta"
+      ],
+      "libraryName": "Mermaid_Packet",
+      "seedName": "mermaid-packet",
+      "projectId": "TODO.owner.mermaid-packet",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/packet"
+    },
+    {
+      "id": "architecture",
+      "name": "Architecture Diagram",
+      "keywords": [
+        "architecture",
+        "architecture-beta"
+      ],
+      "libraryName": "Mermaid_Architecture",
+      "seedName": "mermaid-architecture",
+      "projectId": "TODO.owner.mermaid-architecture",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/architecture"
+    },
+    {
+      "id": "radar",
+      "name": "Radar Chart",
+      "keywords": [
+        "radar",
+        "radar-beta"
+      ],
+      "libraryName": "Mermaid_Radar",
+      "seedName": "mermaid-radar",
+      "projectId": "TODO.owner.mermaid-radar",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/radar"
+    },
+    {
+      "id": "treemap",
+      "name": "Treemap",
+      "keywords": [
+        "treemap",
+        "treemap-beta"
+      ],
+      "libraryName": "Mermaid_Treemap",
+      "seedName": "mermaid-treemap",
+      "projectId": "TODO.owner.mermaid-treemap",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/treemap"
+    },
+    {
+      "id": "ishikawa",
+      "name": "Ishikawa (Fishbone)",
+      "keywords": [
+        "ishikawa",
+        "ishikawa-beta",
+        "fishbone"
+      ],
+      "libraryName": "Mermaid_Ishikawa",
+      "seedName": "mermaid-ishikawa",
+      "projectId": "TODO.owner.mermaid-ishikawa",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/ishikawa"
+    },
+    {
+      "id": "usecase",
+      "name": "Use Case Diagram",
+      "keywords": [
+        "usecase",
+        "usecase-beta"
+      ],
+      "libraryName": "Mermaid_Usecase",
+      "seedName": "mermaid-usecase",
+      "projectId": "TODO.owner.mermaid-usecase",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/usecase"
+    },
+    {
+      "id": "eventmodeling",
+      "name": "Event Modeling",
+      "keywords": [
+        "eventmodeling",
+        "eventmodeling-beta"
+      ],
+      "libraryName": "Mermaid_Eventmodeling",
+      "seedName": "mermaid-eventmodeling",
+      "projectId": "TODO.owner.mermaid-eventmodeling",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/eventmodeling"
+    },
+    {
+      "id": "venn",
+      "name": "Venn Diagram",
+      "keywords": [
+        "venn"
+      ],
+      "libraryName": "Mermaid_Venn",
+      "seedName": "mermaid-venn",
+      "projectId": "TODO.owner.mermaid-venn",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/venn"
+    },
+    {
+      "id": "treeview",
+      "name": "Tree View",
+      "keywords": [
+        "treeView"
+      ],
+      "libraryName": "Mermaid_Treeview",
+      "seedName": "mermaid-treeview",
+      "projectId": "TODO.owner.mermaid-treeview",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/treeview"
+    },
+    {
+      "id": "wardley",
+      "name": "Wardley Map",
+      "keywords": [
+        "wardley",
+        "wardley-beta"
+      ],
+      "libraryName": "Mermaid_Wardley",
+      "seedName": "mermaid-wardley",
+      "projectId": "TODO.owner.mermaid-wardley",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/wardley"
+    },
+    {
+      "id": "cynefin",
+      "name": "Cynefin Framework",
+      "keywords": [
+        "cynefin"
+      ],
+      "libraryName": "Mermaid_Cynefin",
+      "seedName": "mermaid-cynefin",
+      "projectId": "TODO.owner.mermaid-cynefin",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/cynefin"
+    },
+    {
+      "id": "railroad",
+      "name": "Railroad Diagram",
+      "keywords": [
+        "railroad"
+      ],
+      "libraryName": "Mermaid_Railroad",
+      "seedName": "mermaid-railroad",
+      "projectId": "TODO.owner.mermaid-railroad",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportMermaid",
+      "exportPluginId": "ExportMermaid",
+      "packagePath": "diagrams/railroad"
+    }
+  ]
+}

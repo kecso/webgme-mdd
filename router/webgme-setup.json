@@ -1,0 +1,13 @@
+{
+  "components": {
+    "plugins": {
+      "ImportMDD": {
+        "src": "src/plugins/ImportMDD",
+        "test": "test/plugins/ImportMDD"
+      }
+    }
+  },
+  "dependencies": {
+    "plugins": {}
+  }
+}

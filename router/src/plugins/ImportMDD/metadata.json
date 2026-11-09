@@ -1,0 +1,48 @@
+{
+  "id": "ImportMDD",
+  "name": "Import MDD",
+  "version": "0.1.0",
+  "description": "Detect Mermaid diagram domains, ensure each is imported as a WebGME library, then invoke diagram-specific ImportMermaid plugins.",
+  "icon": {
+    "class": "glyphicon glyphicon-import",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "mermaidSource",
+      "displayName": "Mermaid source",
+      "description": "One or more Mermaid diagrams. Separate multiple diagrams with a line containing only ---.",
+      "value": "flowchart TD\n  A[Start] --> B[End]\n---\nsequenceDiagram\n  A->>B: hello\n",
+      "valueType": "string",
+      "readOnly": false
+    },
+    {
+      "name": "ensureLibraries",
+      "displayName": "Ensure domain libraries",
+      "description": "If true, import missing Mermaid domain libraries before invoking diagram importers.",
+      "value": true,
+      "valueType": "boolean",
+      "readOnly": false
+    },
+    {
+      "name": "invokeDiagramImporters",
+      "displayName": "Invoke diagram ImportMermaid plugins",
+      "description": "If true, call each required domain's ImportMermaid via invokePlugin.",
+      "value": true,
+      "valueType": "boolean",
+      "readOnly": false
+    },
+    {
+      "name": "diagramTypeOverride",
+      "displayName": "Diagram type override (optional)",
+      "description": "Comma-separated diagram ids (e.g. flowchart,sequence). When set, skip auto-detect and use these domains.",
+      "value": "",
+      "valueType": "string",
+      "readOnly": false
+    }
+  ]
+}

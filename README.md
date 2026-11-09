@@ -25,12 +25,28 @@ npm run generate  # regenerate diagrams/* from scripts/diagram-catalog.json
 
 ```
 docs/findings/          Survey write-ups (catalog, syntax, domains, JSON format)
+docs/stories/           Multi-domain integrated validation stories
 scripts/
   diagram-catalog.json  Canonical inventory + domain index
   generate-diagram-projects.js
+  generate-domain-registry.js
 packages/shared/        AMD + CJS helpers (MermaidAst, JsonMetaImporter, MetaBuilder)
 diagrams/<id>/          One webgme-cli-style project per diagram
+router/                 WebGME router app — ImportMDD orchestrates libraries + importers
 catalog/                Vite explorer UI
+```
+
+## Router (ImportMDD)
+
+`router/` is a WebGME project whose **ImportMDD** plugin:
+
+1. Detects Mermaid diagram type(s) in the input (multi-doc via `---` separators)
+2. Ensures each required domain is imported as a **library** (`core.addLibrary` — TODOs until seeds exist)
+3. Invokes each domain’s **ImportMermaid** via `invokePlugin` (TODOs for qualified plugin ids / namespaces)
+
+```bash
+npm run generate:registry   # refresh router DomainRegistry.json from the catalog
+cd router && npm start      # WebGME on port 3888
 ```
 
 ## Diagram projects (WebGME)

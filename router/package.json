@@ -1,0 +1,28 @@
+{
+  "name": "@webgme-mdd/router",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WebGME router project: ImportMDD orchestrates domain libraries + diagram-specific Mermaid importers",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha --recursive test",
+    "plugin": "node ./node_modules/webgme-engine/src/bin/run_plugin.js"
+  },
+  "keywords": [
+    "webgme",
+    "mermaid",
+    "mdd",
+    "router",
+    "import"
+  ],
+  "peerDependencies": {
+    "webgme": "^2.23.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "webgme": "^2.23.0"
+  },
+  "dependencies": {
+    "@webgme-mdd/shared": "*"
+  }
+}

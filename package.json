@@ -6,15 +6,17 @@
   "workspaces": [
     "packages/*",
     "diagrams/*",
-    "catalog"
+    "catalog",
+    "router"
   ],
   "scripts": {
     "generate": "node scripts/generate-diagram-projects.js",
+    "generate:registry": "node scripts/generate-domain-registry.js",
     "validate": "node scripts/validate-catalog.js",
     "meta": "node scripts/print-meta-summary.js",
     "catalog": "npm run dev --workspace=catalog",
     "catalog:build": "npm run build --workspace=catalog",
-    "test": "npm run validate"
+    "test": "npm run validate && npm run test --workspace=@webgme-mdd/router"
   },
   "keywords": [
     "webgme",

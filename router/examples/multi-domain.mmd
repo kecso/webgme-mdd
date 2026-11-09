@@ -1,0 +1,20 @@
+flowchart TD
+  Start([Incident]) --> Detect{Obstacle?}
+  Detect -->|Yes| Brake[Request brake]
+  Detect -->|No| Cruise[Maintain gap]
+  Brake --> Done([Safe])
+  Cruise --> Done
+---
+sequenceDiagram
+  participant Radar
+  participant Fusion
+  participant BrakeCtrl
+  Radar->>Fusion: track
+  Fusion->>BrakeCtrl: brakeRequest
+  BrakeCtrl-->>Fusion: ack
+---
+stateDiagram-v2
+  [*] --> ACC
+  ACC --> AEB_Active : obstacle
+  AEB_Active --> Complete : stopped
+  Complete --> [*]
