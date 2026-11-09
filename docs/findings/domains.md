@@ -68,3 +68,15 @@ Machine-readable inverse index: `domainIndex` in [`scripts/diagram-catalog.json`
 5. **Wave E (experimental):** venn, treeview, wardley, cynefin, railroad  
 
 Each wave already has a draft `Language.json` under `diagrams/<id>/metamodel/`.
+
+## Multi-domain stories (integration motivators)
+
+Literature- and industry-backed scenarios that **combine** these domains for cross-model validation live in [`docs/stories/`](../stories/README.md):
+
+| Story | Stresses |
+|-------|----------|
+| S1 Automotive AEB/CACC | req ↔ architecture ↔ state ↔ sequence ↔ ER |
+| S2 Aircraft RFLP fuel/radar | R→F→L→P traces across avionics & physical |
+| S3 IEC 61850 substation | architecture ↔ packet ↔ sequence ↔ LN class model |
+| S4 Event-driven ticketing | eventmodeling ↔ C4 ↔ ER ↔ journey |
+| S5 Medical infusion device | hazard ↔ requirement ↔ state ↔ clinical journey |

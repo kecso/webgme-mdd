@@ -66,7 +66,8 @@ You can also import `Language.json` with upstream **webgme-json-importer** (`Set
 1. [Diagram catalog](docs/findings/diagram-catalog.md) — all 30 families  
 2. [Syntax & capabilities](docs/findings/syntax-capabilities.md)  
 3. [Target domains](docs/findings/domains.md) — for META prioritization  
-4. [webgme-json format notes](docs/findings/webgme-json-format.md)
+4. [webgme-json format notes](docs/findings/webgme-json-format.md)  
+5. [Multi-domain validation stories](docs/stories/README.md) — literature/industrial scenarios that need cross-diagram consistency checks
 
 ## Suggested metamodel waves
 

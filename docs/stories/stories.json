@@ -1,0 +1,193 @@
+{
+  "purpose": "Multi-domain integrated validation stories motivating WebGME housing of Mermaid DSMLs",
+  "updated": "2026-11-09",
+  "validationThemes": [
+    "identity-binding",
+    "req-trace",
+    "interface-contract",
+    "mode-consistency",
+    "allocation",
+    "hazard-coverage",
+    "delivery-coherence"
+  ],
+  "stories": [
+    {
+      "id": "S1",
+      "title": "Automotive AEB / CACC++ safety stack",
+      "file": "S1-automotive-aeb-cacc.md",
+      "priority": 1,
+      "diagrams": [
+        "requirement",
+        "usecase",
+        "c4",
+        "architecture",
+        "class",
+        "block",
+        "state",
+        "sequence",
+        "flowchart",
+        "er",
+        "gantt",
+        "kanban"
+      ],
+      "sources": [
+        "OMG SysML Annex D Hybrid SUV sample",
+        "Valeo SysCARS ERTS 2014",
+        "AVATAR Télécom ParisTech ERTS 2012 automotive SysML",
+        "MSU CACC++ SRS",
+        "Automotive brake requirements-architecture-Modelica digital thread"
+      ],
+      "validationChecks": [
+        "req-scenario-coverage",
+        "architecture-participant-binding",
+        "state-sequence-compatibility",
+        "function-allocation",
+        "data-contract",
+        "supplier-change-propagation"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Aircraft RFLP — fuel CMS + radar multi-views",
+      "file": "S2-aircraft-rflp-fuel-radar.md",
+      "priority": 3,
+      "diagrams": [
+        "requirement",
+        "journey",
+        "timeline",
+        "usecase",
+        "flowchart",
+        "architecture",
+        "block",
+        "c4",
+        "state",
+        "sequence",
+        "gantt",
+        "ishikawa",
+        "er",
+        "class",
+        "packet"
+      ],
+      "sources": [
+        "SysEng 2016 aircraft fuel CMS SysML integration",
+        "3DEXPERIENCE aircraft radar RFLP multi-views",
+        "SYSCON 2024 logical-physical correlation experience",
+        "Northrop Grumman phased-array MBSE case"
+      ],
+      "validationChecks": [
+        "rflp-trace-continuity",
+        "avionics-physical-port-coupling",
+        "bit-maintenance-path",
+        "discipline-risk-feedback",
+        "schedule-vs-icd-maturity"
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "IEC 61850 substation protection & SCADA",
+      "file": "S3-iec61850-substation.md",
+      "priority": 2,
+      "diagrams": [
+        "requirement",
+        "architecture",
+        "c4",
+        "block",
+        "class",
+        "er",
+        "packet",
+        "sequence",
+        "state",
+        "flowchart",
+        "gantt",
+        "timeline",
+        "kanban"
+      ],
+      "sources": [
+        "NamPower / SEL IEC 61850 modernization",
+        "City of Red Deer SS14 IEC 61850 SAS case",
+        "Hydro-Québec IEC 61850 multi-modelling",
+        "ADMID DES-to-SCADA integration",
+        "IEC 61850 + IEC 61499 feeder orchestrator case"
+      ],
+      "validationChecks": [
+        "logical-node-semantic-binding",
+        "goose-vs-mms-topology",
+        "interlock-state-consistency",
+        "redundancy-scenario-coverage",
+        "stakeholder-view-drift",
+        "fat-sat-evidence-links"
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Event-driven ticketing / commerce platform",
+      "file": "S4-event-driven-ticketing.md",
+      "priority": 2,
+      "diagrams": [
+        "eventmodeling",
+        "timeline",
+        "c4",
+        "architecture",
+        "class",
+        "er",
+        "sequence",
+        "state",
+        "journey",
+        "kanban",
+        "gantt",
+        "sankey",
+        "xychart"
+      ],
+      "sources": [
+        "Event-sourcing production workshop (concert ticketing)",
+        "Modular monolith with DDD + Event Storming + C4",
+        "Architecture artifact handoff pipelines",
+        "E-commerce strangler / C4 container examples"
+      ],
+      "validationChecks": [
+        "event-vocabulary-unity",
+        "aggregate-er-state",
+        "journey-command-binding",
+        "bounded-context-edge-type",
+        "oversell-invariant",
+        "delivery-trace"
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "Regulated infusion / IV therapy device",
+      "file": "S5-medical-infusion-device.md",
+      "priority": 1,
+      "diagrams": [
+        "requirement",
+        "usecase",
+        "journey",
+        "sequence",
+        "state",
+        "flowchart",
+        "ishikawa",
+        "class",
+        "block",
+        "architecture",
+        "gantt",
+        "timeline",
+        "er"
+      ],
+      "sources": [
+        "IV infusion set MBSE case study",
+        "INCOSE biomedical infusion pump reference MBSE",
+        "Purdue/FDA risk-to-architecture mapping",
+        "MBE + safety assurance cases for medical device software",
+        "Medical device model-based reference architecture"
+      ],
+      "validationChecks": [
+        "hazard-req-design-chain",
+        "usecase-sequence-journey",
+        "alarm-integrity",
+        "assurance-evidence-graph",
+        "durable-disposable-boundary",
+        "reverification-on-change"
+      ]
+    }
+  ]
+}
