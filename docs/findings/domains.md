@@ -71,12 +71,12 @@ Each wave already has a draft `Language.json` under `diagrams/<id>/metamodel/`.
 
 ## Multi-domain stories (integration motivators)
 
-Literature- and industry-backed scenarios that **combine** these domains for cross-model validation live in [`docs/stories/`](../stories/README.md):
+Literature- and industry-backed scenarios that **combine** these domains for cross-model validation live in [`docs/stories/`](../stories/README.md). Each story now lists **required/optional `diagrams/<id>` packages**, **catalog domains**, and **integration pairs** (see `docs/stories/stories.json`).
 
-| Story | Stresses |
-|-------|----------|
-| S1 Automotive AEB/CACC | req ↔ architecture ↔ state ↔ sequence ↔ ER |
-| S2 Aircraft RFLP fuel/radar | R→F→L→P traces across avionics & physical |
-| S3 IEC 61850 substation | architecture ↔ packet ↔ sequence ↔ LN class model |
-| S4 Event-driven ticketing | eventmodeling ↔ C4 ↔ ER ↔ journey |
-| S5 Medical infusion device | hazard ↔ requirement ↔ state ↔ clinical journey |
+| Story | Required packages (abbrev.) | Stresses |
+|-------|----------------------------|----------|
+| S1 Automotive AEB/CACC | requirement, usecase, c4, architecture, class, state, sequence, flowchart, er | req ↔ architecture ↔ state ↔ sequence ↔ ER |
+| S2 Aircraft RFLP fuel/radar | requirement, flowchart, architecture, block, state, sequence, ishikawa | R→F→L→P traces across avionics & physical |
+| S3 IEC 61850 substation | requirement, architecture, class, packet, sequence, state, flowchart | architecture ↔ packet ↔ sequence ↔ LN class model |
+| S4 Event-driven ticketing | eventmodeling, c4, er, sequence, state, journey | eventmodeling ↔ C4 ↔ ER ↔ journey |
+| S5 Medical infusion device | requirement, usecase, journey, sequence, state, flowchart, ishikawa, architecture | hazard ↔ requirement ↔ state ↔ clinical journey |

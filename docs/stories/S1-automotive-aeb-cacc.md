@@ -14,7 +14,21 @@ An OEM + Tier-1 team co-develops **automatic emergency braking (AEB)** and **coo
 | MSU CACC++ SRS | Student/industrial-style SRS combining use cases, domain/class model, sequences, states for platooning ACC |
 | Automotive brake digital-thread paper (Modelica + SysML + requirements) | Closed-loop validation: requirements ↔ architecture ↔ performance models with bidirectional trace |
 
-## Domains combined (Mermaid → WebGME packages)
+## WebGME packages to integrate
+
+These are the `diagrams/<id>` projects (and router library names) this story must load together.
+
+| Role | Package ids (`diagrams/…`) |
+|------|----------------------------|
+| **Required** | `requirement`, `usecase`, `c4`, `architecture`, `class`, `state`, `sequence`, `flowchart`, `er` |
+| **Optional** | `block`, `gantt`, `kanban` |
+
+**Catalog domains covered (required set):** `safety-critical`, `requirements-management`, `systems-engineering`, `uml`, `software-architecture`, `system-context`, `object-oriented-design`, `finite-state-machines`, `embedded-systems`, `software-interaction`, `protocols`, `process-modeling`, `workflows`, `database-design`, `data-modeling`.
+
+**Must-integrate pairs:** requirement↔usecase/sequence · sequence↔c4/architecture · state↔sequence · flowchart↔architecture/class · sequence↔er  
+(Full `integrationPairs` in [`stories.json`](./stories.json).)
+
+## Domains combined (concern → diagram)
 
 | Concern | Diagram(s) | Example content |
 |---------|------------|-----------------|

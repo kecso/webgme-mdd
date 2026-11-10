@@ -14,7 +14,19 @@ A medical-device manufacturer develops an infusion pump or disposable IV adminis
 | OMG/MBSEHC — MBE + safety assurance cases | Models and verification results as assurance-case evidence with explicit traceability |
 | A model-based reference architecture for medical device development | Capture regulatory environment and map specialized requirements onto system components |
 
-## Domains combined
+## WebGME packages to integrate
+
+| Role | Package ids (`diagrams/…`) |
+|------|----------------------------|
+| **Required** | `requirement`, `usecase`, `journey`, `sequence`, `state`, `flowchart`, `ishikawa`, `architecture` |
+| **Optional** | `class`, `block`, `gantt`, `timeline`, `er` |
+
+**Catalog domains covered (required set):** `safety-critical`, `mbse`, `systems-engineering`, `requirements-management`, `uml`, `ux-design`, `service-design`, `software-interaction`, `finite-state-machines`, `ui-state`, `embedded-systems`, `process-modeling`, `workflows`, `quality-management`, `root-cause-analysis`, `software-architecture`.
+
+**Must-integrate pairs:** ishikawa↔requirement↔architecture · usecase↔sequence · journey↔state · requirement↔sequence (alarms)  
+(Full `integrationPairs` in [`stories.json`](./stories.json).)
+
+## Domains combined (concern → diagram)
 
 | Concern | Diagram(s) | Example content |
 |---------|------------|-----------------|

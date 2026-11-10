@@ -13,7 +13,19 @@ An airframer integrates an avionics **Control Maintenance System (CMS)** with a 
 | Correlating logical & physical models (SYSCON 2024 experience) | Industrial lesson: logical architecture alone under-specifies what physical simulation needs — interface augmentation required |
 | Northrop Grumman phased-array MBSE case | Architecture models connected to multidisciplinary analysis for requirements checking & trade studies |
 
-## Domains combined
+## WebGME packages to integrate
+
+| Role | Package ids (`diagrams/…`) |
+|------|----------------------------|
+| **Required** | `requirement`, `flowchart`, `architecture`, `block`, `state`, `sequence`, `ishikawa` |
+| **Optional** | `journey`, `timeline`, `usecase`, `c4`, `gantt`, `er`, `class`, `packet` |
+
+**Catalog domains covered (required set):** `mbse`, `systems-engineering`, `requirements-management`, `safety-critical`, `process-modeling`, `workflows`, `software-architecture`, `system-structure`, `modular-architecture`, `finite-state-machines`, `embedded-systems`, `software-interaction`, `protocols`, `quality-management`, `root-cause-analysis`.
+
+**Must-integrate pairs:** requirement↔flowchart↔block↔architecture (R→F→L→P) · sequence↔architecture · ishikawa↔requirement  
+(Full `integrationPairs` in [`stories.json`](./stories.json).)
+
+## Domains combined (concern → diagram)
 
 | Concern | Diagram(s) | Example content |
 |---------|------------|-----------------|

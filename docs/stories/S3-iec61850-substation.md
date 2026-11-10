@@ -14,7 +14,19 @@ A utility modernizes a distribution/transmission substation with IEC 61850 IEDs,
 | ADMID / DSO SCADA integration (Energies 2022) | Automated data-model integration of distributed energy systems into SCADA ICT environment |
 | IEC 61850 + IEC 61499 service-oriented feeder case | Requirements as orchestrators mapped onto logical-node services |
 
-## Domains combined
+## WebGME packages to integrate
+
+| Role | Package ids (`diagrams/…`) |
+|------|----------------------------|
+| **Required** | `requirement`, `architecture`, `class`, `packet`, `sequence`, `state`, `flowchart` |
+| **Optional** | `c4`, `block`, `er`, `gantt`, `timeline`, `kanban` |
+
+**Catalog domains covered (required set):** `systems-engineering`, `infrastructure`, `service-topology`, `object-oriented-design`, `networking`, `binary-layouts`, `protocols`, `software-interaction`, `finite-state-machines`, `protocol-state`, `process-modeling`, `workflows`.
+
+**Must-integrate pairs:** class↔architecture/packet · sequence↔architecture (GOOSE vs MMS) · packet↔sequence · flowchart↔state · requirement↔sequence  
+(Full `integrationPairs` in [`stories.json`](./stories.json).)
+
+## Domains combined (concern → diagram)
 
 | Concern | Diagram(s) | Example content |
 |---------|------------|-----------------|

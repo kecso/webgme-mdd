@@ -14,7 +14,19 @@ A product org builds a concert/ticketing (or checkout) platform with **Event Sto
 | “Architecture artifacts in order” handoff essays | Explicit pipeline: requirements → domain events → aggregates → C4 → APIs/data |
 | Enterprise e-commerce strangler/C4 examples | Catalog/Recommendations extracted; Orders in modular monolith; `OrderConfirmed` via broker |
 
-## Domains combined
+## WebGME packages to integrate
+
+| Role | Package ids (`diagrams/…`) |
+|------|----------------------------|
+| **Required** | `eventmodeling`, `c4`, `er`, `sequence`, `state`, `journey` |
+| **Optional** | `architecture`, `class`, `timeline`, `kanban`, `gantt`, `sankey`, `xychart` |
+
+**Catalog domains covered (required set):** `event-driven-architecture`, `cqrs`, `domain-driven-design`, `event-sourcing`, `software-architecture`, `system-context`, `database-design`, `data-modeling`, `software-interaction`, `api-design`, `finite-state-machines`, `ux-design`, `customer-experience`.
+
+**Must-integrate pairs:** eventmodeling↔c4/sequence · er↔state · journey↔eventmodeling · sequence↔c4  
+(Full `integrationPairs` in [`stories.json`](./stories.json).)
+
+## Domains combined (concern → diagram)
 
 | Concern | Diagram(s) | Example content |
 |---------|------------|-----------------|

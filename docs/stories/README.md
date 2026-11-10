@@ -2,7 +2,7 @@
 
 These stories motivate **housing many Mermaid domains in one WebGME workspace**: not to draw prettier diagrams, but to **validate integrated system models** whose concerns span requirements, architecture, behavior, data, protocols, UX, and delivery.
 
-Each story is synthesized from published literature and industrial case descriptions, then restated as a **WebGME-mdd scenario**: which diagram types participate, what must stay consistent across them, and which validation checks a multi-language WebGME project should eventually run.
+Each story is synthesized from published literature and industrial case descriptions, then restated as a **WebGME-mdd scenario**: which diagram packages must be imported as libraries, which catalog domains they cover, what must stay consistent across them, and which validation checks a multi-language WebGME project should eventually run.
 
 ## Why multi-domain integration matters here
 
@@ -13,19 +13,57 @@ Isolated Mermaid files cannot enforce:
 - an ER entity that must back an event-model aggregate and API messages  
 - a packet field layout that must match sequence payloads and architecture links  
 
-WebGME’s strength is **shared identity + typed relationships across metamodels**. These stories define the first product requirements for that shared identity layer.
+WebGME’s strength is **shared identity + typed relationships across metamodels**. These stories define the first product requirements for that shared identity layer — and they explicitly list **which `diagrams/<id>` packages must be integrated**.
 
 ## Story index
 
-| ID | Title | Primary domains | Source flavor |
-|----|-------|-----------------|---------------|
-| [S1](./S1-automotive-aeb-cacc.md) | Automotive AEB / CACC++ safety stack | requirements, use cases, architecture, class, state, sequence, ER, process | OMG HSUV, Valeo SysCARS, AVATAR/ERTS, CACC++ SRS, brake digital thread |
-| [S2](./S2-aircraft-rflp-fuel-radar.md) | Aircraft RFLP — fuel CMS + radar multi-views | requirements, functional flow, state, sequence, architecture/block, timeline, RCA | Aircraft fuel CMS SysML; radar RFLP / 3DEXPERIENCE multi-views |
-| [S3](./S3-iec61850-substation.md) | IEC 61850 substation protection & SCADA | architecture, packet, sequence, state, class/ER, requirements, flowchart | NamPower IEC 61850; Red Deer SAS; Hydro-Québec multi-modelling |
-| [S4](./S4-event-driven-ticketing.md) | Event-driven ticketing / commerce platform | event modeling, C4, ER, sequence, state, journey, kanban | Event-sourcing workshops; modular monolith + Event Storming + C4 |
-| [S5](./S5-medical-infusion-device.md) | Regulated infusion / IV therapy device | requirements, use cases, journey, sequence, state, flowchart, ishikawa, class | IV-set MBSE; infusion-pump reference models; ISO 14971 / FDA design controls |
+| ID | Title | Priority | Source flavor |
+|----|-------|----------|---------------|
+| [S1](./S1-automotive-aeb-cacc.md) | Automotive AEB / CACC++ safety stack | 1 | OMG HSUV, Valeo SysCARS, AVATAR/ERTS, CACC++ SRS, brake digital thread |
+| [S2](./S2-aircraft-rflp-fuel-radar.md) | Aircraft RFLP — fuel CMS + radar multi-views | 3 | Aircraft fuel CMS SysML; radar RFLP / 3DEXPERIENCE multi-views |
+| [S3](./S3-iec61850-substation.md) | IEC 61850 substation protection & SCADA | 2 | NamPower IEC 61850; Red Deer SAS; Hydro-Québec multi-modelling |
+| [S4](./S4-event-driven-ticketing.md) | Event-driven ticketing / commerce platform | 2 | Event-sourcing workshops; modular monolith + Event Storming + C4 |
+| [S5](./S5-medical-infusion-device.md) | Regulated infusion / IV therapy device | 1 | IV-set MBSE; infusion-pump reference models; ISO 14971 / FDA design controls |
 
-Machine-readable index: [`stories.json`](./stories.json).
+Machine-readable index (required/optional packages, catalog domains, integration pairs): [`stories.json`](./stories.json).
+
+## Required WebGME diagram packages per story
+
+Package ids match directories under `diagrams/<id>/` and entries in `router/src/common/DomainRegistry.json`. **Required** packages are the minimum library set for that story’s core validators; **optional** enrich the seed.
+
+| Story | Required `diagrams/<id>` | Optional |
+|-------|--------------------------|----------|
+| **S1** | `requirement`, `usecase`, `c4`, `architecture`, `class`, `state`, `sequence`, `flowchart`, `er` | `block`, `gantt`, `kanban` |
+| **S2** | `requirement`, `flowchart`, `architecture`, `block`, `state`, `sequence`, `ishikawa` | `journey`, `timeline`, `usecase`, `c4`, `gantt`, `er`, `class`, `packet` |
+| **S3** | `requirement`, `architecture`, `class`, `packet`, `sequence`, `state`, `flowchart` | `c4`, `block`, `er`, `gantt`, `timeline`, `kanban` |
+| **S4** | `eventmodeling`, `c4`, `er`, `sequence`, `state`, `journey` | `architecture`, `class`, `timeline`, `kanban`, `gantt`, `sankey`, `xychart` |
+| **S5** | `requirement`, `usecase`, `journey`, `sequence`, `state`, `flowchart`, `ishikawa`, `architecture` | `class`, `block`, `gantt`, `timeline`, `er` |
+
+### Catalog domains covered (from `diagram-catalog.json`)
+
+These are the **modeling domains** those packages target (not package ids). Full lists live in `stories.json` → `catalogDomains`.
+
+| Story | Example catalog domains that must be co-present |
+|-------|--------------------------------------------------|
+| **S1** | `safety-critical`, `requirements-management`, `software-architecture`, `finite-state-machines`, `software-interaction`, `data-modeling`, `process-modeling` |
+| **S2** | `mbse`, `systems-engineering`, `process-modeling`, `system-structure`, `root-cause-analysis`, `software-interaction` |
+| **S3** | `infrastructure`, `networking`, `binary-layouts`, `protocols`, `object-oriented-design`, `protocol-state`, `workflows` |
+| **S4** | `event-driven-architecture`, `cqrs`, `domain-driven-design`, `system-context`, `data-modeling`, `ux-design` |
+| **S5** | `safety-critical`, `mbse`, `ux-design`, `root-cause-analysis`, `finite-state-machines`, `software-architecture` |
+
+## Cross-meta integration pairs (what “integrated” means)
+
+Each story also defines **integration pairs** in `stories.json` (`from` diagram ↔ `to` diagram + `check`). Summary of the highest-value edges:
+
+| Story | Must-integrate pairs |
+|-------|----------------------|
+| **S1** | requirement↔usecase/sequence · sequence↔c4/architecture · state↔sequence · flowchart↔architecture/class · sequence↔er |
+| **S2** | requirement↔flowchart↔block↔architecture (RFLP) · sequence↔architecture · ishikawa↔requirement |
+| **S3** | class↔architecture/packet · sequence↔architecture (GOOSE/MMS) · packet↔sequence · flowchart↔state |
+| **S4** | eventmodeling↔c4/sequence · er↔state · journey↔eventmodeling · sequence↔c4 |
+| **S5** | ishikawa↔requirement↔architecture · usecase↔sequence · journey↔state · requirement↔sequence (alarms) |
+
+`ImportMDD` should eventually ensure all **required** packages are libraries before import; a future **CrossDomainValidate** plugin should walk `integrationPairs`.
 
 ## Cross-story validation themes (product backlog seeds)
 

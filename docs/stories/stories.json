@@ -1,6 +1,12 @@
 {
   "purpose": "Multi-domain integrated validation stories motivating WebGME housing of Mermaid DSMLs",
-  "updated": "2026-11-09",
+  "updated": "2026-11-10",
+  "notes": [
+    "requiredDiagrams = WebGME packages under diagrams/<id> that MUST be libraries in the story project",
+    "optionalDiagrams = useful for a fuller seed but not required for the core validation slice",
+    "catalogDomains = domain tags from scripts/diagram-catalog.json covered by the required diagrams",
+    "integrationPairs = cross-meta consistency edges ImportMDD / CrossDomainValidate should eventually check"
+  ],
   "validationThemes": [
     "identity-binding",
     "req-trace",
@@ -16,6 +22,18 @@
       "title": "Automotive AEB / CACC++ safety stack",
       "file": "S1-automotive-aeb-cacc.md",
       "priority": 1,
+      "requiredDiagrams": [
+        "requirement",
+        "usecase",
+        "c4",
+        "architecture",
+        "class",
+        "state",
+        "sequence",
+        "flowchart",
+        "er"
+      ],
+      "optionalDiagrams": ["block", "gantt", "kanban"],
       "diagrams": [
         "requirement",
         "usecase",
@@ -29,6 +47,37 @@
         "er",
         "gantt",
         "kanban"
+      ],
+      "catalogDomains": [
+        "systems-engineering",
+        "requirements-management",
+        "safety-critical",
+        "uml",
+        "software-architecture",
+        "system-context",
+        "object-oriented-design",
+        "finite-state-machines",
+        "embedded-systems",
+        "software-interaction",
+        "protocols",
+        "process-modeling",
+        "workflows",
+        "database-design",
+        "data-modeling",
+        "project-management",
+        "scheduling",
+        "agile"
+      ],
+      "integrationPairs": [
+        { "from": "requirement", "to": "usecase", "check": "req-scenario-coverage" },
+        { "from": "requirement", "to": "sequence", "check": "req-verify-path" },
+        { "from": "sequence", "to": "c4", "check": "participant-binds-container" },
+        { "from": "sequence", "to": "architecture", "check": "participant-binds-service" },
+        { "from": "state", "to": "sequence", "check": "mode-message-compatibility" },
+        { "from": "flowchart", "to": "architecture", "check": "function-allocation" },
+        { "from": "flowchart", "to": "class", "check": "decision-owned-by-type" },
+        { "from": "sequence", "to": "er", "check": "payload-schema-contract" },
+        { "from": "requirement", "to": "gantt", "check": "optional-delivery-trace" }
       ],
       "sources": [
         "OMG SysML Annex D Hybrid SUV sample",
@@ -51,6 +100,25 @@
       "title": "Aircraft RFLP — fuel CMS + radar multi-views",
       "file": "S2-aircraft-rflp-fuel-radar.md",
       "priority": 3,
+      "requiredDiagrams": [
+        "requirement",
+        "flowchart",
+        "architecture",
+        "block",
+        "state",
+        "sequence",
+        "ishikawa"
+      ],
+      "optionalDiagrams": [
+        "journey",
+        "timeline",
+        "usecase",
+        "c4",
+        "gantt",
+        "er",
+        "class",
+        "packet"
+      ],
       "diagrams": [
         "requirement",
         "journey",
@@ -67,6 +135,39 @@
         "er",
         "class",
         "packet"
+      ],
+      "catalogDomains": [
+        "systems-engineering",
+        "requirements-management",
+        "mbse",
+        "safety-critical",
+        "process-modeling",
+        "workflows",
+        "software-architecture",
+        "system-structure",
+        "modular-architecture",
+        "finite-state-machines",
+        "embedded-systems",
+        "software-interaction",
+        "protocols",
+        "quality-management",
+        "root-cause-analysis",
+        "roadmapping",
+        "ux-design",
+        "project-management",
+        "database-design",
+        "networking",
+        "binary-layouts"
+      ],
+      "integrationPairs": [
+        { "from": "requirement", "to": "flowchart", "check": "r-to-f-trace" },
+        { "from": "flowchart", "to": "block", "check": "f-to-l-allocation" },
+        { "from": "block", "to": "architecture", "check": "l-to-p-allocation" },
+        { "from": "sequence", "to": "architecture", "check": "avionics-physical-port" },
+        { "from": "journey", "to": "state", "check": "ops-mode-path" },
+        { "from": "ishikawa", "to": "requirement", "check": "cause-to-risk-control" },
+        { "from": "gantt", "to": "architecture", "check": "icd-freeze-vs-mismatches" },
+        { "from": "packet", "to": "sequence", "check": "optional-icd-payload" }
       ],
       "sources": [
         "SysEng 2016 aircraft fuel CMS SysML integration",
@@ -87,6 +188,16 @@
       "title": "IEC 61850 substation protection & SCADA",
       "file": "S3-iec61850-substation.md",
       "priority": 2,
+      "requiredDiagrams": [
+        "requirement",
+        "architecture",
+        "class",
+        "packet",
+        "sequence",
+        "state",
+        "flowchart"
+      ],
+      "optionalDiagrams": ["c4", "block", "er", "gantt", "timeline", "kanban"],
       "diagrams": [
         "requirement",
         "architecture",
@@ -101,6 +212,37 @@
         "gantt",
         "timeline",
         "kanban"
+      ],
+      "catalogDomains": [
+        "systems-engineering",
+        "requirements-management",
+        "cloud-architecture",
+        "infrastructure",
+        "service-topology",
+        "software-architecture",
+        "object-oriented-design",
+        "domain-modeling",
+        "networking",
+        "binary-layouts",
+        "protocols",
+        "software-interaction",
+        "finite-state-machines",
+        "protocol-state",
+        "process-modeling",
+        "workflows",
+        "database-design",
+        "project-management",
+        "roadmapping",
+        "agile"
+      ],
+      "integrationPairs": [
+        { "from": "class", "to": "architecture", "check": "logical-node-on-ied" },
+        { "from": "class", "to": "packet", "check": "ln-semantic-in-apdu" },
+        { "from": "sequence", "to": "architecture", "check": "goose-vs-mms-topology" },
+        { "from": "packet", "to": "sequence", "check": "message-field-binding" },
+        { "from": "flowchart", "to": "state", "check": "interlock-forbidden-transitions" },
+        { "from": "requirement", "to": "sequence", "check": "fat-sat-evidence" },
+        { "from": "requirement", "to": "flowchart", "check": "protection-logic-coverage" }
       ],
       "sources": [
         "NamPower / SEL IEC 61850 modernization",
@@ -123,6 +265,23 @@
       "title": "Event-driven ticketing / commerce platform",
       "file": "S4-event-driven-ticketing.md",
       "priority": 2,
+      "requiredDiagrams": [
+        "eventmodeling",
+        "c4",
+        "er",
+        "sequence",
+        "state",
+        "journey"
+      ],
+      "optionalDiagrams": [
+        "architecture",
+        "class",
+        "timeline",
+        "kanban",
+        "gantt",
+        "sankey",
+        "xychart"
+      ],
       "diagrams": [
         "eventmodeling",
         "timeline",
@@ -137,6 +296,40 @@
         "gantt",
         "sankey",
         "xychart"
+      ],
+      "catalogDomains": [
+        "event-driven-architecture",
+        "cqrs",
+        "domain-driven-design",
+        "event-sourcing",
+        "software-architecture",
+        "system-context",
+        "enterprise-architecture",
+        "database-design",
+        "data-modeling",
+        "domain-modeling",
+        "software-interaction",
+        "api-design",
+        "finite-state-machines",
+        "ux-design",
+        "customer-experience",
+        "product-design",
+        "roadmapping",
+        "agile",
+        "project-management",
+        "flow-analysis",
+        "conversion-funnels",
+        "analytics",
+        "timeseries"
+      ],
+      "integrationPairs": [
+        { "from": "eventmodeling", "to": "c4", "check": "event-owned-by-container" },
+        { "from": "eventmodeling", "to": "sequence", "check": "event-appears-in-flow" },
+        { "from": "er", "to": "state", "check": "aggregate-lifecycle" },
+        { "from": "journey", "to": "eventmodeling", "check": "journey-step-has-command" },
+        { "from": "sequence", "to": "c4", "check": "cross-context-edge-type" },
+        { "from": "kanban", "to": "requirement", "check": "optional-delivery-trace" },
+        { "from": "state", "to": "er", "check": "oversell-invariant" }
       ],
       "sources": [
         "Event-sourcing production workshop (concert ticketing)",
@@ -158,6 +351,17 @@
       "title": "Regulated infusion / IV therapy device",
       "file": "S5-medical-infusion-device.md",
       "priority": 1,
+      "requiredDiagrams": [
+        "requirement",
+        "usecase",
+        "journey",
+        "sequence",
+        "state",
+        "flowchart",
+        "ishikawa",
+        "architecture"
+      ],
+      "optionalDiagrams": ["class", "block", "gantt", "timeline", "er"],
       "diagrams": [
         "requirement",
         "usecase",
@@ -172,6 +376,45 @@
         "gantt",
         "timeline",
         "er"
+      ],
+      "catalogDomains": [
+        "systems-engineering",
+        "requirements-management",
+        "mbse",
+        "safety-critical",
+        "requirements",
+        "uml",
+        "product-scope",
+        "ux-design",
+        "service-design",
+        "customer-experience",
+        "software-interaction",
+        "finite-state-machines",
+        "ui-state",
+        "embedded-systems",
+        "process-modeling",
+        "workflows",
+        "quality-management",
+        "root-cause-analysis",
+        "continuous-improvement",
+        "software-architecture",
+        "cloud-architecture",
+        "infrastructure",
+        "object-oriented-design",
+        "project-management",
+        "roadmapping",
+        "database-design",
+        "data-modeling"
+      ],
+      "integrationPairs": [
+        { "from": "ishikawa", "to": "requirement", "check": "hazard-to-risk-control" },
+        { "from": "requirement", "to": "architecture", "check": "control-allocated" },
+        { "from": "usecase", "to": "sequence", "check": "scenario-interaction" },
+        { "from": "journey", "to": "state", "check": "clinical-mode-path" },
+        { "from": "requirement", "to": "sequence", "check": "alarm-integrity" },
+        { "from": "requirement", "to": "gantt", "check": "assurance-evidence-plan" },
+        { "from": "architecture", "to": "sequence", "check": "durable-vs-disposable" },
+        { "from": "er", "to": "requirement", "check": "optional-reverification-on-change" }
       ],
       "sources": [
         "IV infusion set MBSE case study",
