@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header.jsx';
-import DiagramBrowser from '../components/DiagramBrowser.jsx';
+import ProjectOverview from '../components/ProjectOverview.jsx';
+import NewDiagramFab from '../components/NewDiagramFab.jsx';
 import Inspector from '../components/Inspector.jsx';
 import DiagramCanvas from '../widget/DiagramCanvas.jsx';
 import SourceEditorPanel from '../monaco/SourceEditorPanel.jsx';
@@ -13,6 +14,10 @@ import {
   setDiagramSource,
   upsertProject
 } from '../data/demoStore.js';
+import {
+  couplingsForDomain,
+  inferModelingDomain
+} from '../data/modelingDomains.js';
 
 export default function ProjectStudio() {
   const { owner, name } = useParams();
@@ -21,11 +26,13 @@ export default function ProjectStudio() {
 
   const [project, setProject] = useState(() => getProject(projectId));
   const [catalog, setCatalog] = useState(null);
+  const [mode, setMode] = useState('overview'); // overview | canvas
   const [activeKey, setActiveKey] = useState(null);
   const [viewSource, setViewSource] = useState('');
   const [draftSource, setDraftSource] = useState('');
   const [sourceOpen, setSourceOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [fabOpen, setFabOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [log, setLog] = useState([]);
   const [applyBusy, setApplyBusy] = useState(false);
@@ -60,35 +67,53 @@ export default function ProjectStudio() {
   useEffect(() => {
     fetch('/api/catalog')
       .then((r) => r.json())
-      .then(setCatalog)
+      .then((cat) => {
+        setCatalog(cat);
+        // Backfill modelingDomainId on legacy diagram instances
+        const p = getProject(projectId);
+        if (!p) return;
+        let dirty = false;
+        Object.values(p.diagrams || {}).forEach((inst) => {
+          if (!inst.modelingDomainId && inst.diagramType) {
+            inst.modelingDomainId = inferModelingDomain(
+              cat,
+              inst.diagramType,
+              p.enabledModelingDomains
+            );
+            dirty = true;
+          }
+        });
+        if (dirty) {
+          upsertProject(p);
+          setProject({ ...p });
+        }
+      })
       .catch((e) => pushLog(`catalog load failed: ${e.message}`));
-  }, [pushLog]);
+  }, [projectId, pushLog]);
 
   useEffect(() => {
     setProject(getProject(projectId));
+    setMode('overview');
+    setActiveKey(null);
   }, [projectId]);
 
-  const domains = useMemo(() => {
-    if (!catalog) return [];
-    return [...(catalog.diagrams || []), ...(catalog.companionLanguages || [])];
-  }, [catalog]);
-
   const active = activeKey && project?.diagrams?.[activeKey];
-  const domainId = active?.domainId || null;
+  const diagramType = active?.diagramType || null;
   const dirty = draftSource !== viewSource;
 
   const ensureSample = useCallback(
-    async (domainId, diagramKey, diagramName) => {
+    async (diagramTypeId, diagramKey, diagramName, modelingDomainId) => {
       let source = project?.diagrams?.[diagramKey]?.source;
       if (!source) {
-        const res = await fetch(`/api/sample/${domainId}`);
+        const res = await fetch(`/api/sample/${diagramTypeId}`);
         source = res.ok
           ? await res.text()
-          : domainId === 'ears'
+          : diagramTypeId === 'ears'
             ? 'REQ-001 [ubiquitous]\nThe system shall start.\n'
             : `flowchart TD\n  A[${diagramName}] --> B[Edit me]`;
         const next = setDiagramSource(projectId, diagramKey, {
-          domainId,
+          diagramType: diagramTypeId,
+          modelingDomainId,
           name: diagramName,
           source
         });
@@ -99,41 +124,67 @@ export default function ProjectStudio() {
       setDraftSource(source);
       setSelectedId(null);
       setApplyMsg('');
-      pushLog(`opened ${diagramKey}`);
+      pushLog(`opened ${diagramKey} (${modelingDomainId || '?'} → ${diagramTypeId})`);
     },
     [project, projectId, control, pushLog]
   );
 
-  const onSelectDiagram = async (key) => {
+  const onOpenDiagram = async (key) => {
     setActiveKey(key);
+    setMode('canvas');
     const inst = project.diagrams[key];
     if (!inst) return;
-    await ensureSample(inst.domainId, key, inst.name);
+    await ensureSample(
+      inst.diagramType,
+      key,
+      inst.name,
+      inst.modelingDomainId
+    );
   };
 
-  const onCreateDiagram = async (domainId) => {
+  const onCreateDiagram = async ({ modelingDomainId, diagramType: typeId, name: diagramName }) => {
+    const enabled = project.enabledModelingDomains || [];
+    if (!enabled.includes(modelingDomainId)) {
+      pushLog(`create blocked: domain ${modelingDomainId} is not enabled on this project`);
+      return;
+    }
+    const allowed = new Set(
+      couplingsForDomain(catalog, modelingDomainId).map((c) => c.diagramType)
+    );
+    if (!allowed.has(typeId)) {
+      pushLog(
+        `create blocked: view ${typeId} is not coupled to enabled domain ${modelingDomainId}`
+      );
+      return;
+    }
+
     const count =
-      Object.values(project.diagrams).filter((d) => d.domainId === domainId).length + 1;
-    const diagramName = `${domainId}-${count}`;
-    const key = `${domainId}:${diagramName}`;
+      Object.values(project.diagrams).filter(
+        (d) => d.diagramType === typeId && d.modelingDomainId === modelingDomainId
+      ).length + 1;
+    const finalName = diagramName || `${typeId}-${count}`;
+    const key = `${modelingDomainId}:${typeId}:${finalName}`;
     const next = setDiagramSource(projectId, key, {
-      domainId,
-      name: diagramName,
+      modelingDomainId,
+      diagramType: typeId,
+      name: finalName,
       source: ''
     });
     setProject({ ...next });
     setActiveKey(key);
-    await ensureSample(domainId, key, diagramName);
+    setMode('canvas');
+    await ensureSample(typeId, key, finalName, modelingDomainId);
     setSourceOpen(true);
   };
 
   const onApply = async () => {
-    if (!activeKey || !domainId) return;
+    if (!activeKey || !diagramType) return;
     setApplyBusy(true);
     try {
       const result = await control.applySource({
         diagramKey: activeKey,
-        domainId,
+        domainId: diagramType,
+        modelingDomainId: active?.modelingDomainId,
         name: active?.name || activeKey,
         source: draftSource
       });
@@ -155,32 +206,43 @@ export default function ProjectStudio() {
     );
   }
 
+  const bodyClass = [
+    'studio-body',
+    mode === 'overview' ? 'overview-mode' : 'canvas-mode',
+    sourceOpen && mode === 'canvas' ? 'with-source' : ''
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <div className="studio-shell">
       <Header
         project={project}
+        mode={mode}
+        active={active}
         sourceOpen={sourceOpen}
         onToggleSource={() => setSourceOpen((v) => !v)}
         onOpenSettings={() => setSettingsOpen(true)}
+        onShowOverview={() => setMode('overview')}
+        onShowCanvas={() => activeKey && setMode('canvas')}
         onExportBook={() => {
           pushLog('opening Markdown book preview');
           navigate(`/p/${owner}/${name}/book`);
         }}
         userLabel={userLabel}
       />
-      <div className={`studio-body${sourceOpen ? ' with-source' : ''}`}>
-        <DiagramBrowser
-          domains={domains}
-          enabledDomains={project.enabledDomains}
-          diagrams={project.diagrams}
-          activeKey={activeKey}
-          onSelect={onSelectDiagram}
-          onCreate={onCreateDiagram}
-        />
+      <div className={bodyClass}>
         <main className="studio-main">
-          {activeKey && domainId ? (
+          {mode === 'overview' ? (
+            <ProjectOverview
+              project={project}
+              catalog={catalog}
+              activeKey={activeKey}
+              onOpenDiagram={onOpenDiagram}
+            />
+          ) : activeKey && diagramType ? (
             <DiagramCanvas
-              domainId={domainId}
+              domainId={diagramType}
               source={viewSource}
               control={control}
               selectedId={selectedId}
@@ -188,30 +250,46 @@ export default function ProjectStudio() {
             />
           ) : (
             <div className="empty-canvas">
-              <h2>Select or create a diagram</h2>
-              <p>Enabled domains come from project settings (S1 set by default).</p>
+              <h2>No diagram open</h2>
+              <p>Return to overview, or use + to create a view allowed by enabled domains.</p>
             </div>
           )}
         </main>
-        <Inspector
-          domainId={domainId}
-          selectedId={selectedId}
-          diagramKey={activeKey}
-          log={log}
-        />
-        <SourceEditorPanel
-          open={sourceOpen}
-          onClose={() => setSourceOpen(false)}
-          domainId={domainId || 'flowchart'}
-          diagramKey={activeKey || '—'}
-          draft={draftSource}
-          onDraftChange={setDraftSource}
-          onApply={onApply}
-          applyBusy={applyBusy}
-          statusMessage={applyMsg}
-          dirty={dirty}
-        />
+        {mode === 'canvas' ? (
+          <Inspector
+            domainId={diagramType}
+            selectedId={selectedId}
+            diagramKey={activeKey}
+            log={log}
+            modelingDomainId={active?.modelingDomainId}
+          />
+        ) : null}
+        {mode === 'canvas' ? (
+          <SourceEditorPanel
+            open={sourceOpen}
+            onClose={() => setSourceOpen(false)}
+            domainId={diagramType || 'flowchart'}
+            diagramKey={activeKey || '—'}
+            draft={draftSource}
+            onDraftChange={setDraftSource}
+            onApply={onApply}
+            applyBusy={applyBusy}
+            statusMessage={applyMsg}
+            dirty={dirty}
+          />
+        ) : null}
       </div>
+
+      <NewDiagramFab
+        open={fabOpen}
+        onOpen={() => setFabOpen(true)}
+        onClose={() => setFabOpen(false)}
+        catalog={catalog}
+        enabledModelingDomains={project.enabledModelingDomains}
+        onCreate={onCreateDiagram}
+        onOpenDomains={() => setSettingsOpen(true)}
+      />
+
       <ProjectSettings
         project={project}
         catalog={catalog}
@@ -219,10 +297,17 @@ export default function ProjectStudio() {
         onClose={() => setSettingsOpen(false)}
         onSaved={(domains) => {
           const p = getProject(projectId);
-          p.enabledDomains = domains;
+          p.enabledModelingDomains = domains;
           upsertProject(p);
           setProject({ ...p });
-          pushLog(`domains → ${domains.length} enabled`);
+          const views = new Set();
+          domains.forEach((id) => {
+            (catalog?.domainIndex?.[id] || []).forEach((t) => views.add(t));
+          });
+          pushLog(
+            `modeling domains → ${domains.length} enabled` +
+              (views.size ? ` (views: ${[...views].sort().join(', ')})` : '')
+          );
         }}
       />
     </div>

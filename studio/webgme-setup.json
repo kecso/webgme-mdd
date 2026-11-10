@@ -1,0 +1,39 @@
+{
+  "components": {
+    "routers": {
+      "AppRouter": {
+        "src": "src/routers/AppRouter",
+        "mount": "p"
+      },
+      "DomainManager": {
+        "src": "src/routers/DomainManager",
+        "mount": "DomainManager"
+      }
+    },
+    "plugins": {
+      "ImportMDD": {
+        "src": "../router/src/plugins/ImportMDD",
+        "test": "../router/test/plugins/ImportMDD"
+      }
+    },
+    "addons": {},
+    "decorators": {},
+    "layouts": {},
+    "visualizers": {},
+    "seeds": {}
+  },
+  "dependencies": {
+    "routers": {},
+    "plugins": {},
+    "addons": {},
+    "decorators": {},
+    "layouts": {},
+    "visualizers": {},
+    "seeds": {}
+  },
+  "notes": [
+    "MDSS host follows webgme-dss: empty classic visualizers; React SPA via config.client.appDir.",
+    "Diagram-package plugins (ImportMermaid / ExportMermaid / ApplyLanguageMeta / ImportEARS) are wired via plugin.basePaths in config.webgme.js — ids still collide across packages until namespaced invoke lands.",
+    "Domain seeds are not registered yet; DomainManager creates EmptyProject with kind MDSS:<domains>."
+  ]
+}

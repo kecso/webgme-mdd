@@ -2,6 +2,8 @@
 
 These are the **known modeling domains** implied by Mermaid’s diagram families. Use this list when deciding which WebGME metamodels (DSMLs) to stand up first.
 
+**Important:** a WebGME / MDSS “domain” is a **modeling domain** here — not a diagram package id. Several domains share one diagram type (e.g. flowchart). Translators should hang off **domain→view couplings**. See [domain-diagram-couplings.md](./domain-diagram-couplings.md).
+
 Machine-readable inverse index: `domainIndex` in [`scripts/diagram-catalog.json`](../../scripts/diagram-catalog.json).
 
 ## Software engineering

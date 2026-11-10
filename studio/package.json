@@ -2,22 +2,35 @@
   "name": "@webgme-mdd/studio",
   "version": "0.1.0",
   "private": true,
-  "description": "Markdown System Studio (MDSS) — story-centered Mermaid/EARS studio with MD book export",
-  "type": "module",
+  "description": "Markdown System Studio (MDSS) — webgme-engine host + React SPA (webgme-dss pattern)",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 3947",
-    "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 3947"
+    "dev": "vite --config vite.config.mjs --host 0.0.0.0 --port 3947",
+    "build": "vite build --config vite.config.mjs && node scripts/copy-gme-dist.js",
+    "copy:gme-dist": "node scripts/copy-gme-dist.js",
+    "preview": "vite preview --config vite.config.mjs --host 0.0.0.0 --port 3947",
+    "start": "node server.js",
+    "postinstall": "node scripts/copy-gme-dist.js"
   },
+  "keywords": [
+    "webgme",
+    "mermaid",
+    "mdd",
+    "studio",
+    "mdss"
+  ],
   "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mermaid": "^11.6.0",
+    "q": "^1.5.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
-    "mermaid": "^11.6.0",
-    "@monaco-editor/react": "^4.6.0"
+    "webgme-engine": "^2.25.1"
   },
   "devDependencies": {
-    "vite": "^6.2.0",
-    "@vitejs/plugin-react": "^4.3.4"
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.2.0"
   }
 }

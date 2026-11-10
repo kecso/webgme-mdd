@@ -31,11 +31,13 @@ export function buildMarkdownBook(project, opts = {}) {
     ...d
   }));
 
-  // Prefer story required order when present
-  const order = story?.requiredDiagrams || project.enabledDomains || [];
+  // Prefer story required order by view language when present
+  const order = story?.requiredDiagrams || [];
   diagrams.sort((a, b) => {
-    const ia = order.indexOf(a.domainId);
-    const ib = order.indexOf(b.domainId);
+    const typeA = a.diagramType || a.domainId;
+    const typeB = b.diagramType || b.domainId;
+    const ia = order.indexOf(typeA);
+    const ib = order.indexOf(typeB);
     const sa = ia === -1 ? 999 : ia;
     const sb = ib === -1 ? 999 : ib;
     if (sa !== sb) return sa - sb;
@@ -47,15 +49,21 @@ export function buildMarkdownBook(project, opts = {}) {
   const chapterDir = 'chapters';
 
   diagrams.forEach((d, i) => {
+    const diagramType = d.diagramType || d.domainId;
+    const modelingDomainId = d.modelingDomainId || null;
     const n = String(i + 1).padStart(2, '0');
-    const slug = slugify(`${d.domainId}-${d.name || d.key}`);
+    const slug = slugify(
+      `${modelingDomainId || 'view'}-${diagramType}-${d.name || d.key}`
+    );
     const path = `${chapterDir}/${n}-${slug}.md`;
-    const fence = d.domainId === 'ears' ? 'ears' : 'mermaid';
+    const fence = diagramType === 'ears' ? 'ears' : 'mermaid';
     const heading = d.name || d.key;
     const body = [
       `# ${heading}`,
       '',
-      `Domain: \`${d.domainId}\` · Instance: \`${d.key}\``,
+      modelingDomainId
+        ? `Modeling domain: \`${modelingDomainId}\` · View: \`${diagramType}\` · Instance: \`${d.key}\``
+        : `View: \`${diagramType}\` · Instance: \`${d.key}\``,
       '',
       d.updatedAt ? `Last applied: ${d.updatedAt}` : '',
       '',
@@ -74,7 +82,13 @@ export function buildMarkdownBook(project, opts = {}) {
       .join('\n');
 
     files.push({ path, content: body });
-    toc.push({ id: d.key, title: heading, path, domainId: d.domainId });
+    toc.push({
+      id: d.key,
+      title: heading,
+      path,
+      diagramType,
+      modelingDomainId
+    });
   });
 
   const readme = [
@@ -94,9 +108,11 @@ export function buildMarkdownBook(project, opts = {}) {
     'authored as Markdown/Mermaid (or EARS). The studio keeps WebGME as the',
     'consistency backbone; this book is the browsable, shareable spine.',
     '',
-    '## Enabled domains',
+    '## Enabled modeling domains',
     '',
-    ...(project.enabledDomains || []).map((id) => `- \`${id}\``),
+    ...(project.enabledModelingDomains || project.enabledDomains || []).map(
+      (id) => `- \`${id}\``
+    ),
     '',
     story?.integrationPairs?.length
       ? [
@@ -110,7 +126,12 @@ export function buildMarkdownBook(project, opts = {}) {
       : '',
     '## Contents',
     '',
-    ...toc.map((t, i) => `${i + 1}. [${t.title}](${t.path}) (\`${t.domainId}\`)`),
+    ...toc.map((t, i) => {
+      const tag = t.modelingDomainId
+        ? `${t.modelingDomainId} → ${t.diagramType}`
+        : t.diagramType;
+      return `${i + 1}. [${t.title}](${t.path}) (\`${tag}\`)`;
+    }),
     '',
     '---',
     '',
@@ -131,14 +152,27 @@ export function buildMarkdownBook(project, opts = {}) {
     { path: 'SUMMARY.md', content: summaryLines.join('\n') }
   );
 
-  // Placeholder for cross-view traces
+  const demoCorr = project.correspondences || [];
   files.push({
     path: 'traces.md',
     content: [
       '# Cross-view traces',
       '',
-      'TODO(integrating): export Correspondence / `specifiesBody` / `sameAs` links as tables.',
-      '',
+      demoCorr.length
+        ? [
+            '## Demo correspondences (soft Integrating links)',
+            '',
+            '| From | To | Kind | Check |',
+            '|------|----|------|-------|',
+            ...demoCorr.map(
+              (c) =>
+                `| \`${c.from}\` | \`${c.to}\` | ${c.kind} | \`${c.check || ''}\` |`
+            ),
+            '',
+            '_Not enforced until CrossDomainValidate / Core Integrating exist._',
+            ''
+          ].join('\n')
+        : 'TODO(integrating): export Correspondence / `sameAs` / `specifies` links as tables.\n',
       story?.integrationPairs?.length
         ? [
             '## Story checklist',

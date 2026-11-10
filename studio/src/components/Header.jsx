@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { domainLabel } from '../data/modelingDomains.js';
 
 export default function Header({
   project,
+  mode,
+  active,
   onToggleSource,
   sourceOpen,
   onOpenSettings,
+  onShowOverview,
+  onShowCanvas,
   onExportBook,
   userLabel
 }) {
@@ -21,13 +26,41 @@ export default function Header({
             {project.storyId ? ` · ${project.storyId}` : ''}
           </span>
         ) : null}
+        {project ? (
+          <nav className="mode-tabs" aria-label="Project aspects">
+            <button
+              type="button"
+              className={mode === 'overview' ? 'active' : ''}
+              onClick={onShowOverview}
+            >
+              Overview
+            </button>
+            <button
+              type="button"
+              className={mode === 'canvas' ? 'active' : ''}
+              disabled={!active}
+              title={active ? active.name : 'Open a diagram from overview'}
+              onClick={() => active && onShowCanvas?.()}
+            >
+              {active
+                ? `${active.diagramType}${
+                    active.modelingDomainId
+                      ? ` · ${domainLabel(active.modelingDomainId)}`
+                      : ''
+                  }`
+                : 'Diagram'}
+            </button>
+          </nav>
+        ) : null}
       </div>
       <div className="header-actions">
+        {project && mode === 'canvas' ? (
+          <button type="button" className="btn" onClick={onToggleSource}>
+            {sourceOpen ? 'Hide source' : 'Show source'}
+          </button>
+        ) : null}
         {project ? (
           <>
-            <button type="button" className="btn" onClick={onToggleSource}>
-              {sourceOpen ? 'Hide source' : 'Show source'}
-            </button>
             <button type="button" className="btn" onClick={onOpenSettings}>
               Domains
             </button>

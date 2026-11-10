@@ -10,7 +10,7 @@ The monorepo still *houses* Mermaid domains in WebGME. The **product surface** u
 |---------------|-----------------|
 | **Markdown** | Mermaid + EARS + prose live as text; Git-friendly; LLM-friendly |
 | **System** | Multi-view MBSE (req, architecture, behavior, data)—our stories, not doodles |
-| **Studio** | DSS-style shell: projects, domain set, canvas widget, controlled apply |
+| **Studio** | DSS-style shell: projects, **modeling-domain** set, overview + canvas, controlled apply |
 
 `webgme-mdd` remains the accurate *platform/repo* label (WebGME metamodels + ImportMDD). **MDSS** is the studio product name.
 

@@ -23,11 +23,11 @@ export default function Welcome() {
       </div>
       <ul className="welcome-notes">
         <li>
-          <strong>Stories first</strong> — domains and chapters follow S1–S5 system narratives
+          <strong>Stories first</strong> — modeling domains and chapters follow S1–S5 narratives
         </li>
         <li>
-          <strong>Studio</strong> — view-only Mermaid widget + control; Monaco Apply is manual
-          (ImportDelta TODO)
+          <strong>Studio</strong> — S1 demo ships with story-shaped diagrams; overview +{' '}
+          <code>+</code> create; canvas Apply is manual (ImportDelta TODO)
         </li>
         <li>
           <strong>Book export</strong> — README + SUMMARY + chapters with fenced Mermaid/EARS for

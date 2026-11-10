@@ -20,6 +20,7 @@
     "catalog:build": "npm run build --workspace=catalog",
     "studio": "npm run dev --workspace=@webgme-mdd/studio",
     "studio:build": "npm run build --workspace=@webgme-mdd/studio",
+    "studio:start": "npm run start --workspace=@webgme-mdd/studio",
     "lean:check": "cd lean && lake env lean Integrating/Domain.lean && lake env lean examples/S1_participant_binds/Example.lean && lake env lean ../diagrams/ears/lean/Domain.lean",
     "test": "npm run validate && npm run test --workspace=@webgme-mdd/router"
   },

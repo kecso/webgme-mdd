@@ -14,3 +14,5 @@ agent-tools/
 lean/.lake/
 lean/lake-manifest.json
 *.olean
+studio/public/app/
+studio/public/gme-dist/

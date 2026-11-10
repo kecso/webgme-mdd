@@ -1,37 +1,74 @@
-import React, { useMemo, useState } from 'react';
-import { setEnabledDomains } from '../data/demoStore.js';
+import React, { useEffect, useMemo, useState } from 'react';
+import { setEnabledModelingDomains } from '../data/demoStore.js';
+import { listModelingDomains } from '../data/modelingDomains.js';
 
 /**
- * Domain enablement dialog — DSS DomainSelector analogue.
+ * Enable modeling domains for the project.
+ * The enabled set is the sole driver of which diagram views + can create.
  */
 export default function ProjectSettings({ project, catalog, open, onClose, onSaved }) {
-  const all = useMemo(() => {
-    const diagrams = catalog?.diagrams || [];
-    const companions = catalog?.companionLanguages || [];
-    return [...diagrams, ...companions];
-  }, [catalog]);
+  const all = useMemo(() => listModelingDomains(catalog), [catalog]);
+  const [selected, setSelected] = useState(
+    () => new Set(project.enabledModelingDomains || [])
+  );
+  const [filter, setFilter] = useState('');
 
-  const [selected, setSelected] = useState(() => new Set(project.enabledDomains));
+  useEffect(() => {
+    if (open) {
+      setSelected(new Set(project.enabledModelingDomains || []));
+      setFilter('');
+    }
+  }, [open, project.enabledModelingDomains]);
+
+  const previewViews = useMemo(() => {
+    const set = new Set();
+    selected.forEach((id) => {
+      const entry = all.find((d) => d.id === id);
+      (entry?.diagramTypes || []).forEach((t) => set.add(t));
+    });
+    return [...set].sort();
+  }, [selected, all]);
 
   if (!open) return null;
+
+  const q = filter.trim().toLowerCase();
+  const visible = q
+    ? all.filter(
+        (d) =>
+          d.id.includes(q) ||
+          d.name.toLowerCase().includes(q) ||
+          d.diagramTypes.some((t) => t.includes(q))
+      )
+    : all;
 
   return (
     <div className="modal-backdrop" role="presentation" onClick={onClose}>
       <div
-        className="modal"
+        className="modal modal-wide"
         role="dialog"
-        aria-label="Enabled MDD domains"
+        aria-label="Enabled modeling domains"
         onClick={(e) => e.stopPropagation()}
       >
         <header>
-          <h2>Enabled domains</h2>
+          <h2>Modeling domains</h2>
           <p className="hint">
-            Only these packages appear in the browser. TODO: DomainManager syncs WebGME
-            libraries (<code>MDD:…</code> kind).
+            Enable modeling domains for this project. Only those domains appear in{' '}
+            <strong>+</strong>, and only their coupled view languages can be created
+            (e.g. enable <code>ci-cd</code> to allow flowchart under that domain).
+          </p>
+          <input
+            className="filter-input"
+            placeholder="Filter domains or diagram types…"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <p className="hint domain-preview">
+            Creatable views with current selection:{' '}
+            <code>{previewViews.length ? previewViews.join(', ') : 'none'}</code>
           </p>
         </header>
         <div className="domain-grid">
-          {all.map((d) => (
+          {visible.map((d) => (
             <label key={d.id} className="check">
               <input
                 type="checkbox"
@@ -45,7 +82,10 @@ export default function ProjectSettings({ project, catalog, open, onClose, onSav
               />
               <span>
                 {d.name}
-                <small>{d.id}{d.notMermaid ? ' · companion' : ''}</small>
+                <small>
+                  {d.id}
+                  {d.diagramTypes.length ? ` · views: ${d.diagramTypes.join(', ')}` : ''}
+                </small>
               </span>
             </label>
           ))}
@@ -59,7 +99,7 @@ export default function ProjectSettings({ project, catalog, open, onClose, onSav
             className="btn primary"
             onClick={() => {
               const domains = [...selected];
-              setEnabledDomains(project.id, domains);
+              setEnabledModelingDomains(project.id, domains);
               onSaved(domains);
               onClose();
             }}

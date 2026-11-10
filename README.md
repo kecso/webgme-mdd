@@ -15,10 +15,17 @@ Monorepo that surveys **all current Mermaid diagram families** and packages each
 ```bash
 npm install
 npm run catalog   # findings browser → http://127.0.0.1:3847
-npm run studio    # Markdown System Studio → http://127.0.0.1:3947
+npm run studio    # MDSS Vite demo → http://127.0.0.1:3947
 ```
 
 Open the catalog to filter diagrams and META samples; open **MDSS** for story-centered projects, Mermaid view + Monaco Apply, and **Export book** (browsable Markdown).
+
+WebGME host (in-memory by default — no Mongo; DSS-style engine + React `appDir`):
+
+```bash
+npm run studio:build   # Vite → studio/public/app + gme-dist
+npm run studio:start   # webgme-engine → http://127.0.0.1:3988
+```
 
 ```bash
 npm test          # validate generated diagram projects
@@ -39,7 +46,7 @@ diagrams/<id>/          One webgme-cli-style project per diagram (+ `ears` compa
 router/                 WebGME router app — ImportMDD orchestrates libraries + importers
 lean/                   Integrating Language + cross-domain Lean proofs (webgme-lean fashion)
 catalog/                Vite explorer UI
-studio/                 Markdown System Studio (MDSS) — view + Monaco + MD book export
+studio/                 MDSS — webgme-engine host + React SPA (DSS pattern) + MD book export
 ```
 
 ## Router (ImportMDD)
@@ -94,7 +101,9 @@ You can also import `Language.json` with upstream **webgme-json-importer** (`Set
 7. [Lean formalization](docs/findings/lean-formalization.md) — webgme-lean-style META→Lean beside domains + S1 cross-domain proof  
 8. [Requirements specification](docs/findings/requirements-specification.md) — why Mermaid `requirementDiagram` is not enough; **EARS** as the body language  
 9. [Editor architecture](docs/findings/editor-architecture.md) — webgme-dss-style React shell + Mermaid visualize pipeline  
-10. [Diagram manipulation ops](docs/findings/diagram-manipulation-operations.md) — legitimate per-domain edit operations
+10. [Diagram manipulation ops](docs/findings/diagram-manipulation-operations.md) — legitimate per-domain edit operations  
+11. [Validation + LLM assist](docs/findings/validation-and-llm.md) — deferred React validation strip + Assist API notes  
+12. [Domain ↔ diagram couplings](docs/findings/domain-diagram-couplings.md) — modeling domains vs view languages; translator config
 
 ## Suggested metamodel waves
 

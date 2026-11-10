@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta id="mounted-path" content="<%=mountedPath%>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="<%=mountedPath%>/gme-dist/webgme.classes.build.js"></script>
+    <title>Markdown System Studio</title>
+  </head>
+  <body on-gme-init="onGMEInit()">
+    <noscript>You need to enable JavaScript to run Markdown System Studio.</noscript>
+    <div id="root"></div>
+    <script type="module" src="<%=mountedPath%>/app/app.build.js"></script>
+  </body>
+</html>

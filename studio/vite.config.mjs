@@ -68,8 +68,23 @@ function studioApiPlugin() {
 
 export default defineConfig({
   plugins: [react(), studioApiPlugin()],
+  // WebGME serves studio/public as client.appDir — keep Vite from treating it as publicDir.
+  publicDir: false,
+  base: './',
   server: {
     port: 3947,
     host: true
+  },
+  build: {
+    outDir: 'public/app',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: path.resolve(__dirname, 'index.html'),
+      output: {
+        entryFileNames: 'app.build.js',
+        chunkFileNames: 'chunks/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]'
+      }
+    }
   }
 });

@@ -59,12 +59,14 @@ export class DiagramControl {
    * @param {string} args.source  editor buffer
    * @returns {Promise<ApplyResult>}
    */
-  async applySource({ diagramKey, domainId, name, source }) {
+  async applySource({ diagramKey, domainId, modelingDomainId, name, source }) {
     const baseline = this.getBaseline(diagramKey);
     const delta = computeSourceDelta(baseline, source);
 
     this.onLog(
-      `apply requested for ${diagramKey}: ${delta.kind}` +
+      `apply requested for ${diagramKey}` +
+        (modelingDomainId ? ` [${modelingDomainId}→${domainId}]` : '') +
+        `: ${delta.kind}` +
         (delta.kind === 'unchanged' ? '' : ` (~${delta.roughChangeChars} chars touched)`)
     );
 
@@ -74,7 +76,8 @@ export class DiagramControl {
 
     // --- Demo / view path: update local store + refresh view immediately ---
     setDiagramSource(this.projectId, diagramKey, {
-      domainId,
+      diagramType: domainId,
+      modelingDomainId,
       name,
       source,
       updatedAt: new Date().toISOString()

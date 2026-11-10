@@ -168,13 +168,14 @@ Do **not** block on full bidirectional Mermaid editing before the shell and expo
 
 ### In-repo status (`studio/`)
 
-Shipped as a **view-first** SPA (port **3947**):
+`studio/` is now a **valid WebGME host** (DSS-shaped): `webgme-setup.json`, `config/`, `server.js`, AppRouter + DomainManager, `plugin.basePaths` for `router` + `diagrams/*`, React via `client.appDir`.
 
+- **Vite demo** (port **3947**): view-first SPA + demo store (`npm run studio`).  
+- **Engine host** (port **3988**): `npm run studio:build && npm run studio:start` (in-memory storage by default; `NODE_ENV=mongo` for MongoDB).  
 - Widget: `DiagramCanvas` + `SelectionOverlay` + `SvgIndex` (selection intents only).  
 - Control: `DiagramControl` — owns Apply / re-render; **manual** Monaco Apply with `computeSourceDelta` placeholder.  
 - Hideable Monaco: `SourceEditorPanel` (live-editor–like source; no auto WebGME write).  
-- TODOs: `WebGmeBridge`, DomainManager, **ImportDelta** (AST → Core ops, no wipe/reinsert), pan/zoom, Core inspector edits.
-
-```bash
-npm run studio
-```
+- Bridge: `WebGmeBridge` boots `gmeClient` on `onGMEInit`; DomainManager stamps `MDSS:<domains>` on EmptyProject (library sync awaits seeds).  
+- Domains ≠ diagram types: overview + floating domain→view create; couplings — [domain-diagram-couplings.md](./domain-diagram-couplings.md).  
+- TODOs: domain seeds + DomainSelector-analogue, domain-rooted translators, namespaced plugin ids, **ImportDelta**, pan/zoom, Core inspector edits.  
+- Deferred: validation strip + LLM assist — [validation-and-llm.md](./validation-and-llm.md).
