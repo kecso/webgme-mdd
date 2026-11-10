@@ -1,0 +1,10 @@
+{
+  "components": {
+    "plugins": {
+      "ImportEARS": { "src": "src/plugins/ImportEARS", "test": "test/plugins/ImportEARS" },
+      "ExportEARS": { "src": "src/plugins/ExportEARS", "test": "test/plugins/ExportEARS" },
+      "ApplyLanguageMeta": { "src": "src/plugins/ApplyLanguageMeta", "test": "test/plugins/ApplyLanguageMeta" }
+    }
+  },
+  "dependencies": { "plugins": {} }
+}

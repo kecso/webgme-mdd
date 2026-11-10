@@ -12,7 +12,15 @@ Source of truth in-repo: [`scripts/diagram-catalog.json`](../../scripts/diagram-
 | beta | 9 | Keyword often `*-beta`; API still shifting |
 | experimental | 5 | Present in docs/examples; may be absent from some builds |
 
-**Total packaged here: 30** WebGME project directories under `diagrams/`.
+**Total packaged here: 30** Mermaid WebGME project directories under `diagrams/`, plus **1 companion language** (`ears`).
+
+## Companion languages (not Mermaid)
+
+| ID | Name | Kind | Status | Primary domains |
+|----|------|------|--------|-----------------|
+| ears | EARS Requirements Specification | textual-spec | companion | requirements-specification, MBSE, safety-critical |
+
+EARS is the **requirements body language**; Mermaid `requirementDiagram` remains the **traceability** view. See [requirements-specification.md](./requirements-specification.md).
 
 ## Full list
 

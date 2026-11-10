@@ -2,7 +2,8 @@
   "generatedFrom": "scripts/diagram-catalog.json",
   "notes": [
     "projectId / seedName / libraryRootHash are placeholders until real WebGME domain seeds exist.",
-    "importPluginId is the diagram-package plugin id; router invokes it after ensuring the library."
+    "importPluginId is the diagram-package plugin id; router invokes it after ensuring the library.",
+    "Companion languages (kind != mermaid) are textual/spec domains such as EARS — not Mermaid diagrams."
   ],
   "domains": [
     {
@@ -12,6 +13,7 @@
         "flowchart",
         "graph"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Flowchart",
       "seedName": "mermaid-flowchart",
       "projectId": "TODO.owner.mermaid-flowchart",
@@ -27,6 +29,7 @@
       "keywords": [
         "sequenceDiagram"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Sequence",
       "seedName": "mermaid-sequence",
       "projectId": "TODO.owner.mermaid-sequence",
@@ -42,6 +45,7 @@
       "keywords": [
         "classDiagram"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Class",
       "seedName": "mermaid-class",
       "projectId": "TODO.owner.mermaid-class",
@@ -58,6 +62,7 @@
         "stateDiagram",
         "stateDiagram-v2"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_State",
       "seedName": "mermaid-state",
       "projectId": "TODO.owner.mermaid-state",
@@ -73,6 +78,7 @@
       "keywords": [
         "erDiagram"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Er",
       "seedName": "mermaid-er",
       "projectId": "TODO.owner.mermaid-er",
@@ -88,6 +94,7 @@
       "keywords": [
         "journey"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Journey",
       "seedName": "mermaid-journey",
       "projectId": "TODO.owner.mermaid-journey",
@@ -103,6 +110,7 @@
       "keywords": [
         "gantt"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Gantt",
       "seedName": "mermaid-gantt",
       "projectId": "TODO.owner.mermaid-gantt",
@@ -118,6 +126,7 @@
       "keywords": [
         "pie"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Pie",
       "seedName": "mermaid-pie",
       "projectId": "TODO.owner.mermaid-pie",
@@ -133,6 +142,7 @@
       "keywords": [
         "quadrantChart"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Quadrant",
       "seedName": "mermaid-quadrant",
       "projectId": "TODO.owner.mermaid-quadrant",
@@ -148,6 +158,7 @@
       "keywords": [
         "requirementDiagram"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Requirement",
       "seedName": "mermaid-requirement",
       "projectId": "TODO.owner.mermaid-requirement",
@@ -163,6 +174,7 @@
       "keywords": [
         "gitGraph"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Gitgraph",
       "seedName": "mermaid-gitgraph",
       "projectId": "TODO.owner.mermaid-gitgraph",
@@ -182,6 +194,7 @@
         "C4Dynamic",
         "C4Deployment"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_C4",
       "seedName": "mermaid-c4",
       "projectId": "TODO.owner.mermaid-c4",
@@ -197,6 +210,7 @@
       "keywords": [
         "mindmap"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Mindmap",
       "seedName": "mermaid-mindmap",
       "projectId": "TODO.owner.mermaid-mindmap",
@@ -212,6 +226,7 @@
       "keywords": [
         "timeline"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Timeline",
       "seedName": "mermaid-timeline",
       "projectId": "TODO.owner.mermaid-timeline",
@@ -227,6 +242,7 @@
       "keywords": [
         "kanban"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Kanban",
       "seedName": "mermaid-kanban",
       "projectId": "TODO.owner.mermaid-kanban",
@@ -243,6 +259,7 @@
         "sankey",
         "sankey-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Sankey",
       "seedName": "mermaid-sankey",
       "projectId": "TODO.owner.mermaid-sankey",
@@ -259,6 +276,7 @@
         "xychart",
         "xychart-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Xychart",
       "seedName": "mermaid-xychart",
       "projectId": "TODO.owner.mermaid-xychart",
@@ -275,6 +293,7 @@
         "block",
         "block-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Block",
       "seedName": "mermaid-block",
       "projectId": "TODO.owner.mermaid-block",
@@ -291,6 +310,7 @@
         "packet",
         "packet-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Packet",
       "seedName": "mermaid-packet",
       "projectId": "TODO.owner.mermaid-packet",
@@ -307,6 +327,7 @@
         "architecture",
         "architecture-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Architecture",
       "seedName": "mermaid-architecture",
       "projectId": "TODO.owner.mermaid-architecture",
@@ -323,6 +344,7 @@
         "radar",
         "radar-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Radar",
       "seedName": "mermaid-radar",
       "projectId": "TODO.owner.mermaid-radar",
@@ -339,6 +361,7 @@
         "treemap",
         "treemap-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Treemap",
       "seedName": "mermaid-treemap",
       "projectId": "TODO.owner.mermaid-treemap",
@@ -356,6 +379,7 @@
         "ishikawa-beta",
         "fishbone"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Ishikawa",
       "seedName": "mermaid-ishikawa",
       "projectId": "TODO.owner.mermaid-ishikawa",
@@ -372,6 +396,7 @@
         "usecase",
         "usecase-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Usecase",
       "seedName": "mermaid-usecase",
       "projectId": "TODO.owner.mermaid-usecase",
@@ -388,6 +413,7 @@
         "eventmodeling",
         "eventmodeling-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Eventmodeling",
       "seedName": "mermaid-eventmodeling",
       "projectId": "TODO.owner.mermaid-eventmodeling",
@@ -403,6 +429,7 @@
       "keywords": [
         "venn"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Venn",
       "seedName": "mermaid-venn",
       "projectId": "TODO.owner.mermaid-venn",
@@ -418,6 +445,7 @@
       "keywords": [
         "treeView"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Treeview",
       "seedName": "mermaid-treeview",
       "projectId": "TODO.owner.mermaid-treeview",
@@ -434,6 +462,7 @@
         "wardley",
         "wardley-beta"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Wardley",
       "seedName": "mermaid-wardley",
       "projectId": "TODO.owner.mermaid-wardley",
@@ -449,6 +478,7 @@
       "keywords": [
         "cynefin"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Cynefin",
       "seedName": "mermaid-cynefin",
       "projectId": "TODO.owner.mermaid-cynefin",
@@ -464,6 +494,7 @@
       "keywords": [
         "railroad"
       ],
+      "kind": "mermaid",
       "libraryName": "Mermaid_Railroad",
       "seedName": "mermaid-railroad",
       "projectId": "TODO.owner.mermaid-railroad",
@@ -472,6 +503,27 @@
       "importPluginId": "ImportMermaid",
       "exportPluginId": "ExportMermaid",
       "packagePath": "diagrams/railroad"
+    },
+    {
+      "id": "ears",
+      "name": "EARS Requirements Specification",
+      "keywords": [
+        "ears",
+        "EARS"
+      ],
+      "kind": "textual-spec",
+      "notMermaid": true,
+      "companionTo": [
+        "requirement"
+      ],
+      "libraryName": "EARS_Requirements",
+      "seedName": "ears-requirements",
+      "projectId": "TODO.owner.ears-requirements",
+      "branchName": "master",
+      "libraryRootHash": null,
+      "importPluginId": "ImportEARS",
+      "exportPluginId": "ExportEARS",
+      "packagePath": "diagrams/ears"
     }
   ]
 }

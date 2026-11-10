@@ -23,6 +23,7 @@
       "file": "S1-automotive-aeb-cacc.md",
       "priority": 1,
       "requiredDiagrams": [
+        "ears",
         "requirement",
         "usecase",
         "c4",
@@ -35,6 +36,7 @@
       ],
       "optionalDiagrams": ["block", "gantt", "kanban"],
       "diagrams": [
+        "ears",
         "requirement",
         "usecase",
         "c4",
@@ -51,7 +53,9 @@
       "catalogDomains": [
         "systems-engineering",
         "requirements-management",
+        "requirements-specification",
         "safety-critical",
+        "llm-assisted-engineering",
         "uml",
         "software-architecture",
         "system-context",
@@ -69,6 +73,10 @@
         "agile"
       ],
       "integrationPairs": [
+        { "from": "ears", "to": "requirement", "check": "specifies-body" },
+        { "from": "ears", "to": "state", "check": "while-precondition-binds-mode" },
+        { "from": "ears", "to": "sequence", "check": "when-trigger-binds-message" },
+        { "from": "ears", "to": "architecture", "check": "system-subject-binds-service" },
         { "from": "requirement", "to": "usecase", "check": "req-scenario-coverage" },
         { "from": "requirement", "to": "sequence", "check": "req-verify-path" },
         { "from": "sequence", "to": "c4", "check": "participant-binds-container" },
@@ -110,6 +118,7 @@
         "ishikawa"
       ],
       "optionalDiagrams": [
+        "ears",
         "journey",
         "timeline",
         "usecase",
@@ -197,7 +206,7 @@
         "state",
         "flowchart"
       ],
-      "optionalDiagrams": ["c4", "block", "er", "gantt", "timeline", "kanban"],
+      "optionalDiagrams": ["ears", "c4", "block", "er", "gantt", "timeline", "kanban"],
       "diagrams": [
         "requirement",
         "architecture",
@@ -361,7 +370,7 @@
         "ishikawa",
         "architecture"
       ],
-      "optionalDiagrams": ["class", "block", "gantt", "timeline", "er"],
+      "optionalDiagrams": ["ears", "class", "block", "gantt", "timeline", "er"],
       "diagrams": [
         "requirement",
         "usecase",

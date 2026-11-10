@@ -1,0 +1,113 @@
+{
+  "attributes": {
+    "name": "Language"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "children_meta": {
+    "min": -1,
+    "max": -1,
+    "@meta:Specification": {
+      "min": -1,
+      "max": -1
+    }
+  },
+  "registry": {
+    "validPlugins": "ImportEARS ExportEARS ApplyLanguageMeta"
+  },
+  "children": [
+    {
+      "id": "@meta:Specification",
+      "attributes": {
+        "name": "Specification",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "children_meta": {
+        "min": -1,
+        "max": -1,
+        "@meta:EARSRequirement": {
+          "min": -1,
+          "max": -1
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      }
+    },
+    {
+      "id": "@meta:EARSRequirement",
+      "attributes": {
+        "name": "EARSRequirement",
+        "reqId": "",
+        "pattern": "ubiquitous",
+        "precondition": "",
+        "trigger": "",
+        "feature": "",
+        "unwantedCondition": "",
+        "system": "",
+        "response": "",
+        "text": "",
+        "risk": "medium",
+        "verifymethod": "test"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "reqId": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "precondition": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        },
+        "feature": {
+          "type": "string"
+        },
+        "unwantedCondition": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        },
+        "response": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        },
+        "verifymethod": {
+          "type": "string"
+        }
+      },
+      "registry": {
+        "position": {
+          "x": 240,
+          "y": 100
+        }
+      }
+    }
+  ]
+}

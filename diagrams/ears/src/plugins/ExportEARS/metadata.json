@@ -1,0 +1,15 @@
+{
+  "id": "ExportEARS",
+  "name": "Export EARS",
+  "version": "0.1.0",
+  "description": "Export the active EARS specification subtree to .ears text",
+  "icon": {
+    "class": "glyphicon glyphicon-export",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "dependencies": [],
+  "writeAccessRequired": false,
+  "configStructure": []
+}

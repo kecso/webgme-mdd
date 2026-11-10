@@ -33,7 +33,9 @@ define([
     }
 
     /**
-     * Detect diagram domain from the first non-comment token of Mermaid source.
+     * Detect diagram / companion domain from source.
+     * Mermaid: first non-comment keyword token.
+     * EARS: REQ-* header lines or an `ears` keyword.
      * @param {string} source
      * @returns {object|null} domain entry
      */
@@ -42,13 +44,18 @@ define([
             return null;
         }
         const lines = String(source).split(/\r?\n/);
+        let sawEarsHeader = false;
         for (let i = 0; i < lines.length; i += 1) {
             const line = lines[i].trim();
-            if (!line || line.indexOf('%%') === 0) {
+            if (!line || line.indexOf('%%') === 0 || line.indexOf('#') === 0) {
                 continue;
             }
             // Optional YAML frontmatter — skip until closing ---
             if (i === 0 && line === '---') {
+                continue;
+            }
+            if (/^REQ[\w.-]+/i.test(line)) {
+                sawEarsHeader = true;
                 continue;
             }
             const token = line.split(/\s+/)[0];
@@ -56,7 +63,12 @@ define([
                 return byKeyword[token];
             }
             // C4* keywords are exact; flowchart/graph already covered
-            return null;
+            if (!sawEarsHeader) {
+                return null;
+            }
+        }
+        if (sawEarsHeader && byId.ears) {
+            return byId.ears;
         }
         return null;
     }

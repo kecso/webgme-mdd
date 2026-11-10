@@ -43,8 +43,13 @@ function catalogApiPlugin() {
 
         const sampleMatch = req.url.match(/^\/api\/sample\/([a-z0-9-]+)$/);
         if (sampleMatch) {
-          const file = path.join(repoRoot, 'diagrams', sampleMatch[1], 'examples/sample.mmd');
-          if (!fs.existsSync(file)) {
+          const id = sampleMatch[1];
+          const candidates = [
+            path.join(repoRoot, 'diagrams', id, 'examples/sample.mmd'),
+            path.join(repoRoot, 'diagrams', id, 'examples/sample.ears')
+          ];
+          const file = candidates.find((f) => fs.existsSync(f));
+          if (!file) {
             res.statusCode = 404;
             return res.end('Not found');
           }

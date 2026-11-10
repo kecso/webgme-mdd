@@ -27,12 +27,14 @@ Machine-readable inverse index: `domainIndex` in [`scripts/diagram-catalog.json`
 
 ## Systems & requirements
 
-| Domain | Diagrams |
+| Domain | Diagrams / languages |
 |--------|----------|
-| Systems engineering / MBSE | requirement, c4 |
-| Requirements & product scope | requirement, usecase |
+| Systems engineering / MBSE | requirement, **ears** (body), c4 |
+| Requirements & product scope | requirement, **ears**, usecase |
 | Finite-state / embedded / UI state | state |
-| Safety-critical verification links | requirement |
+| Safety-critical verification links | requirement, **ears** |
+
+**EARS** (`diagrams/ears`) is a **companion language**, not a Mermaid diagram — structured *shall* text that feeds `requirementDiagram` traceability. See [requirements-specification.md](./requirements-specification.md).
 
 ## Product, UX, and delivery
 
@@ -61,7 +63,7 @@ Machine-readable inverse index: `domainIndex` in [`scripts/diagram-catalog.json`
 
 ## Suggested WebGME metamodel waves
 
-1. **Wave A (high leverage):** flowchart, sequence, class, state, er, c4, requirement  
+1. **Wave A (high leverage):** flowchart, sequence, class, state, er, c4, requirement, **ears** (companion)  
 2. **Wave B (delivery & UX):** gantt, kanban, journey, timeline, gitgraph  
 3. **Wave C (analytics):** pie, xychart, sankey, quadrant, radar, treemap  
 4. **Wave D (specialized / beta):** architecture, block, packet, usecase, eventmodeling, ishikawa, mindmap  

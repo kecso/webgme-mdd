@@ -615,10 +615,12 @@
     "prioritization": ["quadrant"],
     "product-portfolio": ["quadrant", "treemap"],
     "marketing-analysis": ["quadrant"],
-    "systems-engineering": ["requirement", "c4"],
-    "requirements-management": ["requirement", "usecase"],
-    "mbse": ["requirement"],
-    "safety-critical": ["requirement"],
+    "systems-engineering": ["requirement", "ears", "c4"],
+    "requirements-management": ["requirement", "ears", "usecase"],
+    "requirements-specification": ["ears"],
+    "mbse": ["requirement", "ears"],
+    "safety-critical": ["requirement", "ears"],
+    "llm-assisted-engineering": ["ears"],
     "version-control": ["gitgraph"],
     "devex-education": ["gitgraph"],
     "release-engineering": ["gitgraph"],
@@ -658,7 +660,7 @@
     "root-cause-analysis": ["ishikawa"],
     "manufacturing": ["ishikawa"],
     "continuous-improvement": ["ishikawa"],
-    "requirements": ["usecase", "requirement"],
+    "requirements": ["usecase", "requirement", "ears"],
     "product-scope": ["usecase"],
     "systems-analysis": ["usecase"],
     "event-driven-architecture": ["eventmodeling"],
@@ -680,5 +682,61 @@
     "parsers": ["railroad"],
     "language-engineering": ["railroad"],
     "ebnf": ["railroad"]
-  }
+  },
+  "companionLanguages": [
+    {
+      "id": "ears",
+      "name": "EARS Requirements Specification",
+      "keywords": ["ears", "EARS"],
+      "status": "companion",
+      "kind": "textual-spec",
+      "notMermaid": true,
+      "companionTo": ["requirement"],
+      "domains": [
+        "requirements-management",
+        "requirements-specification",
+        "systems-engineering",
+        "mbse",
+        "safety-critical",
+        "llm-assisted-engineering"
+      ],
+      "capabilities": [
+        "EARS patterns: ubiquitous, state-driven (While), event-driven (When), optional feature (Where), unwanted (If/Then), complex combinations",
+        "Structured clauses for LLM authoring and Lean well-formedness",
+        "Body language that feeds Mermaid requirementDiagram / Integrating traces"
+      ],
+      "syntaxHighlights": [
+        "While <precondition>, when <trigger>, the <system> shall <response>",
+        "If <condition>, then the <system> shall <response>",
+        "The <system> shall <response>"
+      ],
+      "metaConcepts": {
+        "Specification": { "attrs": ["name", "title"] },
+        "EARSRequirement": {
+          "attrs": [
+            "reqId",
+            "pattern",
+            "precondition",
+            "trigger",
+            "feature",
+            "unwantedCondition",
+            "system",
+            "response",
+            "text",
+            "risk",
+            "verifymethod"
+          ]
+        }
+      },
+      "sampleFile": "diagrams/ears/examples/sample.ears",
+      "importPluginId": "ImportEARS",
+      "exportPluginId": "ExportEARS",
+      "libraryName": "EARS_Requirements",
+      "seedName": "ears-requirements",
+      "packagePath": "diagrams/ears",
+      "leanDomain": "diagrams/ears/lean/Domain.lean",
+      "leanNamespace": "EarsDomain",
+      "notes": "Not a Mermaid diagram — textual req-spec domain (EARS) for webgme-mdd. See docs/findings/requirements-specification.md."
+    }
+  ]
 }

@@ -1,0 +1,20 @@
+# EARS sample — AEB / CACC slice (story S1)
+# Patterns: ubiquitous | state | event | optional | unwanted | complex
+
+REQ-AEB-001 [event] risk=high verifymethod=test
+When an obstacle is detected within the braking envelope, the BrakeController shall command deceleration within 100 ms.
+
+REQ-AEB-002 [state] risk=high verifymethod=test
+While AEB_Active, the BrakeController shall ignore driver acceleration requests that reduce deceleration.
+
+REQ-AEB-003 [unwanted] risk=high verifymethod=test
+If sensor fusion confidence is below threshold, then the BrakeController shall not command autonomous braking.
+
+REQ-CACC-001 [ubiquitous] risk=medium verifymethod=analysis
+The LongitudinalController shall maintain gap error within ±0.5 m in steady cruise.
+
+REQ-CACC-002 [optional] risk=medium verifymethod=demonstration
+Where the vehicle has V2XGateway, the FusionApp shall incorporate remote vehicle tracks into gap control.
+
+REQ-CACC-003 [complex] risk=high verifymethod=test
+While ACC is engaged, when the lead vehicle brakes, the LongitudinalController shall reduce speed to preserve the selected time gap.

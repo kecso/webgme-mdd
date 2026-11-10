@@ -63,7 +63,5 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd",
-  "leanDomain": "../lean/Domain.lean",
-  "leanNamespace": "UsecaseDomain"
+  "sample": "./../examples/sample.mmd"
 }

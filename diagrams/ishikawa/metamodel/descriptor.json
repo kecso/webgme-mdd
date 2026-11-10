@@ -46,7 +46,5 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd",
-  "leanDomain": "../lean/Domain.lean",
-  "leanNamespace": "IshikawaDomain"
+  "sample": "./../examples/sample.mmd"
 }

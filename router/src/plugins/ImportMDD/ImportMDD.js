@@ -324,15 +324,17 @@ define([
             return Q(null);
         }
 
+        const pluginConfig = domain.notMermaid || domain.kind === 'textual-spec'
+            ? { earsSource: job.source }
+            : { mermaidSource: job.source };
+
         return self.invokePlugin(pluginId, {
             // TODO(webgme-mdd): Use domain.libraryName as namespace after libraries exist.
             // namespace: domain.libraryName,
             namespace: self.namespace,
             activeNode: self.activeNode,
             activeSelection: self.activeSelection,
-            pluginConfig: {
-                mermaidSource: job.source
-            }
+            pluginConfig: pluginConfig
         }).then(function (interResult) {
             const ok = !interResult || interResult.getSuccess === undefined ||
                 interResult.getSuccess();

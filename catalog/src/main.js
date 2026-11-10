@@ -10,7 +10,7 @@ const state = {
   catalog: null,
   selectedId: null,
   filter: '',
-  statuses: new Set(['stable', 'beta', 'experimental'])
+  statuses: new Set(['stable', 'beta', 'experimental', 'companion'])
 };
 
 const els = {
@@ -38,15 +38,24 @@ function matches(diagram) {
   return hay.includes(q);
 }
 
+function allEntries() {
+  return [
+    ...(state.catalog.diagrams || []),
+    ...(state.catalog.companionLanguages || [])
+  ];
+}
+
 function renderStats() {
-  const diagrams = state.catalog.diagrams;
+  const diagrams = state.catalog.diagrams || [];
+  const companions = state.catalog.companionLanguages || [];
   const domains = new Set(Object.keys(state.catalog.domainIndex || {}));
-  const byStatus = diagrams.reduce((acc, d) => {
+  const byStatus = diagrams.concat(companions).reduce((acc, d) => {
     acc[d.status] = (acc[d.status] || 0) + 1;
     return acc;
   }, {});
   els.stats.innerHTML = [
     ['Diagrams', diagrams.length],
+    ['Companions', companions.length],
     ['Domains', domains.size],
     ['Stable', byStatus.stable || 0],
     ['Beta', byStatus.beta || 0],
@@ -60,7 +69,7 @@ function renderStats() {
 }
 
 function renderStatusFilters() {
-  els.statusFilters.innerHTML = ['stable', 'beta', 'experimental']
+  els.statusFilters.innerHTML = ['stable', 'beta', 'experimental', 'companion']
     .map((s) => {
       const active = state.statuses.has(s) ? 'active' : '';
       return `<button type="button" class="chip ${active}" data-status="${s}">${s}</button>`;
@@ -69,7 +78,7 @@ function renderStatusFilters() {
 }
 
 function renderList() {
-  const items = state.catalog.diagrams.filter(matches);
+  const items = allEntries().filter(matches);
   els.list.innerHTML = items
     .map((d) => {
       const active = d.id === state.selectedId ? 'active' : '';
@@ -82,7 +91,7 @@ function renderList() {
 }
 
 async function renderDetail(id) {
-  const diagram = state.catalog.diagrams.find((d) => d.id === id);
+  const diagram = allEntries().find((d) => d.id === id);
   if (!diagram) return;
 
   const [metaRes, sampleRes] = await Promise.all([
@@ -100,20 +109,24 @@ async function renderDetail(id) {
         <h2>${diagram.name}</h2>
         <span class="badge ${diagram.status}">${diagram.status}</span>
       </div>
-      <p>WebGME project: <code>diagrams/${diagram.id}</code></p>
+      <p>WebGME project: <code>diagrams/${diagram.id}</code>${
+        diagram.notMermaid
+          ? ' · <em>companion language (not Mermaid)</em>'
+          : ''
+      }</p>
       <h3>Keywords</h3>
-      <div class="tags">${diagram.keywords.map((k) => `<span class="tag"><code>${k}</code></span>`).join('')}</div>
+      <div class="tags">${(diagram.keywords || []).map((k) => `<span class="tag"><code>${k}</code></span>`).join('')}</div>
       <h3>Domains</h3>
-      <div class="tags">${diagram.domains.map((k) => `<span class="tag">${k}</span>`).join('')}</div>
+      <div class="tags">${(diagram.domains || []).map((k) => `<span class="tag">${k}</span>`).join('')}</div>
       <h3>Capabilities</h3>
-      <ul class="clean">${diagram.capabilities.map((c) => `<li>${c}</li>`).join('')}</ul>
+      <ul class="clean">${(diagram.capabilities || []).map((c) => `<li>${c}</li>`).join('')}</ul>
     </article>
 
     <div class="grid-2">
       <article class="panel">
         <h2>Sample</h2>
         <pre>${escapeHtml(sample)}</pre>
-        <h3>Render</h3>
+        <h3>${diagram.notMermaid ? 'Preview' : 'Render'}</h3>
         <div class="mermaid-host" id="mermaidHost"></div>
       </article>
       <article class="panel">
@@ -128,6 +141,11 @@ async function renderDetail(id) {
   `;
 
   const host = document.getElementById('mermaidHost');
+  if (diagram.notMermaid) {
+    host.innerHTML =
+      '<p>Textual specification language — no Mermaid render. See sample and META.</p>';
+    return;
+  }
   try {
     const { svg } = await mermaid.render(`mmd-${id}-${Date.now()}`, sample);
     host.innerHTML = svg;
@@ -177,7 +195,7 @@ renderList();
 // Deep-link ?d=flowchart
 const params = new URLSearchParams(location.search);
 const initial = params.get('d') || 'flowchart';
-if (catalog.diagrams.some((d) => d.id === initial)) {
+if (allEntries().some((d) => d.id === initial)) {
   state.selectedId = initial;
   renderList();
   renderDetail(initial);

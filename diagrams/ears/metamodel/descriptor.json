@@ -1,0 +1,58 @@
+{
+  "id": "ears",
+  "name": "EARS Requirements Specification",
+  "keywords": [
+    "ears",
+    "EARS"
+  ],
+  "status": "companion",
+  "domains": [
+    "requirements-management",
+    "requirements-specification",
+    "systems-engineering",
+    "mbse",
+    "safety-critical",
+    "llm-assisted-engineering"
+  ],
+  "capabilities": [
+    "EARS patterns: ubiquitous, state-driven (While), event-driven (When), optional feature (Where), unwanted (If/Then), complex combinations",
+    "Structured clauses for LLM authoring and Lean well-formedness",
+    "Body language that feeds Mermaid requirementDiagram / Integrating traces"
+  ],
+  "syntaxHighlights": [
+    "While <precondition>, when <trigger>, the <system> shall <response>",
+    "If <condition>, then the <system> shall <response>",
+    "The <system> shall <response>"
+  ],
+  "metaConcepts": {
+    "Specification": {
+      "attrs": [
+        "name",
+        "title"
+      ]
+    },
+    "EARSRequirement": {
+      "attrs": [
+        "reqId",
+        "pattern",
+        "precondition",
+        "trigger",
+        "feature",
+        "unwantedCondition",
+        "system",
+        "response",
+        "text",
+        "risk",
+        "verifymethod"
+      ]
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "sample": "./../examples/sample.ears",
+  "leanDomain": "../lean/Domain.lean",
+  "leanNamespace": "EarsDomain",
+  "companionTo": [
+    "requirement"
+  ],
+  "notes": "Not a Mermaid diagram — textual req-spec domain (EARS) for webgme-mdd."
+}

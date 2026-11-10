@@ -705,13 +705,16 @@ function main() {
     generateProject(diagram);
     console.log('generated diagrams/' + diagram.id);
   }
-  // Index file for tooling
+  const companions = CATALOG.companionLanguages || [];
+  // Index file for tooling (Mermaid diagrams + companion languages)
   write(
     path.join(ROOT, 'diagrams/index.json'),
     JSON.stringify(
       {
         generatedAt: new Date().toISOString(),
-        count: CATALOG.diagrams.length,
+        diagramCount: CATALOG.diagrams.length,
+        companionCount: companions.length,
+        count: CATALOG.diagrams.length + companions.length,
         diagrams: CATALOG.diagrams.map((d) => ({
           id: d.id,
           name: d.name,
@@ -719,13 +722,30 @@ function main() {
           keywords: d.keywords,
           domains: d.domains,
           path: `diagrams/${d.id}`
+        })),
+        companions: companions.map((c) => ({
+          id: c.id,
+          name: c.name,
+          status: c.status,
+          kind: c.kind || 'companion',
+          notMermaid: !!c.notMermaid,
+          companionTo: c.companionTo || [],
+          keywords: c.keywords,
+          domains: c.domains,
+          path: c.packagePath || `diagrams/${c.id}`
         }))
       },
       null,
       2
     ) + '\n'
   );
-  console.log('Wrote diagrams/index.json (' + CATALOG.diagrams.length + ' projects)');
+  console.log(
+    'Wrote diagrams/index.json (' +
+      CATALOG.diagrams.length +
+      ' diagrams + ' +
+      companions.length +
+      ' companions)'
+  );
 }
 
 main();

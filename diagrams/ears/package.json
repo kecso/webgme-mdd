@@ -1,0 +1,14 @@
+{
+  "name": "@webgme-mdd/ears",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EARS requirements specification domain (textual, companion to Mermaid requirementDiagram)",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha --recursive test"
+  },
+  "keywords": ["webgme", "ears", "requirements", "mdd"],
+  "peerDependencies": { "webgme": "^2.23.0" },
+  "devDependencies": { "mocha": "^5.2.0", "webgme": "^2.23.0" },
+  "dependencies": { "@webgme-mdd/shared": "*" }
+}

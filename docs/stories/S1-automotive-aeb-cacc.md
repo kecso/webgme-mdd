@@ -20,12 +20,12 @@ These are the `diagrams/<id>` projects (and router library names) this story mus
 
 | Role | Package ids (`diagrams/…`) |
 |------|----------------------------|
-| **Required** | `requirement`, `usecase`, `c4`, `architecture`, `class`, `state`, `sequence`, `flowchart`, `er` |
+| **Required** | `ears`, `requirement`, `usecase`, `c4`, `architecture`, `class`, `state`, `sequence`, `flowchart`, `er` |
 | **Optional** | `block`, `gantt`, `kanban` |
 
-**Catalog domains covered (required set):** `safety-critical`, `requirements-management`, `systems-engineering`, `uml`, `software-architecture`, `system-context`, `object-oriented-design`, `finite-state-machines`, `embedded-systems`, `software-interaction`, `protocols`, `process-modeling`, `workflows`, `database-design`, `data-modeling`.
+**Catalog domains covered (required set):** `safety-critical`, `requirements-management`, `requirements-specification`, `systems-engineering`, `uml`, `software-architecture`, `system-context`, `object-oriented-design`, `finite-state-machines`, `embedded-systems`, `software-interaction`, `protocols`, `process-modeling`, `workflows`, `database-design`, `data-modeling`.
 
-**Must-integrate pairs:** requirement↔usecase/sequence · sequence↔c4/architecture · state↔sequence · flowchart↔architecture/class · sequence↔er  
+**Must-integrate pairs:** ears↔requirement · requirement↔usecase/sequence · sequence↔c4/architecture · state↔sequence · flowchart↔architecture/class · sequence↔er  
 (Full `integrationPairs` in [`stories.json`](./stories.json).)
 
 **Lean exemplar:** [`lean/examples/S1_participant_binds/`](../../lean/examples/S1_participant_binds/) encodes `ParticipantBindsArchitecture` (sequence participant `sameAs` architecture service) with theorems for a good and a bad model — webgme-lean fashion.
@@ -34,7 +34,7 @@ These are the `diagrams/<id>` projects (and router library names) this story mus
 
 | Concern | Diagram(s) | Example content |
 |---------|------------|-----------------|
-| Stakeholder needs & safety/security reqs | `requirement`, `usecase` | “Detect obstacle and brake within X ms”; ASIL constraints; spoofing resistance |
+| Stakeholder needs & safety/security reqs | `ears`, `requirement`, `usecase` | EARS shall-statements (When/While/If); `requirementDiagram` for satisfy/verify; ASIL / spoofing |
 | Driver / system context | `c4`, `architecture` | Vehicle, radar/camera ECUs, brake controller, V2X, cloud diagnostics |
 | Logical software structure | `class`, `block` | Sensor fusion, threat assessor, longitudinal controller |
 | Modes & fault behavior | `state` | ACC active / AEB arming / emergency / limp-home |
@@ -71,7 +71,8 @@ These are the `diagrams/<id>` projects (and router library names) this story mus
 ## Seed model sketch (minimal multi-file set)
 
 ```
-requirementDiagram  →  AEB_DetectAndBrake, CACC_MaintainGap, Sec_AntiSpoof
+.ears               →  REQ-AEB-001 [event], REQ-AEB-003 [unwanted], …
+requirementDiagram  →  AEB_DetectAndBrake, CACC_MaintainGap, Sec_AntiSpoof  (trace links)
 usecase-beta        →  DriverEngageCACC, EmergencyBrake
 C4Container         →  SensorECU, FusionApp, BrakeCtrl, HMI
 stateDiagram-v2     →  Off → ACC → AEB_Active → Complete

@@ -1,6 +1,8 @@
 {
-  "generatedAt": "2026-11-09T20:27:59.893Z",
-  "count": 30,
+  "generatedAt": "2026-11-10T12:04:43.807Z",
+  "diagramCount": 30,
+  "companionCount": 1,
+  "count": 31,
   "diagrams": [
     {
       "id": "flowchart",
@@ -458,6 +460,31 @@
         "ebnf"
       ],
       "path": "diagrams/railroad"
+    }
+  ],
+  "companions": [
+    {
+      "id": "ears",
+      "name": "EARS Requirements Specification",
+      "status": "companion",
+      "kind": "textual-spec",
+      "notMermaid": true,
+      "companionTo": [
+        "requirement"
+      ],
+      "keywords": [
+        "ears",
+        "EARS"
+      ],
+      "domains": [
+        "requirements-management",
+        "requirements-specification",
+        "systems-engineering",
+        "mbse",
+        "safety-critical",
+        "llm-assisted-engineering"
+      ],
+      "path": "diagrams/ears"
     }
   ]
 }

@@ -8,6 +8,7 @@
 | [webgme-json-format.md](./webgme-json-format.md) | JSON META schema used for `Language.json` |
 | [integration-architecture.md](./integration-architecture.md) | Generic Integrating Language vs domain×domain; shared identity; multi-diagram constraints |
 | [lean-formalization.md](./lean-formalization.md) | webgme-lean fashion: META→Lean beside domains; cross-diagram constraint example |
+| [requirements-specification.md](./requirements-specification.md) | Mermaid requirementDiagram ≠ req-spec language; pick **EARS** as companion body language |
 | [../stories/README.md](../stories/README.md) | Multi-domain integrated validation stories (why combine diagrams) |
 
-Canonical data: `scripts/diagram-catalog.json`. Stories index: `docs/stories/stories.json`.
+Canonical data: `scripts/diagram-catalog.json` (Mermaid diagrams + `companionLanguages`). Stories index: `docs/stories/stories.json`.

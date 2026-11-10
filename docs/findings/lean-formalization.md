@@ -25,8 +25,9 @@ Cross-diagram validation does **not** require Lean packages per diagram pair. It
 |----------|---------|
 | `diagrams/<id>/lean/Domain.lean` | Generated Lean beside META for priority domains |
 | `diagrams/<id>/metamodel/descriptor.json` → `leanDomain` | Pointer to the Lean artifact |
-| `lean/Integrating/Domain.lean` | `SystemElement`, `Correspondence`, `ConstraintInstance`, `participantBindsArchitecture` |
+| `lean/Integrating/Domain.lean` | `SystemElement`, `Correspondence`, `ConstraintInstance`, `participantBindsArchitecture`, `earsSpecifiesRequirement` |
 | `lean/examples/S1_participant_binds/` | `.wgl` + Lean proof that S1 sequence↔architecture binding holds/fails |
+| `diagrams/ears/lean/Domain.lean` | EARS companion language: patterns + `wellFormed` / `allWellFormed` theorems |
 | `scripts/generate-lean-domain.js` | META → Lean generator (`npm run generate:lean`) |
 
 ## Exemplar constraint (what we are aiming for)

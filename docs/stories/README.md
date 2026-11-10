@@ -33,11 +33,11 @@ Package ids match directories under `diagrams/<id>/` and entries in `router/src/
 
 | Story | Required `diagrams/<id>` | Optional |
 |-------|--------------------------|----------|
-| **S1** | `requirement`, `usecase`, `c4`, `architecture`, `class`, `state`, `sequence`, `flowchart`, `er` | `block`, `gantt`, `kanban` |
-| **S2** | `requirement`, `flowchart`, `architecture`, `block`, `state`, `sequence`, `ishikawa` | `journey`, `timeline`, `usecase`, `c4`, `gantt`, `er`, `class`, `packet` |
-| **S3** | `requirement`, `architecture`, `class`, `packet`, `sequence`, `state`, `flowchart` | `c4`, `block`, `er`, `gantt`, `timeline`, `kanban` |
+| **S1** | `ears`, `requirement`, `usecase`, `c4`, `architecture`, `class`, `state`, `sequence`, `flowchart`, `er` | `block`, `gantt`, `kanban` |
+| **S2** | `requirement`, `flowchart`, `architecture`, `block`, `state`, `sequence`, `ishikawa` | `ears`, `journey`, `timeline`, `usecase`, `c4`, `gantt`, `er`, `class`, `packet` |
+| **S3** | `requirement`, `architecture`, `class`, `packet`, `sequence`, `state`, `flowchart` | `ears`, `c4`, `block`, `er`, `gantt`, `timeline`, `kanban` |
 | **S4** | `eventmodeling`, `c4`, `er`, `sequence`, `state`, `journey` | `architecture`, `class`, `timeline`, `kanban`, `gantt`, `sankey`, `xychart` |
-| **S5** | `requirement`, `usecase`, `journey`, `sequence`, `state`, `flowchart`, `ishikawa`, `architecture` | `class`, `block`, `gantt`, `timeline`, `er` |
+| **S5** | `requirement`, `usecase`, `journey`, `sequence`, `state`, `flowchart`, `ishikawa`, `architecture` | `ears`, `class`, `block`, `gantt`, `timeline`, `er` |
 
 ### Catalog domains covered (from `diagram-catalog.json`)
 
@@ -45,7 +45,7 @@ These are the **modeling domains** those packages target (not package ids). Full
 
 | Story | Example catalog domains that must be co-present |
 |-------|--------------------------------------------------|
-| **S1** | `safety-critical`, `requirements-management`, `software-architecture`, `finite-state-machines`, `software-interaction`, `data-modeling`, `process-modeling` |
+| **S1** | `safety-critical`, `requirements-specification` (EARS), `requirements-management`, `software-architecture`, `finite-state-machines`, `software-interaction`, `data-modeling`, `process-modeling` |
 | **S2** | `mbse`, `systems-engineering`, `process-modeling`, `system-structure`, `root-cause-analysis`, `software-interaction` |
 | **S3** | `infrastructure`, `networking`, `binary-layouts`, `protocols`, `object-oriented-design`, `protocol-state`, `workflows` |
 | **S4** | `event-driven-architecture`, `cqrs`, `domain-driven-design`, `system-context`, `data-modeling`, `ux-design` |

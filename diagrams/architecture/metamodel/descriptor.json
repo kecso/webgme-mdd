@@ -59,7 +59,5 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd",
-  "leanDomain": "../lean/Domain.lean",
-  "leanNamespace": "ArchitectureDomain"
+  "sample": "./../examples/sample.mmd"
 }

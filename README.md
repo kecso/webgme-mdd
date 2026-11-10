@@ -6,6 +6,7 @@ Monorepo that surveys **all current Mermaid diagram families** and packages each
 - Core API **ImportMermaid** / **ExportMermaid** plugins
 - **ApplyLanguageMeta** to load the JSON META into a project
 - domain index for choosing which languages to build first
+- companion **EARS** requirements body language (`diagrams/ears`) — not Mermaid; pairs with `requirementDiagram` for traceability
 
 ## Quick start (findings browser)
 
@@ -30,8 +31,8 @@ scripts/
   diagram-catalog.json  Canonical inventory + domain index
   generate-diagram-projects.js
   generate-domain-registry.js
-packages/shared/        AMD + CJS helpers (MermaidAst, JsonMetaImporter, MetaBuilder)
-diagrams/<id>/          One webgme-cli-style project per diagram
+packages/shared/        AMD + CJS helpers (MermaidAst, EarsAst, JsonMetaImporter, MetaBuilder)
+diagrams/<id>/          One webgme-cli-style project per diagram (+ `ears` companion)
 router/                 WebGME router app — ImportMDD orchestrates libraries + importers
 lean/                   Integrating Language + cross-domain Lean proofs (webgme-lean fashion)
 catalog/                Vite explorer UI
@@ -86,11 +87,12 @@ You can also import `Language.json` with upstream **webgme-json-importer** (`Set
 4. [webgme-json format notes](docs/findings/webgme-json-format.md)  
 5. [Multi-domain validation stories](docs/stories/README.md) — literature/industrial scenarios that need cross-diagram consistency checks  
 6. [Integration architecture](docs/findings/integration-architecture.md) — generic Integrating Language vs domain×domain; how constraints span diagrams  
-7. [Lean formalization](docs/findings/lean-formalization.md) — webgme-lean-style META→Lean beside domains + S1 cross-domain proof
+7. [Lean formalization](docs/findings/lean-formalization.md) — webgme-lean-style META→Lean beside domains + S1 cross-domain proof  
+8. [Requirements specification](docs/findings/requirements-specification.md) — why Mermaid `requirementDiagram` is not enough; **EARS** as the body language
 
 ## Suggested metamodel waves
 
-- **A:** flowchart, sequence, class, state, er, c4, requirement  
+- **A:** flowchart, sequence, class, state, er, c4, requirement + **ears** (companion)  
 - **B:** gantt, kanban, journey, timeline, gitgraph  
 - **C:** pie, xychart, sankey, quadrant, radar, treemap  
 - **D–E:** remaining beta/experimental families (already scaffolded)

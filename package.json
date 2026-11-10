@@ -17,7 +17,7 @@
     "meta": "node scripts/print-meta-summary.js",
     "catalog": "npm run dev --workspace=catalog",
     "catalog:build": "npm run build --workspace=catalog",
-    "lean:check": "cd lean && lake env lean Integrating/Domain.lean && lake env lean examples/S1_participant_binds/Example.lean",
+    "lean:check": "cd lean && lake env lean Integrating/Domain.lean && lake env lean examples/S1_participant_binds/Example.lean && lake env lean ../diagrams/ears/lean/Domain.lean",
     "test": "npm run validate && npm run test --workspace=@webgme-mdd/router"
   },
   "keywords": [

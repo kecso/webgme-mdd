@@ -65,4 +65,15 @@ def participantBindsArchitecture
     archNodes.any fun a =>
       hasCorrespondence m "sameAs" p a
 
+/--
+EARS body → Mermaid requirementDiagram node:
+every EARS requirement id must `specifiesBody` a requirement diagram node.
+-/
+def earsSpecifiesRequirement
+    (m : IntegratedModel)
+    (earsNodes reqNodes : List _NodeId) : Bool :=
+  earsNodes.all fun e =>
+    reqNodes.any fun r =>
+      hasCorrespondence m "specifiesBody" e r
+
 end IntegratingDomain
