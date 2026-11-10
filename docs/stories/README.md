@@ -15,6 +15,8 @@ Isolated Mermaid files cannot enforce:
 
 WebGME’s strength is **shared identity + typed relationships across metamodels**. These stories define the first product requirements for that shared identity layer — and they explicitly list **which `diagrams/<id>` packages must be integrated**.
 
+Studio note: the planned **view-only Mermaid + transparent overlay** approach is aimed at being a strong fit for these story packages (not necessarily every Mermaid family). See [`docs/findings/mermaid-embed-and-overlay.md`](../findings/mermaid-embed-and-overlay.md) § story-required fit.
+
 ## Story index
 
 | ID | Title | Priority | Source flavor |

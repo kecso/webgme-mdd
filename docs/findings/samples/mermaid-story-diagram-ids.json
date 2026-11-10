@@ -1,0 +1,109 @@
+{
+  "requirement": {
+    "ok": true,
+    "length": 12511,
+    "fo": 10,
+    "meaningfulIds": [
+      "s-requirement-1794314111707",
+      "s-requirement-1794314111707_requirement-requirement_containsStart",
+      "s-requirement-1794314111707-controller-safety-0",
+      "s-requirement-1794314111707-safety",
+      "s-requirement-1794314111707-controller"
+    ],
+    "dataSample": [
+      "data-edge=true",
+      "data-et=edge",
+      "data-id=controller-safety-0",
+      "data-points=W3sieCI6MTEyLjI1NzgxMjUsInkiOjEyMH0seyJ4IjoxMTIuMjU3ODEyNSwieSI6MTU3fSx7IngiOjExMi4yNTc4MTI1LCJ5IjoxOTR9XQ==",
+      "data-look=classic"
+    ],
+    "hasNodeClass": true,
+    "error": null
+  },
+  "usecase": {
+    "ok": false,
+    "error": "No diagram type detected matching given configuration for text: usecase-beta\n  actor Driver\n  usecase EmergencyBrake\n  Driver --> EmergencyBrake"
+  },
+  "architecture": {
+    "ok": true,
+    "length": 9681,
+    "fo": 0,
+    "meaningfulIds": [
+      "s-architecture-1794314111784",
+      "s-architecture-1794314111784-L_web_db_0",
+      "s-architecture-1794314111784-service-web",
+      "s-architecture-1794314111784-service-db",
+      "IconifyId1a1c57488e01eb4b30",
+      "IconifyId1a1c57488e01eb4b31",
+      "IconifyId1a1c57488e01eb4b32",
+      "IconifyId1a1c57488e01eb4b33",
+      "s-architecture-1794314111784-group-api"
+    ],
+    "dataSample": [
+      "data-name=4",
+      "data-name=3",
+      "data-name=2",
+      "data-name=1"
+    ],
+    "hasNodeClass": true,
+    "error": null
+  },
+  "block": {
+    "ok": true,
+    "length": 10375,
+    "fo": 2,
+    "meaningfulIds": [
+      "s-block-1794314111936",
+      "s-block-1794314111936-A",
+      "s-block-1794314111936-B",
+      "s-block-1794314111936-s-block-1794314111936-1-A-B"
+    ],
+    "dataSample": [
+      "data-edge=true",
+      "data-et=edge",
+      "data-id=s-block-1794314111936-1-A-B",
+      "data-points=W3sieCI6NDEuMzUxNTYyNSwieSI6LTR9LHsieCI6NDEuMzUxNTYyNSwieSI6MH0seyJ4Ijo0MS4zNTE1NjI1LCJ5Ijo0fV0="
+    ],
+    "hasNodeClass": true,
+    "error": null
+  },
+  "ishikawa": {
+    "ok": true,
+    "length": 5826,
+    "fo": 0,
+    "meaningfulIds": [
+      "s-ishikawa-1794314111961"
+    ],
+    "dataSample": [],
+    "hasNodeClass": false,
+    "error": null
+  },
+  "journey": {
+    "ok": true,
+    "length": 9566,
+    "fo": 3,
+    "meaningfulIds": [
+      "s-journey-1794314111974",
+      "s-journey-1794314111974-task0",
+      "s-journey-1794314111974-task1"
+    ],
+    "dataSample": [],
+    "hasNodeClass": false,
+    "error": null
+  },
+  "packet": {
+    "ok": true,
+    "length": 3937,
+    "fo": 0,
+    "meaningfulIds": [
+      "s-packet-1794314111988"
+    ],
+    "dataSample": [],
+    "hasNodeClass": false,
+    "error": null
+  },
+  "eventmodeling": {
+    "ok": false,
+    "error": "Parsing failed: Lexer error on line 1, column 14: unexpected character: ->-<- at offset: 13, skipped 1 characters.\nLexer error on line 6, column 14: unexpected character: ->-<- at offset: 107, skipped 3 characters. Parse error on line 1, column 1: Expecting token of type 'eventmodeling' but found `eventmodeling`."
+  }
+}

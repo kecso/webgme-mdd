@@ -116,4 +116,41 @@ Wardley/quadrant (position-as-data) are the rare cases where coordinates are att
 3. **All mutations** = WebGME Core ops that change what Export would emit (the “text equivalence”).  
 4. Optional later: side-by-side Mermaid source pane (Monaco) for power users — still not SVG editing.
 
-Probe artifact: `docs/findings/samples/mermaid-embed-ids.json`.
+Probe artifacts: `docs/findings/samples/mermaid-embed-ids.json`, `mermaid-story-overlay-fitness.json`.
+
+---
+
+## Fit for story-required diagrams (good enough ≠ perfect)
+
+Union of **required** packages across S1–S5:
+
+`architecture`, `block`, `c4`, `class`, `ears`, `er`, `eventmodeling`, `flowchart`, `ishikawa`, `journey`, `packet`, `requirement`, `sequence`, `state`, `usecase`
+
+Overlay / identity fitness against mermaid@11.17 catalog samples:
+
+| Package | Stories | Overlay fit | Identity hooks |
+|---------|---------|-------------|----------------|
+| flowchart | S1–S3, S5 | **Strong** | `…-flowchart-<id>-N`, edges `data-id=L_A_B_0` |
+| sequence | all | **Strong** | `data-et=participant\|message`, `data-id`, `data-from`/`data-to` |
+| class | S1, S3 | **Strong** | `…-classId-<Name>-N`, relation `data-id` |
+| state | all | **Strong** | `…-state-<Name>-N`; edges ordinal `edgeN` (name via endpoints) |
+| er | S1, S4 | **Strong** | `…-entity-<NAME>-N`, relation ids embed entity names |
+| requirement | S1–S3, S5 | **Strong** | `…-<reqName>`, `…-<elementName>`, edge `data-id` |
+| block | S2 | **Strong** | `…-<BlockId>`, edge ids include endpoints |
+| architecture | S1–S3, S5 | **Good** | `…-service-<id>`, `…-group-<id>`, `…-L_a_b_0` |
+| c4 | S1, S4 | **Good** | `…-<c4Id>` on shapes; thinner `data-*` |
+| journey | S4, S5 | **Good** | `…-task0`… ordered tasks — map by section/task index |
+| ishikawa | S2, S5 | **Fair** | Mostly root SVG; use text/`getBBox` on labeled groups or ordered causes |
+| packet | S3 | **Fair** | Field order = bit ranges; overlay strips by row index, not named ids |
+| ears | S1 | **N/A (better)** | Not Mermaid — list/card UI is the “view”; row = `reqId` (perfect identity) |
+| usecase | S1, S5 | **Deferred** | `usecase-beta` **not in** mermaid@11.17 bundle — view when runtime catches up; until then inspector-first / placeholder |
+| eventmodeling | S4 | **Deferred** | Same — experimental syntax failed parse on 11.17; treat as structured timeline UI or upgrade Mermaid later |
+
+### Verdict for stories
+
+- **S1 / S3 core path** (flowchart, sequence, class, state, er, requirement, architecture/c4, block): overlay approach is a **strong fit**.  
+- **S2 / S5** add ishikawa (fair — still selectable via geometry/order heuristics) and usecase (wait on Mermaid or non-SVG panel).  
+- **S4** is fine on sequence/state/er/c4/journey; eventmodeling needs a fallback panel until the diagram type stabilizes in Mermaid.  
+- **ears** does not need SVG overlay at all.
+
+So: **not perfect for every package**, but **pretty close for the story-critical set**, with only experimental Mermaid betas and a couple of “fair” types needing small adapters — not a different architecture.

@@ -1,0 +1,251 @@
+{
+  "usecase": {
+    "ok": false,
+    "error": "No diagram type detected matching given configuration for text: usecase-beta"
+  },
+  "eventmodeling": {
+    "ok": false,
+    "error": "Parsing failed: Lexer error on line 1, column 14: unexpected character: ->-<- at offset: 13, skipped 1 characters."
+  },
+  "ishikawa": {
+    "ok": true,
+    "diagramType": "ishikawa",
+    "fitness": "fair",
+    "meaningfulIds": [
+      "x-ishikawa-1794314122616"
+    ],
+    "dataIds": [],
+    "dataEt": [],
+    "fo": 0
+  },
+  "packet": {
+    "ok": true,
+    "diagramType": "packet",
+    "fitness": "fair",
+    "meaningfulIds": [
+      "x-packet-1794314122635"
+    ],
+    "dataIds": [],
+    "dataEt": [],
+    "fo": 0
+  },
+  "journey": {
+    "ok": true,
+    "diagramType": "journey",
+    "fitness": "good",
+    "meaningfulIds": [
+      "x-journey-1794314122650",
+      "x-journey-1794314122650-task0",
+      "x-journey-1794314122650-task1",
+      "x-journey-1794314122650-task2",
+      "x-journey-1794314122650-task3"
+    ],
+    "dataIds": [],
+    "dataEt": [],
+    "fo": 6
+  },
+  "architecture": {
+    "ok": true,
+    "diagramType": "architecture",
+    "fitness": "good",
+    "meaningfulIds": [
+      "x-architecture-1794314122671",
+      "x-architecture-1794314122671-L_ui_gme_0",
+      "x-architecture-1794314122671-L_gme_db_0",
+      "x-architecture-1794314122671-service-ui",
+      "x-architecture-1794314122671-service-gme",
+      "x-architecture-1794314122671-service-db",
+      "x-architecture-1794314122671-group-web"
+    ],
+    "dataIds": [],
+    "dataEt": [],
+    "fo": 0
+  },
+  "requirement": {
+    "ok": true,
+    "diagramType": "requirement",
+    "fitness": "strong",
+    "meaningfulIds": [
+      "x-requirement-1794314122763",
+      "x-requirement-1794314122763-controller-safety-0",
+      "x-requirement-1794314122763-safety",
+      "x-requirement-1794314122763-controller"
+    ],
+    "dataIds": [
+      "controller-safety-0"
+    ],
+    "dataEt": [
+      "edge"
+    ],
+    "fo": 10
+  },
+  "block": {
+    "ok": true,
+    "diagramType": "block",
+    "fitness": "strong",
+    "meaningfulIds": [
+      "x-block-1794314122809",
+      "x-block-1794314122809-Catalog",
+      "x-block-1794314122809-Meta",
+      "x-block-1794314122809-Plugins",
+      "x-block-1794314122809-x-block-1794314122809-1-Catalog-Meta",
+      "x-block-1794314122809-x-block-1794314122809-1-Meta-Plugins"
+    ],
+    "dataIds": [
+      "x-block-1794314122809-1-Catalog-Meta",
+      "x-block-1794314122809-1-Meta-Plugins"
+    ],
+    "dataEt": [
+      "edge"
+    ],
+    "fo": 3
+  },
+  "flowchart": {
+    "ok": true,
+    "diagramType": "flowchart-v2",
+    "fitness": "strong",
+    "meaningfulIds": [
+      "x-flowchart-1794314122835",
+      "x-flowchart-1794314122835-L_Start_Decide_0",
+      "x-flowchart-1794314122835-L_Decide_Work_0",
+      "x-flowchart-1794314122835-L_Decide_Start_0",
+      "x-flowchart-1794314122835-L_Work_Done_0",
+      "x-flowchart-1794314122835-flowchart-Start-0",
+      "x-flowchart-1794314122835-flowchart-Decide-1",
+      "x-flowchart-1794314122835-flowchart-Work-3",
+      "x-flowchart-1794314122835-flowchart-Done-7"
+    ],
+    "dataIds": [
+      "L_Start_Decide_0",
+      "L_Decide_Work_0",
+      "L_Decide_Start_0",
+      "L_Work_Done_0"
+    ],
+    "dataEt": [
+      "edge"
+    ],
+    "fo": 8
+  },
+  "sequence": {
+    "ok": true,
+    "diagramType": "sequence",
+    "fitness": "strong",
+    "meaningfulIds": [
+      "x-sequence-1794314122881",
+      "actor2",
+      "root-2",
+      "actor1",
+      "root-1",
+      "actor0",
+      "actor-man-torso0",
+      "actor-man-arms0",
+      "actor-man-torso2",
+      "actor-man-arms2"
+    ],
+    "dataIds": [
+      "DB",
+      "API",
+      "U",
+      "i0",
+      "i2",
+      "i4",
+      "i6"
+    ],
+    "dataEt": [
+      "life-line",
+      "participant",
+      "message"
+    ],
+    "fo": 0
+  },
+  "class": {
+    "ok": true,
+    "diagramType": "classDiagram",
+    "fitness": "strong",
+    "meaningfulIds": [
+      "x-class-1794314122909",
+      "x-class-1794314122909-id_Animal_Dog_1",
+      "x-class-1794314122909-id_Animal_Cat_2",
+      "x-class-1794314122909-id_Owner_Animal_3",
+      "x-class-1794314122909-classId-Animal-0",
+      "x-class-1794314122909-classId-Dog-1",
+      "x-class-1794314122909-classId-Cat-2",
+      "x-class-1794314122909-classId-Owner-3"
+    ],
+    "dataIds": [
+      "id_Animal_Dog_1",
+      "id_Animal_Cat_2",
+      "id_Owner_Animal_3"
+    ],
+    "dataEt": [
+      "edge"
+    ],
+    "fo": 11
+  },
+  "state": {
+    "ok": true,
+    "diagramType": "stateDiagram",
+    "fitness": "strong",
+    "meaningfulIds": [
+      "x-state-1794314122962",
+      "x-state-1794314122962-edge0",
+      "x-state-1794314122962-edge1",
+      "x-state-1794314122962-edge2",
+      "x-state-1794314122962-edge3",
+      "x-state-1794314122962-edge4",
+      "x-state-1794314122962-edge5",
+      "x-state-1794314122962-state-root_start-0",
+      "x-state-1794314122962-state-Idle-5",
+      "x-state-1794314122962-state-Busy-3",
+      "x-state-1794314122962-state-Failed-4",
+      "x-state-1794314122962-state-root_end-5"
+    ],
+    "dataIds": [
+      "edge0",
+      "edge1",
+      "edge2",
+      "edge3",
+      "edge4",
+      "edge5"
+    ],
+    "dataEt": [
+      "edge"
+    ],
+    "fo": 9
+  },
+  "er": {
+    "ok": true,
+    "diagramType": "er",
+    "fitness": "strong",
+    "meaningfulIds": [
+      "x-er-1794314123008",
+      "x-er-1794314123008-id_entity-CUSTOMER-0_entity-ORDER-1_0",
+      "x-er-1794314123008-id_entity-ORDER-1_entity-LINE-ITEM-2_1",
+      "x-er-1794314123008-entity-CUSTOMER-0",
+      "x-er-1794314123008-entity-ORDER-1",
+      "x-er-1794314123008-entity-LINE-ITEM-2"
+    ],
+    "dataIds": [
+      "id_entity-CUSTOMER-0_entity-ORDER-1_0",
+      "id_entity-ORDER-1_entity-LINE-ITEM-2_1"
+    ],
+    "dataEt": [
+      "edge"
+    ],
+    "fo": 21
+  },
+  "c4": {
+    "ok": true,
+    "diagramType": "c4",
+    "fitness": "good",
+    "meaningfulIds": [
+      "x-c4-1794314123042",
+      "x-c4-1794314123042-modeler",
+      "x-c4-1794314123042-webgme",
+      "x-c4-1794314123042-mermaid"
+    ],
+    "dataIds": [],
+    "dataEt": [],
+    "fo": 0
+  }
+}
