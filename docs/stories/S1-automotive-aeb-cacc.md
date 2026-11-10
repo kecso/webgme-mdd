@@ -28,6 +28,8 @@ These are the `diagrams/<id>` projects (and router library names) this story mus
 **Must-integrate pairs:** requirement↔usecase/sequence · sequence↔c4/architecture · state↔sequence · flowchart↔architecture/class · sequence↔er  
 (Full `integrationPairs` in [`stories.json`](./stories.json).)
 
+**Lean exemplar:** [`lean/examples/S1_participant_binds/`](../../lean/examples/S1_participant_binds/) encodes `ParticipantBindsArchitecture` (sequence participant `sameAs` architecture service) with theorems for a good and a bad model — webgme-lean fashion.
+
 ## Domains combined (concern → diagram)
 
 | Concern | Diagram(s) | Example content |

@@ -33,6 +33,7 @@ scripts/
 packages/shared/        AMD + CJS helpers (MermaidAst, JsonMetaImporter, MetaBuilder)
 diagrams/<id>/          One webgme-cli-style project per diagram
 router/                 WebGME router app — ImportMDD orchestrates libraries + importers
+lean/                   Integrating Language + cross-domain Lean proofs (webgme-lean fashion)
 catalog/                Vite explorer UI
 ```
 
@@ -84,7 +85,8 @@ You can also import `Language.json` with upstream **webgme-json-importer** (`Set
 3. [Target domains](docs/findings/domains.md) — for META prioritization  
 4. [webgme-json format notes](docs/findings/webgme-json-format.md)  
 5. [Multi-domain validation stories](docs/stories/README.md) — literature/industrial scenarios that need cross-diagram consistency checks  
-6. [Integration architecture](docs/findings/integration-architecture.md) — generic Integrating Language vs domain×domain; how constraints span diagrams
+6. [Integration architecture](docs/findings/integration-architecture.md) — generic Integrating Language vs domain×domain; how constraints span diagrams  
+7. [Lean formalization](docs/findings/lean-formalization.md) — webgme-lean-style META→Lean beside domains + S1 cross-domain proof
 
 ## Suggested metamodel waves
 

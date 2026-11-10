@@ -12,10 +12,12 @@
   "scripts": {
     "generate": "node scripts/generate-diagram-projects.js",
     "generate:registry": "node scripts/generate-domain-registry.js",
+    "generate:lean": "node scripts/generate-lean-domain.js",
     "validate": "node scripts/validate-catalog.js",
     "meta": "node scripts/print-meta-summary.js",
     "catalog": "npm run dev --workspace=catalog",
     "catalog:build": "npm run build --workspace=catalog",
+    "lean:check": "cd lean && lake env lean Integrating/Domain.lean && lake env lean examples/S1_participant_binds/Example.lean",
     "test": "npm run validate && npm run test --workspace=@webgme-mdd/router"
   },
   "keywords": [

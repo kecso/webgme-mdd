@@ -68,5 +68,7 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd"
+  "sample": "./../examples/sample.mmd",
+  "leanDomain": "../lean/Domain.lean",
+  "leanNamespace": "FlowchartDomain"
 }

@@ -11,3 +11,6 @@ coverage/
 data/db/
 agent-tools/
 .cursor/
+lean/.lake/
+lean/lake-manifest.json
+*.olean

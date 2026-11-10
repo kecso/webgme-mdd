@@ -80,3 +80,5 @@ Literature- and industry-backed scenarios that **combine** these domains for cro
 | S3 IEC 61850 substation | requirement, architecture, class, packet, sequence, state, flowchart | architecture ↔ packet ↔ sequence ↔ LN class model |
 | S4 Event-driven ticketing | eventmodeling, c4, er, sequence, state, journey | eventmodeling ↔ C4 ↔ ER ↔ journey |
 | S5 Medical infusion device | requirement, usecase, journey, sequence, state, flowchart, ishikawa, architecture | hazard ↔ requirement ↔ state ↔ clinical journey |
+
+Lean formalizations (webgme-lean fashion) sit beside priority META packages at `diagrams/<id>/lean/Domain.lean`. Cross-domain proof exemplar: `lean/examples/S1_participant_binds/`. See [lean-formalization.md](./lean-formalization.md).

@@ -7,6 +7,7 @@
 | [domains.md](./domains.md) | Domains targeted by each diagram + build waves |
 | [webgme-json-format.md](./webgme-json-format.md) | JSON META schema used for `Language.json` |
 | [integration-architecture.md](./integration-architecture.md) | Generic Integrating Language vs domain×domain; shared identity; multi-diagram constraints |
+| [lean-formalization.md](./lean-formalization.md) | webgme-lean fashion: META→Lean beside domains; cross-diagram constraint example |
 | [../stories/README.md](../stories/README.md) | Multi-domain integrated validation stories (why combine diagrams) |
 
 Canonical data: `scripts/diagram-catalog.json`. Stories index: `docs/stories/stories.json`.

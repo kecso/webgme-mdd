@@ -1,0 +1,14 @@
+// Cross-domain constraint in webgme-lean .wgl dialect.
+// Vocabulary mixes Sequence + Architecture aspect META with Integrating correspondences.
+// This file is the human/DSL form; Example.lean is the Lean encoding + proof.
+
+constraintset S1ParticipantBinds for IntegratedModel
+
+// Every sequence Participant must correspond (sameAs) to an Architecture Service
+// (or C4 Container). Participants and services are aspect instances; the link
+// lives in the Integrating Language.
+
+constraint ParticipantBindsArchitecture [error]
+forall p in Participant:
+  exists s in Service:
+    corresponds(p, s, "sameAs")
