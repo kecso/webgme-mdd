@@ -2,6 +2,7 @@
   "name": "@webgme-mdd/studio",
   "version": "0.1.0",
   "private": true,
+  "description": "Markdown System Studio (MDSS) — story-centered Mermaid/EARS studio with MD book export",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3947",

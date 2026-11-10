@@ -26,6 +26,7 @@ function defaultState() {
         owner: 'demo',
         name: 's1-aeb',
         title: 'S1 AEB / CACC (demo)',
+        storyId: 'S1',
         enabledDomains: [...S1_DOMAINS],
         // diagram instances in the project (id → { domainId, name, source })
         diagrams: {}
@@ -37,7 +38,14 @@ function defaultState() {
 export function loadStore() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const state = JSON.parse(raw);
+      // Migrate older demo projects
+      (state.projects || []).forEach((p) => {
+        if (!p.storyId) p.storyId = p.name?.includes('s1') ? 'S1' : 'S1';
+      });
+      return state;
+    }
   } catch {
     /* ignore */
   }
@@ -65,13 +73,14 @@ export function upsertProject(project) {
   return project;
 }
 
-export function createProject({ name, owner = 'demo', enabledDomains }) {
+export function createProject({ name, owner = 'demo', enabledDomains, storyId = 'S1' }) {
   const id = `${owner}+${name}`;
   const project = {
     id,
     owner,
     name,
     title: name,
+    storyId,
     enabledDomains: enabledDomains?.length ? enabledDomains : [...S1_DOMAINS],
     diagrams: {}
   };

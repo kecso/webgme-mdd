@@ -539,3 +539,123 @@ a {
     min-height: 240px;
   }
 }
+
+/* —— Markdown book preview —— */
+.book-shell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+
+.book-toc {
+  border-right: 1px solid var(--line);
+  background: var(--bg-panel);
+  overflow: auto;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.book-toc button {
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.book-toc button.active,
+.book-toc button:hover {
+  background: #243140;
+  color: var(--text);
+}
+
+.book-article {
+  overflow: auto;
+  padding: 1.75rem 2rem 3rem;
+  max-width: 52rem;
+  line-height: 1.55;
+}
+
+.book-article h1 {
+  margin-top: 0;
+  letter-spacing: -0.02em;
+}
+
+.book-article h2 {
+  margin-top: 1.75rem;
+  font-size: 1.15rem;
+}
+
+.book-article code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+
+.book-article pre.md-fence {
+  background: #0d1117;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+.book-article table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+}
+
+.book-article th,
+.book-article td {
+  border: 1px solid var(--line);
+  padding: 0.4rem 0.55rem;
+  text-align: left;
+}
+
+.book-article blockquote {
+  margin: 0.75rem 0;
+  padding: 0.35rem 0.9rem;
+  border-left: 3px solid var(--accent-2);
+  color: #c5d2e0;
+}
+
+.book-mermaid {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #121820;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: auto;
+}
+
+.book-mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.book-error {
+  color: #ffc4c7;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 800px) {
+  .book-body {
+    grid-template-columns: 1fr;
+  }
+}

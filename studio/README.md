@@ -1,6 +1,8 @@
-# webgme-mdd Studio
+# Markdown System Studio (MDSS)
 
-DSS-style React shell for Mermaid MDD: **view-only** diagram canvas (widget) + **DiagramControl** + hideable **Monaco** source panel with **manual Apply**.
+Story-centered studio for multi-view system models as **Markdown / Mermaid / EARS**, with WebGME as the consistency backbone and a **browsable Markdown book** as the shareable deliverable.
+
+Package id remains `@webgme-mdd/studio` inside the webgme-mdd monorepo.
 
 ## Run
 
@@ -10,25 +12,22 @@ npm run studio
 # → http://127.0.0.1:3947
 ```
 
-## What works now
+## Product shape
 
-| Piece | Behavior |
-|-------|----------|
-| Welcome / Projects | Demo project list + create (localStorage) |
-| Domains settings | Enable/disable catalog packages for the project |
-| Diagram browser | Create/open instances per enabled domain; loads `diagrams/*/examples` samples |
-| DiagramCanvas widget | `mermaid.render` view-only; selection overlay via SvgIndex |
-| EARS | List view (not Mermaid) |
-| Monaco source | Hideable; edit freely; **Apply to model** only updates on click |
-| Apply | Updates demo store + re-renders; logs delta hint |
+| Piece | Role |
+|-------|------|
+| Welcome / Projects | DSS-style shell; projects can bind a **story** (e.g. S1) |
+| Domains | Enable Mermaid/EARS packages for the project |
+| Canvas widget | View-only Mermaid + selection overlay → DiagramControl |
+| Monaco source | Hideable; **Apply** is manual (ImportDelta TODO) |
+| **Export book** | `README` + `SUMMARY` + `chapters/*.md` + `traces.md`; in-app preview at `/p/:owner/:name/book` |
+
+See [`docs/findings/product-positioning.md`](../docs/findings/product-positioning.md).
 
 ## Intentional TODOs
 
-- Wire `WebGmeBridge` / `window.gmeClient` (DSS `onGMEInit`)
-- `DomainManager` REST for library sync (`MDD:domain:…` kind)
-- **ImportDelta**: AST diff → Core ops (no wipe-and-reinsert)
-- Overlay pan/zoom shared transform; Integrating badges
-- Monaco Mermaid language + `mermaid.parse` markers
-- Map selection → Core `activeNode` / attribute inspector edits
-
-Architecture notes: [`docs/findings/editor-architecture.md`](../docs/findings/editor-architecture.md), [`mermaid-embed-and-overlay.md`](../docs/findings/mermaid-embed-and-overlay.md).
+- Zip download of real folder layout (currently a concatenated `.mdbundle.txt`)
+- Seed empty chapters from story templates when domains are enabled
+- WebGME export plugin → blob/repo; mdBook/Pages publish
+- Richer MD renderer; Integrating traces filled from Core
+- `WebGmeBridge` / ImportDelta (unchanged from view-first studio plan)

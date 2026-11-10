@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import DiagramBrowser from '../components/DiagramBrowser.jsx';
 import Inspector from '../components/Inspector.jsx';
@@ -16,6 +16,7 @@ import {
 
 export default function ProjectStudio() {
   const { owner, name } = useParams();
+  const navigate = useNavigate();
   const projectId = `${owner}+${name}`;
 
   const [project, setProject] = useState(() => getProject(projectId));
@@ -161,6 +162,10 @@ export default function ProjectStudio() {
         sourceOpen={sourceOpen}
         onToggleSource={() => setSourceOpen((v) => !v)}
         onOpenSettings={() => setSettingsOpen(true)}
+        onExportBook={() => {
+          pushLog('opening Markdown book preview');
+          navigate(`/p/${owner}/${name}/book`);
+        }}
         userLabel={userLabel}
       />
       <div className={`studio-body${sourceOpen ? ' with-source' : ''}`}>

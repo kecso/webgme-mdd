@@ -2,7 +2,7 @@
   "name": "webgme-mdd",
   "version": "0.1.0",
   "private": true,
-  "description": "Mermaid diagram survey + WebGME DSML monorepo (metamodels, import/export plugins)",
+  "description": "WebGME Mermaid MDD monorepo + Markdown System Studio (MDSS) — metamodels, stories, browsable MD book export",
   "workspaces": [
     "packages/*",
     "diagrams/*",

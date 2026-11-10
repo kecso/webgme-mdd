@@ -6,17 +6,19 @@ export default function Header({
   onToggleSource,
   sourceOpen,
   onOpenSettings,
+  onExportBook,
   userLabel
 }) {
   return (
     <header className="studio-header">
       <div className="brand-block">
-        <Link to="/" className="brand">
-          webgme-mdd
+        <Link to="/" className="brand" title="Markdown System Studio">
+          MDSS
         </Link>
         {project ? (
           <span className="project-chip">
             {project.owner}/{project.name}
+            {project.storyId ? ` · ${project.storyId}` : ''}
           </span>
         ) : null}
       </div>
@@ -28,6 +30,14 @@ export default function Header({
             </button>
             <button type="button" className="btn" onClick={onOpenSettings}>
               Domains
+            </button>
+            <button
+              type="button"
+              className="btn primary"
+              onClick={onExportBook}
+              title="Open browsable Markdown book for this project"
+            >
+              Export book
             </button>
           </>
         ) : null}
