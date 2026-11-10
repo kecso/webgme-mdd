@@ -116,6 +116,30 @@ SVG or structured list  (manipulation UI deferred)
 
 Mutations (later): UI operation → Core API change → re-export → re-render. Avoid treating the Mermaid textarea as long-term source of truth once Core models exist; keep `mermaidSource` as fidelity cache (already in Import plugins).
 
+### What `mermaid.render` returns (probed, mermaid@11.17)
+
+API shape:
+
+```js
+const { svg, bindFunctions, diagramType } = await mermaid.render(id, source);
+// svg: string starting with <svg …>
+// bindFunctions: optional function — call after inserting SVG into the DOM for click/hover hooks
+```
+
+The `svg` string is an **SVG document fragment** (root `<svg xmlns="http://www.w3.org/2000/svg">`), not Canvas/PNG. It is **not always “pure geometry SVG”**:
+
+| Content | Typical? | Notes |
+|---------|----------|-------|
+| `<svg>` root + `viewBox` | Always | Also `role` / `aria-roledescription` |
+| Embedded `<style>` | Common | Theme / font / animation keyframes inlined |
+| `<defs>` (markers, filters) | Common | Arrowheads, drop shadows |
+| Native SVG text (`<text>`, `<tspan>`) | Many types | e.g. sequence, pie |
+| HTML in `<foreignObject>` (`div`/`p`/`span`) | Some types | **flowchart**, **mindmap** (and similar) use HTML labels |
+| `<script>` inside SVG | No (with `securityLevel: 'strict'`) | Probed samples had none |
+| Inline `on*` handlers in markup | No in probed samples | Interactivity via `bindFunctions` after mount |
+
+So: safe to treat as **SVG markup to `innerHTML` / React `dangerouslySetInnerHTML`**, but hit-testing and text editing must account for **foreignObject HTML** on several diagram families. Do not assume every label is an SVG `<text>` node.
+
 ---
 
 ## Mapping to this monorepo
