@@ -6,12 +6,11 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import mermaid from 'mermaid';
 import SelectionOverlay from './SelectionOverlay.jsx';
 import { buildSvgIndex } from './SvgIndex.js';
-
-mermaid.initialize({
-  startOnLoad: false,
-  securityLevel: 'strict',
-  theme: 'neutral'
-});
+import {
+  getMermaidSurface,
+  setMermaidSurface,
+  mermaidInitOptions
+} from './mermaidTheme.js';
 
 /**
  * @param {object} props
@@ -32,6 +31,7 @@ export default function DiagramCanvas({
   const [error, setError] = useState(null);
   const [index, setIndex] = useState([]);
   const [hostBox, setHostBox] = useState(null);
+  const [surface, setSurface] = useState(() => getMermaidSurface());
   const renderGen = useRef(0);
 
   const rebuildIndex = useCallback(() => {
@@ -41,6 +41,10 @@ export default function DiagramCanvas({
     setHostBox(host.getBoundingClientRect());
     setIndex(buildSvgIndex(svg, domainId));
   }, [domainId]);
+
+  useEffect(() => {
+    mermaid.initialize(mermaidInitOptions(surface));
+  }, [surface]);
 
   useEffect(() => {
     if (domainId === 'ears') {
@@ -55,12 +59,15 @@ export default function DiagramCanvas({
     (async () => {
       setError(null);
       try {
+        mermaid.initialize(mermaidInitOptions(surface));
         const id = `studio-${domainId}-${Date.now()}`;
-        const { svg } = await mermaid.render(id, source || 'flowchart TD\n  Empty[Empty diagram]');
+        const { svg } = await mermaid.render(
+          id,
+          source || 'flowchart TD\n  Empty[Empty diagram]'
+        );
         if (cancelled || gen !== renderGen.current) return;
         if (hostRef.current) {
           hostRef.current.innerHTML = svg;
-          // Do not call bindFunctions — view-only; overlay owns interaction.
           requestAnimationFrame(() => rebuildIndex());
         }
       } catch (err) {
@@ -74,7 +81,7 @@ export default function DiagramCanvas({
     return () => {
       cancelled = true;
     };
-  }, [source, domainId, rebuildIndex]);
+  }, [source, domainId, surface, rebuildIndex]);
 
   useEffect(() => {
     const onResize = () => rebuildIndex();
@@ -82,12 +89,25 @@ export default function DiagramCanvas({
     return () => window.removeEventListener('resize', onResize);
   }, [rebuildIndex]);
 
+  const toggleSurface = () => {
+    const next = surface === 'light' ? 'dark' : 'light';
+    setMermaidSurface(next);
+    setSurface(next);
+  };
+
   if (domainId === 'ears') {
-    return <EarsView source={source} selectedId={selectedId} onSelect={onSelectedId} control={control} />;
+    return (
+      <EarsView
+        source={source}
+        selectedId={selectedId}
+        onSelect={onSelectedId}
+        control={control}
+      />
+    );
   }
 
   return (
-    <div className="diagram-canvas">
+    <div className={`diagram-canvas surface-${surface}`}>
       {error ? <div className="canvas-error">{error}</div> : null}
       <div
         className="mermaid-host"
@@ -109,7 +129,14 @@ export default function DiagramCanvas({
       />
       <div className="canvas-meta">
         <span>{index.length} indexed elements</span>
-        {/* TODO(widget): pan/zoom (svg-pan-zoom) sharing transform with overlay */}
+        <button
+          type="button"
+          className="btn tiny"
+          onClick={toggleSurface}
+          title="Mermaid diagram paper theme (studio chrome stays dark)"
+        >
+          Diagrams: {surface === 'light' ? 'Light' : 'Dark'}
+        </button>
       </div>
     </div>
   );

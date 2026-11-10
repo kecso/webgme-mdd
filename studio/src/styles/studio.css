@@ -351,6 +351,17 @@ a {
   overflow: auto;
 }
 
+/* Light paper (default): Mermaid default theme is readable. Dark paper uses theme dark. */
+.diagram-canvas.surface-light .mermaid-host {
+  background: #f4f7fb;
+  color: #1a222c;
+}
+
+.diagram-canvas.surface-dark .mermaid-host {
+  background: #0e1319;
+  color: #e7eef6;
+}
+
 .mermaid-host {
   min-height: 100%;
   padding: 1.25rem;
@@ -392,6 +403,9 @@ a {
   position: absolute;
   right: 0.75rem;
   bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 0.75rem;
   color: var(--muted);
   background: color-mix(in srgb, var(--bg) 80%, transparent);
@@ -680,7 +694,7 @@ a {
 .book-mermaid {
   margin: 1rem 0;
   padding: 1rem;
-  background: #121820;
+  background: #f4f7fb;
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: auto;

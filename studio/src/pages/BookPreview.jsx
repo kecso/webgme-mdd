@@ -7,8 +7,12 @@ import {
   buildMarkdownBook,
   renderBookMarkdown
 } from '../book/buildMarkdownBook.js';
+import {
+  getMermaidSurface,
+  mermaidInitOptions
+} from '../widget/mermaidTheme.js';
 
-mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: 'neutral' });
+mermaid.initialize(mermaidInitOptions(getMermaidSurface()));
 
 export default function BookPreview() {
   const { owner, name } = useParams();

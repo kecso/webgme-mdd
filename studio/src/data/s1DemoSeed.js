@@ -2,11 +2,13 @@
  * Story-shaped S1 demo fixtures (text only — no WebGME seeds required).
  * Keys: modelingDomainId:diagramType:instanceName
  *
- * Content mirrors docs/stories/S1-automotive-aeb-cacc.md seed sketch and
- * lean/examples/S1_participant_binds (RadarECU / FusionApp / BrakeCtrl / V2XGateway).
+ * Mermaid 11 notes:
+ * - requirement ids/text with punctuation must be quoted
+ * - architecture-beta service ids must be lowercase (labels may be TitleCase)
+ * - usecase / usecase-beta not available in this Mermaid build — use flowchart stand-in
  */
 
-export const S1_SEED_VERSION = 1;
+export const S1_SEED_VERSION = 2;
 
 /** @type {Record<string, { modelingDomainId: string, diagramType: string, name: string, source: string }>} */
 export const S1_DEMO_DIAGRAMS = {
@@ -43,26 +45,26 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
     name: 'aeb-req-trace',
     source: `requirementDiagram
   requirement AEB_DetectAndBrake {
-    id: REQ-AEB-001
-    text: Detect obstacle and brake within 100ms
+    id: "REQ-AEB-001"
+    text: "Detect obstacle and brake within 100ms"
     risk: high
     verifymethod: test
   }
   requirement AEB_InhibitLowConfidence {
-    id: REQ-AEB-003
-    text: Do not brake when fusion confidence is low
+    id: "REQ-AEB-003"
+    text: "Do not brake when fusion confidence is low"
     risk: high
     verifymethod: test
   }
   requirement CACC_MaintainGap {
-    id: REQ-CACC-001
-    text: Maintain gap error within ±0.5 m
+    id: "REQ-CACC-001"
+    text: "Maintain gap error within 0.5 m"
     risk: medium
     verifymethod: analysis
   }
   requirement Sec_AntiSpoof {
-    id: REQ-SEC-001
-    text: Reject spoofed V2X tracks without secondary corroboration
+    id: "REQ-SEC-001"
+    text: "Reject spoofed V2X tracks without secondary corroboration"
     risk: high
     verifymethod: test
   }
@@ -82,22 +84,18 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
 `
   },
 
-  'uml:usecase:driver-aeb-cacc': {
-    modelingDomainId: 'uml',
-    diagramType: 'usecase',
-    name: 'driver-aeb-cacc',
-    source: `usecase-beta
-  direction LR
-  actor Driver
-  actor Technician
-  (DriverEngageCACC)
-  (EmergencyBrake)
-  (OverrideDeceleration)
-  (EnterDiagnostics)
-  Driver --> (DriverEngageCACC)
-  Driver --> (OverrideDeceleration)
-  Driver --> (EmergencyBrake)
-  Technician --> (EnterDiagnostics)
+  // usecase-beta not shipped in Mermaid 11.17 used here — flowchart stand-in for early UX feedback
+  'process-modeling:flowchart:driver-scenarios': {
+    modelingDomainId: 'process-modeling',
+    diagramType: 'flowchart',
+    name: 'driver-scenarios',
+    source: `flowchart LR
+  Driver((Driver)) --> Engage[DriverEngageCACC]
+  Driver --> Brake[EmergencyBrake]
+  Driver --> Override[OverrideDeceleration]
+  Tech((Technician)) --> Diag[EnterDiagnostics]
+  Engage --> Gap[MaintainTimeGap]
+  Brake --> Detect[DetectAndBrake]
 `
   },
 
@@ -125,20 +123,20 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
     name: 'ecu-services',
     source: `architecture-beta
   group vehicle(cloud)[Ego Vehicle]
-  service RadarECU(server)[RadarECU] in vehicle
-  service CameraECU(server)[CameraECU] in vehicle
-  service FusionApp(server)[FusionApp] in vehicle
-  service BrakeCtrl(server)[BrakeController] in vehicle
-  service LongCtrl(server)[LongitudinalController] in vehicle
-  service V2XGateway(server)[V2XGateway] in vehicle
-  service HMI(server)[HMI] in vehicle
-  RadarECU:R --> L:FusionApp
-  CameraECU:R --> L:FusionApp
-  V2XGateway:R --> L:FusionApp
-  FusionApp:R --> L:BrakeCtrl
-  FusionApp:R --> L:LongCtrl
-  BrakeCtrl:R --> L:HMI
-  LongCtrl:R --> L:HMI
+  service radar(server)[RadarECU] in vehicle
+  service camera(server)[CameraECU] in vehicle
+  service fusion(server)[FusionApp] in vehicle
+  service brake(server)[BrakeController] in vehicle
+  service longctrl(server)[LongitudinalController] in vehicle
+  service v2x(server)[V2XGateway] in vehicle
+  service hmi(server)[HMI] in vehicle
+  radar:R --> L:fusion
+  camera:R --> L:fusion
+  v2x:R --> L:fusion
+  fusion:R --> L:brake
+  fusion:R --> L:longctrl
+  brake:R --> L:hmi
+  longctrl:R --> L:hmi
 `
   },
 
@@ -157,18 +155,18 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
     +float gapError
   }
   class SensorFusion {
-    +fuse() ObstacleTrack
+    +fuse()
     +confidence() float
   }
   class ThreatAssessor {
-    +plausible(track, ego) bool
-    +recommendBrake(track) BrakeRequest
+    +plausible() bool
+    +recommendBrake()
   }
   class LongitudinalController {
-    +maintainGap(ego, lead) Cmd
+    +maintainGap()
   }
   class BrakeController {
-    +commandDecel(req) ActuatorAck
+    +commandDecel()
   }
   SensorFusion --> ObstacleTrack : produces
   ThreatAssessor --> SensorFusion : uses
@@ -193,8 +191,7 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
   DiagnosticsOnly --> Off: ExitDiagnostics
   AEB_Active --> LimpHome: ActuatorFault
   note right of AEB_Active
-    While AEB_Active: ignore accel that
-    reduces deceleration (REQ-AEB-002)
+    While AEB_Active ignore accel that reduces deceleration
   end note
 `
   },
@@ -209,15 +206,15 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
   participant FusionApp
   participant BrakeCtrl as BrakeController
   participant HMI
-  Driver->>FusionApp: (CACC engaged)
-  RadarECU->>+FusionApp: ObstacleDetect(obstacleId, ttc, confidence)
+  Driver->>FusionApp: CACC engaged
+  RadarECU->>+FusionApp: ObstacleDetect
   FusionApp->>FusionApp: PlausibilityCheck
   alt confidence >= threshold
-    FusionApp->>+BrakeCtrl: BrakeRequest(obstacleId, decelerationCmd)
+    FusionApp->>+BrakeCtrl: BrakeRequest
     BrakeCtrl-->>-FusionApp: ActuatorAck
     BrakeCtrl->>HMI: AEB_Active
-    Note over FusionApp,BrakeCtrl: Happy path — binds to architecture services
-  else low confidence (REQ-AEB-003)
+    Note over FusionApp,BrakeCtrl: Happy path binds to architecture services
+  else low confidence REQ-AEB-003
     FusionApp-->>RadarECU: InhibitBrake
     Note over FusionApp: No BrakeRequest
   end
@@ -233,11 +230,11 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
   participant FusionApp
   participant BrakeCtrl as BrakeController
   participant HMI
-  CameraECU->>FusionApp: SensorFault(camera)
+  CameraECU->>FusionApp: SensorFault
   FusionApp->>FusionApp: DropCameraTracks
   FusionApp->>BrakeCtrl: EnterLimpHome
   BrakeCtrl->>HMI: LimpHome
-  Note over FusionApp,BrakeCtrl: Forbidden: BrakeRequest in DiagnosticsOnly
+  Note over FusionApp,BrakeCtrl: Forbidden BrakeRequest in DiagnosticsOnly
 `
   },
 
@@ -246,14 +243,14 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
     diagramType: 'flowchart',
     name: 'plausibility-gate',
     source: `flowchart TD
-  Start([ObstacleDetect]) --> Conf{confidence >= threshold?}
-  Conf -->|No| Inhibit[InhibitBrake<br/>REQ-AEB-003]
-  Conf -->|Yes| Plaus[PlausibilityCheck<br/>ThreatAssessor]
-  Plaus --> InEnv{inside braking envelope?}
+  Start([ObstacleDetect]) --> Conf{confidence ok?}
+  Conf -->|No| Inhibit[InhibitBrake REQ-AEB-003]
+  Conf -->|Yes| Plaus[PlausibilityCheck]
+  Plaus --> InEnv{in braking envelope?}
   InEnv -->|No| TrackOnly[Update ObstacleTrack]
-  InEnv -->|Yes| Mode{state = ACC or AEB_Arming?}
+  InEnv -->|Yes| Mode{ACC or AEB_Arming?}
   Mode -->|No| Reject[Reject BrakeRequest]
-  Mode -->|Yes| Brake[BrakeRequest → BrakeController]
+  Mode -->|Yes| Brake[BrakeRequest to BrakeController]
   Inhibit --> End([Done])
   TrackOnly --> End
   Reject --> End
@@ -302,19 +299,19 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
 export const S1_DEMO_CORRESPONDENCES = [
   {
     from: 'software-interaction:sequence:obstacle-brake#RadarECU',
-    to: 'software-architecture:architecture:ecu-services#RadarECU',
+    to: 'software-architecture:architecture:ecu-services#radar',
     kind: 'sameAs',
     check: 'participant-binds-service'
   },
   {
     from: 'software-interaction:sequence:obstacle-brake#FusionApp',
-    to: 'software-architecture:architecture:ecu-services#FusionApp',
+    to: 'software-architecture:architecture:ecu-services#fusion',
     kind: 'sameAs',
     check: 'participant-binds-service'
   },
   {
     from: 'software-interaction:sequence:obstacle-brake#BrakeController',
-    to: 'software-architecture:architecture:ecu-services#BrakeController',
+    to: 'software-architecture:architecture:ecu-services#brake',
     kind: 'sameAs',
     check: 'participant-binds-service'
   },
@@ -326,7 +323,7 @@ export const S1_DEMO_CORRESPONDENCES = [
   },
   {
     from: 'database-design:er:vehicle-trip#ObstacleTrack.ttc',
-    to: 'software-interaction:sequence:obstacle-brake#ObstacleDetect.ttc',
+    to: 'software-interaction:sequence:obstacle-brake#ObstacleDetect',
     kind: 'sameAs',
     check: 'payload-schema-contract'
   }
