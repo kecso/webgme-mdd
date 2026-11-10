@@ -7,7 +7,8 @@
     "packages/*",
     "diagrams/*",
     "catalog",
-    "router"
+    "router",
+    "studio"
   ],
   "scripts": {
     "generate": "node scripts/generate-diagram-projects.js",
@@ -17,6 +18,8 @@
     "meta": "node scripts/print-meta-summary.js",
     "catalog": "npm run dev --workspace=catalog",
     "catalog:build": "npm run build --workspace=catalog",
+    "studio": "npm run dev --workspace=@webgme-mdd/studio",
+    "studio:build": "npm run build --workspace=@webgme-mdd/studio",
     "lean:check": "cd lean && lake env lean Integrating/Domain.lean && lake env lean examples/S1_participant_binds/Example.lean && lake env lean ../diagrams/ears/lean/Domain.lean",
     "test": "npm run validate && npm run test --workspace=@webgme-mdd/router"
   },

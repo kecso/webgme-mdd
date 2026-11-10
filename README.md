@@ -12,10 +12,11 @@ Monorepo that surveys **all current Mermaid diagram families** and packages each
 
 ```bash
 npm install
-npm run catalog
+npm run catalog   # findings browser → http://127.0.0.1:3847
+npm run studio    # MDD studio shell → http://127.0.0.1:3947
 ```
 
-Open [http://127.0.0.1:3847](http://127.0.0.1:3847) — filter diagrams, inspect domains/capabilities, preview samples, and read `Language.json` excerpts.
+Open the catalog to filter diagrams and META samples; open the **studio** for the DSS-style welcome → projects → Mermaid view + hideable Monaco (manual Apply).
 
 ```bash
 npm test          # validate generated diagram projects
@@ -36,6 +37,7 @@ diagrams/<id>/          One webgme-cli-style project per diagram (+ `ears` compa
 router/                 WebGME router app — ImportMDD orchestrates libraries + importers
 lean/                   Integrating Language + cross-domain Lean proofs (webgme-lean fashion)
 catalog/                Vite explorer UI
+studio/                 DSS-style React studio (view + Monaco Apply)
 ```
 
 ## Router (ImportMDD)

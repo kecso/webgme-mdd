@@ -165,3 +165,16 @@ So: safe to treat as **SVG markup to `innerHTML` / React `dangerouslySetInnerHTM
 5. **Integrating** — show/edit correspondences; run Lean/validation later.
 
 Do **not** block on full bidirectional Mermaid editing before the shell and export→render path work.
+
+### In-repo status (`studio/`)
+
+Shipped as a **view-first** SPA (port **3947**):
+
+- Widget: `DiagramCanvas` + `SelectionOverlay` + `SvgIndex` (selection intents only).  
+- Control: `DiagramControl` — owns Apply / re-render; **manual** Monaco Apply with `computeSourceDelta` placeholder.  
+- Hideable Monaco: `SourceEditorPanel` (live-editor–like source; no auto WebGME write).  
+- TODOs: `WebGmeBridge`, DomainManager, **ImportDelta** (AST → Core ops, no wipe/reinsert), pan/zoom, Core inspector edits.
+
+```bash
+npm run studio
+```

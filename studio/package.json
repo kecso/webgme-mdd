@@ -1,0 +1,22 @@
+{
+  "name": "@webgme-mdd/studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 3947",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 3947"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "mermaid": "^11.6.0",
+    "@monaco-editor/react": "^4.6.0"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0",
+    "@vitejs/plugin-react": "^4.3.4"
+  }
+}
