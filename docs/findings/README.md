@@ -9,6 +9,8 @@
 | [integration-architecture.md](./integration-architecture.md) | Generic Integrating Language vs domain×domain; shared identity; multi-diagram constraints |
 | [lean-formalization.md](./lean-formalization.md) | webgme-lean fashion: META→Lean beside domains; cross-diagram constraint example |
 | [requirements-specification.md](./requirements-specification.md) | Mermaid requirementDiagram ≠ req-spec language; pick **EARS** as companion body language |
+| [editor-architecture.md](./editor-architecture.md) | webgme-dss-style React studio: welcome, projects, domain settings, Mermaid view pipeline |
+| [diagram-manipulation-operations.md](./diagram-manipulation-operations.md) | Per-domain legitimate edit ops (foundation for later canvas manipulation) |
 | [../stories/README.md](../stories/README.md) | Multi-domain integrated validation stories (why combine diagrams) |
 
 Canonical data: `scripts/diagram-catalog.json` (Mermaid diagrams + `companionLanguages`). Stories index: `docs/stories/stories.json`.

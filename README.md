@@ -88,7 +88,9 @@ You can also import `Language.json` with upstream **webgme-json-importer** (`Set
 5. [Multi-domain validation stories](docs/stories/README.md) — literature/industrial scenarios that need cross-diagram consistency checks  
 6. [Integration architecture](docs/findings/integration-architecture.md) — generic Integrating Language vs domain×domain; how constraints span diagrams  
 7. [Lean formalization](docs/findings/lean-formalization.md) — webgme-lean-style META→Lean beside domains + S1 cross-domain proof  
-8. [Requirements specification](docs/findings/requirements-specification.md) — why Mermaid `requirementDiagram` is not enough; **EARS** as the body language
+8. [Requirements specification](docs/findings/requirements-specification.md) — why Mermaid `requirementDiagram` is not enough; **EARS** as the body language  
+9. [Editor architecture](docs/findings/editor-architecture.md) — webgme-dss-style React shell + Mermaid visualize pipeline  
+10. [Diagram manipulation ops](docs/findings/diagram-manipulation-operations.md) — legitimate per-domain edit operations
 
 ## Suggested metamodel waves
 
