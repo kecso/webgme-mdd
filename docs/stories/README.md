@@ -65,6 +65,8 @@ Each story also defines **integration pairs** in `stories.json` (`from` diagram 
 
 `ImportMDD` should eventually ensure all **required** packages are libraries before import; a future **CrossDomainValidate** plugin should walk `integrationPairs`.
 
+**Architecture choice:** do **not** invent a WebGME package per diagram pair. Use a thin **Integrating Language** (identity anchors + typed correspondences + n-ary constraint instances) and keep pair semantics as a **rule catalog** (this file / `stories.json`). See [`docs/findings/integration-architecture.md`](../findings/integration-architecture.md).
+
 ## Cross-story validation themes (product backlog seeds)
 
 1. **Name/identity binding** — same logical element referenced from ≥2 diagram types.  

@@ -83,7 +83,8 @@ You can also import `Language.json` with upstream **webgme-json-importer** (`Set
 2. [Syntax & capabilities](docs/findings/syntax-capabilities.md)  
 3. [Target domains](docs/findings/domains.md) — for META prioritization  
 4. [webgme-json format notes](docs/findings/webgme-json-format.md)  
-5. [Multi-domain validation stories](docs/stories/README.md) — literature/industrial scenarios that need cross-diagram consistency checks
+5. [Multi-domain validation stories](docs/stories/README.md) — literature/industrial scenarios that need cross-diagram consistency checks  
+6. [Integration architecture](docs/findings/integration-architecture.md) — generic Integrating Language vs domain×domain; how constraints span diagrams
 
 ## Suggested metamodel waves
 
