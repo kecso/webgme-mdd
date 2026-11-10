@@ -1,5 +1,7 @@
 # webgme-mdd
 
+**GitHub:** [kecso/webgme-mdd](https://github.com/kecso/webgme-mdd)
+
 Monorepo that surveys **all current Mermaid diagram families** and packages each one as a **WebGME-shaped DSML project** with:
 
 - draft metamodels in [webgme-json](https://github.com/deepforge-dev/webgme-json-importer) format (`metamodel/Language.json`)
