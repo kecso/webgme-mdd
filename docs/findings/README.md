@@ -11,6 +11,7 @@
 | [requirements-specification.md](./requirements-specification.md) | Mermaid requirementDiagram ≠ req-spec language; pick **EARS** as companion body language |
 | [editor-architecture.md](./editor-architecture.md) | webgme-dss-style React studio: welcome, projects, domain settings, Mermaid view pipeline |
 | [diagram-manipulation-operations.md](./diagram-manipulation-operations.md) | Per-domain legitimate edit ops (foundation for later canvas manipulation) |
+| [mermaid-embed-and-overlay.md](./mermaid-embed-and-overlay.md) | How apps embed Mermaid (view-only SVG); element ids; transparent overlay plan |
 | [../stories/README.md](../stories/README.md) | Multi-domain integrated validation stories (why combine diagrams) |
 
 Canonical data: `scripts/diagram-catalog.json` (Mermaid diagrams + `companionLanguages`). Stories index: `docs/stories/stories.json`.

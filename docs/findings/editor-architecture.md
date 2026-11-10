@@ -140,6 +140,8 @@ The `svg` string is an **SVG document fragment** (root `<svg xmlns="http://www.w
 
 So: safe to treat as **SVG markup to `innerHTML` / React `dangerouslySetInnerHTML`**, but hit-testing and text editing must account for **foreignObject HTML** on several diagram families. Do not assume every label is an SVG `<text>` node.
 
+**Studio stance:** keep Mermaid **view-only**; put selection/business UI in a transparent overlay keyed by SVG `id` / `data-id` (see [mermaid-embed-and-overlay.md](./mermaid-embed-and-overlay.md)). Mutations equate to model/text ops, then re-render — same pattern as mermaid-live-editor (Monaco edits source, View only renders).
+
 ---
 
 ## Mapping to this monorepo
