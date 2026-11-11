@@ -1,91 +1,77 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { setEnabledModelingDomains } from '../data/demoStore.js';
-import { listModelingDomains } from '../data/modelingDomains.js';
+import React, { useEffect, useState } from 'react';
+import { setAllowedDiagramTypes } from '../data/demoStore.js';
+import {
+  S1_DIAGRAM_TYPES,
+  diagramLabel,
+  diagramsForDomain,
+  domainLabel
+} from '../data/modelingDomains.js';
 
 /**
- * Enable modeling domains for the project.
- * The enabled set is the sole driver of which diagram views + can create.
+ * Allowed diagram types for this project.
+ * A chosen domain starts with its diagrams checked. Empty starts with none.
  */
-export default function ProjectSettings({ project, catalog, open, onClose, onSaved }) {
-  const all = useMemo(() => listModelingDomains(catalog), [catalog]);
+export default function ProjectSettings({ project, open, onClose, onSaved }) {
   const [selected, setSelected] = useState(
-    () => new Set(project.enabledModelingDomains || [])
+    () => new Set(project.allowedDiagramTypes || [])
   );
-  const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    if (open) {
-      setSelected(new Set(project.enabledModelingDomains || []));
-      setFilter('');
-    }
-  }, [open, project.enabledModelingDomains]);
-
-  const previewViews = useMemo(() => {
-    const set = new Set();
-    selected.forEach((id) => {
-      const entry = all.find((d) => d.id === id);
-      (entry?.diagramTypes || []).forEach((t) => set.add(t));
-    });
-    return [...set].sort();
-  }, [selected, all]);
+    if (open) setSelected(new Set(project.allowedDiagramTypes || []));
+  }, [open, project.allowedDiagramTypes]);
 
   if (!open) return null;
 
-  const q = filter.trim().toLowerCase();
-  const visible = q
-    ? all.filter(
-        (d) =>
-          d.id.includes(q) ||
-          d.name.toLowerCase().includes(q) ||
-          d.diagramTypes.some((t) => t.includes(q))
-      )
-    : all;
+  const domainDefaults =
+    project.profile === 'domain' && project.profileDomain
+      ? diagramsForDomain(project.profileDomain)
+      : [];
 
   return (
     <div className="modal-backdrop" role="presentation" onClick={onClose}>
       <div
         className="modal modal-wide"
         role="dialog"
-        aria-label="Enabled modeling domains"
+        aria-label="Domains"
         onClick={(e) => e.stopPropagation()}
       >
         <header>
-          <h2>Modeling domains</h2>
-          <p className="hint">
-            Enable modeling domains for this project. Only those domains appear in{' '}
-            <strong>+</strong>, and only their coupled view languages can be created
-            (e.g. enable <code>ci-cd</code> to allow flowchart under that domain).
-          </p>
-          <input
-            className="filter-input"
-            placeholder="Filter domains or diagram types…"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-          <p className="hint domain-preview">
-            Creatable views with current selection:{' '}
-            <code>{previewViews.length ? previewViews.join(', ') : 'none'}</code>
-          </p>
+          <h2>Domains</h2>
+          {project.profile === 'empty' ? (
+            <p className="hint">
+              This project started empty. Check the diagrams it should be allowed to use.
+            </p>
+          ) : null}
+          {project.profile === 'domain' && project.profileDomain ? (
+            <p className="hint">
+              Started from <strong>{domainLabel(project.profileDomain)}</strong>. Its
+              diagrams are allowed by default
+              {domainDefaults.length ? `: ${domainDefaults.map(diagramLabel).join(', ')}` : ''}.
+              Add or remove diagrams for this project.
+            </p>
+          ) : null}
+          {project.profile === 'story' ? (
+            <p className="hint">
+              S1 demo. These are the diagram types you can create more of.
+            </p>
+          ) : null}
         </header>
         <div className="domain-grid">
-          {visible.map((d) => (
-            <label key={d.id} className="check">
+          {S1_DIAGRAM_TYPES.map((id) => (
+            <label key={id} className="check">
               <input
                 type="checkbox"
-                checked={selected.has(d.id)}
+                checked={selected.has(id)}
                 onChange={(e) => {
                   const next = new Set(selected);
-                  if (e.target.checked) next.add(d.id);
-                  else next.delete(d.id);
+                  if (e.target.checked) next.add(id);
+                  else next.delete(id);
                   setSelected(next);
                 }}
               />
               <span>
-                {d.name}
-                <small>
-                  {d.id}
-                  {d.diagramTypes.length ? ` · views: ${d.diagramTypes.join(', ')}` : ''}
-                </small>
+                {diagramLabel(id)}
+                <small>{id}</small>
               </span>
             </label>
           ))}
@@ -98,9 +84,9 @@ export default function ProjectSettings({ project, catalog, open, onClose, onSav
             type="button"
             className="btn primary"
             onClick={() => {
-              const domains = [...selected];
-              setEnabledModelingDomains(project.id, domains);
-              onSaved(domains);
+              const types = S1_DIAGRAM_TYPES.filter((id) => selected.has(id));
+              setAllowedDiagramTypes(project.id, types);
+              onSaved(types);
               onClose();
             }}
           >

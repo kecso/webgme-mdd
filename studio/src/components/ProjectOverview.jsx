@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { domainLabel } from '../data/modelingDomains.js';
+import { diagramLabel, domainLabel } from '../data/modelingDomains.js';
+import { integrationView } from '../data/s1Integrating.js';
 
 /**
- * Project overview — lists project elements (diagram instances) grouped by
- * modeling domain. This is a project aspect, not a permanent side rail of
- * every possible diagram type.
+ * Project overview. The S1 demo groups existing diagrams by the domain that
+ * owns each one. A new project is one domain, or empty, and lists its diagrams
+ * in a single group.
  */
 export default function ProjectOverview({
   project,
@@ -13,41 +14,64 @@ export default function ProjectOverview({
   onOpenDiagram
 }) {
   const groups = useMemo(() => {
-    const enabled = project.enabledModelingDomains || [];
-    const byDomain = new Map();
-    enabled.forEach((id) => byDomain.set(id, []));
+    const itemsOf = (list) =>
+      list.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 
-    Object.entries(project.diagrams || {}).forEach(([key, inst]) => {
+    const all = Object.entries(project.diagrams || {}).map(([key, inst]) => ({
+      key,
+      ...inst
+    }));
+
+    if (project.profile === 'domain' || project.profile === 'empty') {
+      if (project.profile === 'empty' && all.length === 0) return [];
+      return [
+        {
+          modelingDomainId: project.profileDomain || '_diagrams',
+          name:
+            project.profile === 'domain'
+              ? domainLabel(project.profileDomain)
+              : 'Diagrams',
+          diagramTypes: project.allowedDiagramTypes || [],
+          items: itemsOf(all)
+        }
+      ];
+    }
+
+    const byDomain = new Map();
+    all.forEach((inst) => {
       const md =
         inst.modelingDomainId ||
-        enabled.find((id) => (catalog?.domainIndex?.[id] || []).includes(inst.diagramType)) ||
+        (project.enabledModelingDomains || []).find((id) =>
+          (catalog?.domainIndex?.[id] || []).includes(inst.diagramType)
+        ) ||
         '_unassigned';
       if (!byDomain.has(md)) byDomain.set(md, []);
-      byDomain.get(md).push({ key, ...inst });
+      byDomain.get(md).push(inst);
     });
 
     return [...byDomain.entries()].map(([modelingDomainId, items]) => ({
       modelingDomainId,
       name:
-        modelingDomainId === '_unassigned'
-          ? 'Unassigned'
-          : domainLabel(modelingDomainId),
-      diagramTypes: catalog?.domainIndex?.[modelingDomainId] || [],
-      items: items.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+        modelingDomainId === '_unassigned' ? 'Unassigned' : domainLabel(modelingDomainId),
+      diagramTypes: [],
+      items: itemsOf(items)
     }));
   }, [project, catalog]);
 
   const total = Object.keys(project.diagrams || {}).length;
-  const corrCount = (project.correspondences || []).length;
+  const allowed = project.allowedDiagramTypes || [];
+  const connections = integrationView(project.integrating);
 
-  const enabledCount = (project.enabledModelingDomains || []).length;
-  const allowedViews = useMemo(() => {
-    const set = new Set();
-    (project.enabledModelingDomains || []).forEach((id) => {
-      (catalog?.domainIndex?.[id] || []).forEach((t) => set.add(t));
-    });
-    return [...set].sort();
-  }, [project.enabledModelingDomains, catalog]);
+  let lead = 'S1 demo.';
+  if (project.profile === 'domain' && project.profileDomain) {
+    lead = `${domainLabel(project.profileDomain)}. Allowed: ${
+      allowed.length ? allowed.map(diagramLabel).join(', ') : 'none'
+    }.`;
+  } else if (project.profile === 'empty') {
+    lead = allowed.length
+      ? `Empty project. Allowed: ${allowed.map(diagramLabel).join(', ')}.`
+      : 'Empty project. Open Diagrams and add the ones you need, then use +.';
+  }
 
   return (
     <div className="project-overview">
@@ -55,49 +79,84 @@ export default function ProjectOverview({
         <div>
           <p className="eyebrow">Project overview</p>
           <h2>{project.title || project.name}</h2>
-          <p className="hint">
-            Elements grouped by <strong>modeling domain</strong>. Use <strong>Domains</strong> to
-            enable concerns for this project — that set drives which views the{' '}
-            <strong>+</strong> control can create. Several domains may share a view language
-            (e.g. flowchart).
-          </p>
+          <p className="hint">{lead}</p>
         </div>
       </header>
 
       <div className="overview-stats">
-        <span>{enabledCount} domains enabled</span>
-        <span>{total} diagram{total === 1 ? '' : 's'}</span>
-        {corrCount ? (
-          <span>{corrCount} correspondence{corrCount === 1 ? '' : 's'}</span>
+        <span>
+          {total} diagram{total === 1 ? '' : 's'}
+        </span>
+        {project.id === 'demo+s1-aeb' ? <span>S1 demo</span> : null}
+        {connections ? (
+          <span>
+            {connections.uses.length} connections
+            {connections.open.length ? ` · ${connections.open.length} open` : ''}
+          </span>
         ) : null}
-        {project.storyId ? <span>Story {project.storyId}</span> : null}
-        {project.seedVersion ? <span>seed v{project.seedVersion}</span> : null}
       </div>
 
-      {enabledCount === 0 ? (
-        <p className="hint overview-gate">
-          No modeling domains enabled — open <strong>Domains</strong> before creating diagrams.
-        </p>
-      ) : (
-        <p className="hint overview-gate">
-          Creatable views from enabled domains:{' '}
-          <code>{allowedViews.length ? allowedViews.join(', ') : 'none'}</code>
-        </p>
-      )}
+      {connections ? (
+        <details className="connections">
+          <summary>
+            How these diagrams connect
+            {connections.open.length
+              ? ` — ${connections.open.length} open`
+              : ''}
+          </summary>
+          <p className="hint">
+            Same portion of the system is one element that shows up on several diagrams.
+            A connection says how one element uses another. The diagrams keep one shared
+            taxonomy.
+          </p>
+          {connections.open.length ? (
+            <>
+              <h3>Open</h3>
+              <ul className="conn-list">
+                {connections.open.map((c) => (
+                  <li key={c.id}>
+                    <span className="status-open">open</span>{' '}
+                    <code className="conn-rule">{c.ruleId}</code>
+                    <div>{c.summary}</div>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          <h3>Same element, several diagrams</h3>
+          <ul className="conn-list">
+            {connections.identities.map((item) => (
+              <li key={item.name}>
+                <strong>{item.name}</strong>
+                <div className="hint">{item.places.join(' · ')}</div>
+              </li>
+            ))}
+          </ul>
+          <h3>How one element uses another</h3>
+          <ul className="conn-list">
+            {connections.uses.map((link) => (
+              <li key={link.id}>
+                {link.left} <em>{link.kind}</em> {link.right}
+                <div>
+                  <code className="conn-rule">{link.ruleId}</code>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
 
       <div className="overview-groups">
         {groups.map((g) => (
           <section key={g.modelingDomainId} className="overview-group">
             <header>
               <h3>{g.name}</h3>
-              {g.diagramTypes.length ? (
-                <p className="hint">
-                  Views: {g.diagramTypes.join(', ')}
-                </p>
+              {project.profile !== 'story' && g.diagramTypes.length ? (
+                <p className="hint">Allowed: {g.diagramTypes.map(diagramLabel).join(', ')}</p>
               ) : null}
             </header>
             {g.items.length === 0 ? (
-              <p className="empty">No diagrams yet in this domain.</p>
+              <p className="empty">No diagrams yet. Use + to add one.</p>
             ) : (
               <ul className="overview-list">
                 {g.items.map((inst) => (

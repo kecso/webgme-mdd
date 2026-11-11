@@ -11,13 +11,11 @@ import { DiagramControl } from '../control/DiagramControl.js';
 import { WebGmeBridge } from '../control/WebGmeBridge.js';
 import {
   getProject,
+  setAllowedDiagramTypes,
   setDiagramSource,
   upsertProject
 } from '../data/demoStore.js';
-import {
-  couplingsForDomain,
-  inferModelingDomain
-} from '../data/modelingDomains.js';
+import { inferModelingDomain } from '../data/modelingDomains.js';
 
 export default function ProjectStudio() {
   const { owner, name } = useParams();
@@ -31,6 +29,7 @@ export default function ProjectStudio() {
   const [viewSource, setViewSource] = useState('');
   const [draftSource, setDraftSource] = useState('');
   const [sourceOpen, setSourceOpen] = useState(false);
+  const [inspectorOpen, setInspectorOpen] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -142,28 +141,32 @@ export default function ProjectStudio() {
     );
   };
 
-  const onCreateDiagram = async ({ modelingDomainId, diagramType: typeId, name: diagramName }) => {
-    const enabled = project.enabledModelingDomains || [];
-    if (!enabled.includes(modelingDomainId)) {
-      pushLog(`create blocked: domain ${modelingDomainId} is not enabled on this project`);
-      return;
-    }
-    const allowed = new Set(
-      couplingsForDomain(catalog, modelingDomainId).map((c) => c.diagramType)
-    );
-    if (!allowed.has(typeId)) {
-      pushLog(
-        `create blocked: view ${typeId} is not coupled to enabled domain ${modelingDomainId}`
-      );
+  const revealDiagram = () => {
+    if (mode !== 'canvas' && activeKey) setMode('canvas');
+  };
+
+  const onCreateDiagram = async ({ diagramType: typeId, name: diagramName }) => {
+    const allowed = project.allowedDiagramTypes || [];
+    if (!allowed.includes(typeId)) {
+      pushLog(`create blocked: ${typeId} is not an allowed diagram on this project`);
       return;
     }
 
+    let modelingDomainId = null;
+    if (project.profile === 'domain') {
+      modelingDomainId = project.profileDomain;
+    } else if (project.profile === 'story') {
+      modelingDomainId = inferModelingDomain(
+        catalog,
+        typeId,
+        project.enabledModelingDomains
+      );
+    }
+
     const count =
-      Object.values(project.diagrams).filter(
-        (d) => d.diagramType === typeId && d.modelingDomainId === modelingDomainId
-      ).length + 1;
+      Object.values(project.diagrams).filter((d) => d.diagramType === typeId).length + 1;
     const finalName = diagramName || `${typeId}-${count}`;
-    const key = `${modelingDomainId}:${typeId}:${finalName}`;
+    const key = `${modelingDomainId || 'project'}:${typeId}:${finalName}`;
     const next = setDiagramSource(projectId, key, {
       modelingDomainId,
       diagramType: typeId,
@@ -209,7 +212,8 @@ export default function ProjectStudio() {
   const bodyClass = [
     'studio-body',
     mode === 'overview' ? 'overview-mode' : 'canvas-mode',
-    sourceOpen && mode === 'canvas' ? 'with-source' : ''
+    sourceOpen && mode === 'canvas' ? 'with-source' : '',
+    mode === 'canvas' && !inspectorOpen ? 'inspector-hidden' : ''
   ]
     .filter(Boolean)
     .join(' ');
@@ -221,14 +225,22 @@ export default function ProjectStudio() {
         mode={mode}
         active={active}
         sourceOpen={sourceOpen}
-        onToggleSource={() => setSourceOpen((v) => !v)}
+        onToggleSource={() => {
+          revealDiagram();
+          setSourceOpen((v) => !v);
+        }}
+        inspectorOpen={inspectorOpen}
+        onToggleInspector={() => {
+          revealDiagram();
+          setInspectorOpen((v) => !v);
+        }}
         onOpenSettings={() => setSettingsOpen(true)}
-        onShowOverview={() => setMode('overview')}
-        onShowCanvas={() => activeKey && setMode('canvas')}
         onExportBook={() => {
           pushLog('opening Markdown book preview');
           navigate(`/p/${owner}/${name}/book`);
         }}
+        onShowOverview={() => setMode('overview')}
+        onShowCanvas={() => activeKey && setMode('canvas')}
         userLabel={userLabel}
       />
       <div className={bodyClass}>
@@ -251,11 +263,11 @@ export default function ProjectStudio() {
           ) : (
             <div className="empty-canvas">
               <h2>No diagram open</h2>
-              <p>Return to overview, or use + to create a view allowed by enabled domains.</p>
+              <p>Return to overview, or use + to create an allowed diagram.</p>
             </div>
           )}
         </main>
-        {mode === 'canvas' ? (
+        {mode === 'canvas' && inspectorOpen ? (
           <Inspector
             domainId={diagramType}
             selectedId={selectedId}
@@ -284,30 +296,19 @@ export default function ProjectStudio() {
         open={fabOpen}
         onOpen={() => setFabOpen(true)}
         onClose={() => setFabOpen(false)}
-        catalog={catalog}
-        enabledModelingDomains={project.enabledModelingDomains}
+        allowedDiagramTypes={project.allowedDiagramTypes}
         onCreate={onCreateDiagram}
-        onOpenDomains={() => setSettingsOpen(true)}
+        onOpenDiagrams={() => setSettingsOpen(true)}
       />
 
       <ProjectSettings
         project={project}
-        catalog={catalog}
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
-        onSaved={(domains) => {
-          const p = getProject(projectId);
-          p.enabledModelingDomains = domains;
-          upsertProject(p);
+        onSaved={(types) => {
+          const p = setAllowedDiagramTypes(projectId, types);
           setProject({ ...p });
-          const views = new Set();
-          domains.forEach((id) => {
-            (catalog?.domainIndex?.[id] || []).forEach((t) => views.add(t));
-          });
-          pushLog(
-            `modeling domains → ${domains.length} enabled` +
-              (views.size ? ` (views: ${[...views].sort().join(', ')})` : '')
-          );
+          pushLog(`allowed diagrams → ${types.length ? types.join(', ') : 'none'}`);
         }}
       />
     </div>

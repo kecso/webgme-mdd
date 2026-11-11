@@ -3,12 +3,14 @@
  * Persists in localStorage.
  *
  * Project fields:
- *   enabledModelingDomains — modeling domain ids (ci-cd, uml, …), NOT diagram types
+ *   profile — 'story' | 'domain' | 'empty'
+ *   profileDomain — coarse domain id when profile is 'domain'
+ *   allowedDiagramTypes — diagram types the + control may create
  *   diagrams[key] — { modelingDomainId, diagramType, name, source }
- *   correspondences[] — soft Integrating links for S1 demo feedback
+ *   integrating — domain-independent connection instance (S1 demo)
  */
 
-import { S1_MODELING_DOMAINS } from './modelingDomains.js';
+import { diagramsForDomain } from './modelingDomains.js';
 import { S1_SEED_VERSION, buildS1DemoProject } from './s1DemoSeed.js';
 
 const STORAGE_KEY = 'webgme-mdd-studio-demo-v2';
@@ -45,10 +47,39 @@ function ensureS1Seed(p) {
 }
 
 function migrateProject(p) {
-  if (!p.enabledModelingDomains) {
-    p.enabledModelingDomains = [...S1_MODELING_DOMAINS];
-  }
   delete p.enabledDomains;
+
+  if (!p.profile) {
+    const enabled = p.enabledModelingDomains || [];
+    if (enabled.length === 1) {
+      p.profile = 'domain';
+      p.profileDomain = enabled[0];
+    } else if (enabled.length === 0) {
+      p.profile = 'empty';
+      p.profileDomain = null;
+    } else {
+      p.profile = 'story';
+      p.profileDomain = null;
+    }
+  }
+
+  if (!Array.isArray(p.allowedDiagramTypes)) {
+    if (p.profile === 'domain' && p.profileDomain) {
+      p.allowedDiagramTypes = diagramsForDomain(p.profileDomain);
+    } else if (p.profile === 'empty') {
+      p.allowedDiagramTypes = [];
+    } else {
+      const set = new Set();
+      Object.values(p.diagrams || {}).forEach((d) => {
+        if (d.diagramType) set.add(d.diagramType);
+      });
+      p.allowedDiagramTypes = [...set];
+    }
+  }
+
+  if (!p.enabledModelingDomains) {
+    p.enabledModelingDomains = p.profileDomain ? [p.profileDomain] : [];
+  }
 
   Object.values(p.diagrams || {}).forEach((inst) => {
     if (!inst.diagramType && inst.domainId) {
@@ -116,7 +147,9 @@ export function upsertProject(project) {
 export function createProject({
   name,
   owner = 'demo',
-  enabledModelingDomains,
+  profile = 'empty',
+  profileDomain = null,
+  allowedDiagramTypes = [],
   storyId = 'S1'
 }) {
   const id = `${owner}+${name}`;
@@ -126,11 +159,13 @@ export function createProject({
     name,
     title: name,
     storyId,
-    enabledModelingDomains: enabledModelingDomains?.length
-      ? enabledModelingDomains
-      : [...S1_MODELING_DOMAINS],
+    profile,
+    profileDomain,
+    allowedDiagramTypes: [...allowedDiagramTypes],
+    enabledModelingDomains: profileDomain ? [profileDomain] : [],
     diagrams: {},
-    correspondences: []
+    correspondences: [],
+    integrating: null
   };
   return upsertProject(project);
 }
@@ -142,10 +177,10 @@ export function resetS1DemoProject() {
   return upsertProject(buildS1DemoProject());
 }
 
-export function setEnabledModelingDomains(projectId, enabledModelingDomains) {
+export function setAllowedDiagramTypes(projectId, allowedDiagramTypes) {
   const project = getProject(projectId);
   if (!project) return null;
-  project.enabledModelingDomains = enabledModelingDomains;
+  project.allowedDiagramTypes = [...allowedDiagramTypes];
   return upsertProject(project);
 }
 
@@ -162,4 +197,4 @@ export function setDiagramSource(projectId, diagramKey, patch) {
   return upsertProject(project);
 }
 
-export { S1_MODELING_DOMAINS, S1_SEED_VERSION };
+export { S1_SEED_VERSION };

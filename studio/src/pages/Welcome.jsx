@@ -5,35 +5,21 @@ export default function Welcome() {
   return (
     <div className="page welcome">
       <div className="welcome-hero">
-        <p className="eyebrow">Markdown System Studio · MDSS</p>
+        <p className="eyebrow">S1 · Automotive AEB / CACC</p>
         <h1>Markdown System Studio</h1>
         <p className="lede">
-          Multi-view system models as Markdown/Mermaid (and EARS)—aligned with our
-          validation stories—then publish the project as a <strong>browsable Markdown book</strong>.
-          WebGME stays the consistency engine; the book is the shareable spine.
+          The studio is on the first story. Open the demo, or start a project from one
+          domain. An empty project starts with no diagrams until you add them.
         </p>
         <div className="cta-row">
-          <Link className="btn primary" to="/projects">
-            Projects
-          </Link>
-          <Link className="btn" to="/p/demo/s1-aeb">
+          <Link className="btn primary" to="/p/demo/s1-aeb">
             Open S1 demo
+          </Link>
+          <Link className="btn" to="/projects">
+            Projects
           </Link>
         </div>
       </div>
-      <ul className="welcome-notes">
-        <li>
-          <strong>Stories first</strong> — modeling domains and chapters follow S1–S5 narratives
-        </li>
-        <li>
-          <strong>Studio</strong> — S1 demo ships with story-shaped diagrams; overview +{' '}
-          <code>+</code> create; canvas Apply is manual (ImportDelta TODO)
-        </li>
-        <li>
-          <strong>Book export</strong> — README + SUMMARY + chapters with fenced Mermaid/EARS for
-          GitHub, mdBook, or in-app preview
-        </li>
-      </ul>
     </div>
   );
 }

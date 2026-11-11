@@ -36,7 +36,7 @@ const DOMAIN_LABELS = {
   'embedded-systems': 'Embedded systems'
 };
 
-/** S1 story — modeling domains (not diagram package ids). */
+/** S1 story — coarse modeling domains the create form offers. */
 export const S1_MODELING_DOMAINS = [
   'systems-engineering',
   'requirements-management',
@@ -56,6 +56,72 @@ export const S1_MODELING_DOMAINS = [
   'database-design',
   'data-modeling'
 ];
+
+/** Diagram types a project may allow while the studio stays on S1. */
+export const S1_DIAGRAM_TYPES = [
+  'ears',
+  'requirement',
+  'usecase',
+  'c4',
+  'architecture',
+  'class',
+  'state',
+  'sequence',
+  'flowchart',
+  'er',
+  'block',
+  'gantt',
+  'kanban'
+];
+
+const DIAGRAM_LABELS = {
+  ears: 'EARS',
+  requirement: 'Requirement',
+  usecase: 'Use case',
+  c4: 'C4',
+  architecture: 'Architecture',
+  class: 'Class',
+  state: 'State',
+  sequence: 'Sequence',
+  flowchart: 'Flowchart',
+  er: 'Entity-relationship',
+  block: 'Block',
+  gantt: 'Gantt',
+  kanban: 'Kanban'
+};
+
+/**
+ * Diagrams each coarse S1 domain allows.
+ * Taken from domainIndex, limited to S1 diagram types (so protocols does not
+ * pull in packet, which this story does not use).
+ */
+export const S1_DOMAIN_DIAGRAMS = {
+  'systems-engineering': ['requirement', 'ears', 'c4'],
+  'requirements-management': ['requirement', 'ears', 'usecase'],
+  'requirements-specification': ['ears'],
+  'safety-critical': ['requirement', 'ears'],
+  'llm-assisted-engineering': ['ears'],
+  uml: ['sequence', 'class', 'state', 'usecase'],
+  'software-architecture': ['class', 'c4', 'architecture', 'block'],
+  'system-context': ['c4'],
+  'object-oriented-design': ['class'],
+  'finite-state-machines': ['state'],
+  'embedded-systems': ['state'],
+  'software-interaction': ['sequence'],
+  protocols: ['sequence', 'state'],
+  'process-modeling': ['flowchart'],
+  workflows: ['flowchart'],
+  'database-design': ['er'],
+  'data-modeling': ['er']
+};
+
+export function diagramLabel(diagramType) {
+  return DIAGRAM_LABELS[diagramType] || diagramType;
+}
+
+export function diagramsForDomain(domainId) {
+  return [...(S1_DOMAIN_DIAGRAMS[domainId] || [])];
+}
 
 export function domainLabel(domainId) {
   if (DOMAIN_LABELS[domainId]) return DOMAIN_LABELS[domainId];

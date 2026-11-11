@@ -8,7 +8,10 @@
  * - usecase / usecase-beta not available in this Mermaid build — use flowchart stand-in
  */
 
-export const S1_SEED_VERSION = 2;
+import { S1_MODELING_DOMAINS } from './modelingDomains.js';
+import { S1_INTEGRATING, flatCorrespondences } from './s1Integrating.js';
+
+export const S1_SEED_VERSION = 3;
 
 /** @type {Record<string, { modelingDomainId: string, diagramType: string, name: string, source: string }>} */
 export const S1_DEMO_DIAGRAMS = {
@@ -292,43 +295,6 @@ While ACC is engaged, when the lead vehicle brakes, the LongitudinalController s
   }
 };
 
-/**
- * Soft Integrating correspondences for book / overview feedback
- * (not enforced until CrossDomainValidate exists).
- */
-export const S1_DEMO_CORRESPONDENCES = [
-  {
-    from: 'software-interaction:sequence:obstacle-brake#RadarECU',
-    to: 'software-architecture:architecture:ecu-services#radar',
-    kind: 'sameAs',
-    check: 'participant-binds-service'
-  },
-  {
-    from: 'software-interaction:sequence:obstacle-brake#FusionApp',
-    to: 'software-architecture:architecture:ecu-services#fusion',
-    kind: 'sameAs',
-    check: 'participant-binds-service'
-  },
-  {
-    from: 'software-interaction:sequence:obstacle-brake#BrakeController',
-    to: 'software-architecture:architecture:ecu-services#brake',
-    kind: 'sameAs',
-    check: 'participant-binds-service'
-  },
-  {
-    from: 'requirements-specification:ears:aeb-cacc-shalls#REQ-AEB-001',
-    to: 'requirements-management:requirement:aeb-req-trace#AEB_DetectAndBrake',
-    kind: 'specifies',
-    check: 'specifies-body'
-  },
-  {
-    from: 'database-design:er:vehicle-trip#ObstacleTrack.ttc',
-    to: 'software-interaction:sequence:obstacle-brake#ObstacleDetect',
-    kind: 'sameAs',
-    check: 'payload-schema-contract'
-  }
-];
-
 export function buildS1DemoProject() {
   const diagrams = {};
   Object.entries(S1_DEMO_DIAGRAMS).forEach(([key, inst]) => {
@@ -346,26 +312,12 @@ export function buildS1DemoProject() {
     title: 'S1 AEB / CACC (demo)',
     storyId: 'S1',
     seedVersion: S1_SEED_VERSION,
-    enabledModelingDomains: [
-      'systems-engineering',
-      'requirements-management',
-      'requirements-specification',
-      'safety-critical',
-      'llm-assisted-engineering',
-      'uml',
-      'software-architecture',
-      'system-context',
-      'object-oriented-design',
-      'finite-state-machines',
-      'embedded-systems',
-      'software-interaction',
-      'protocols',
-      'process-modeling',
-      'workflows',
-      'database-design',
-      'data-modeling'
-    ],
+    profile: 'story',
+    profileDomain: null,
+    allowedDiagramTypes: [...new Set(Object.values(diagrams).map((d) => d.diagramType))],
+    enabledModelingDomains: [...S1_MODELING_DOMAINS],
     diagrams,
-    correspondences: [...S1_DEMO_CORRESPONDENCES]
+    integrating: S1_INTEGRATING,
+    correspondences: flatCorrespondences(S1_INTEGRATING)
   };
 }

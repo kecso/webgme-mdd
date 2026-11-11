@@ -10,7 +10,7 @@ export default function Inspector({
 }) {
   return (
     <aside className="inspector">
-      <div className="rail-title">Inspector</div>
+      <div className="rail-title">Logs</div>
       <dl className="kv">
         <dt>Instance</dt>
         <dd>{diagramKey || '—'}</dd>
