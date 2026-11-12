@@ -9,6 +9,7 @@ import SourceEditorPanel from '../monaco/SourceEditorPanel.jsx';
 import ProjectSettings from './ProjectSettings.jsx';
 import { DiagramControl } from '../control/DiagramControl.js';
 import { WebGmeBridge } from '../control/WebGmeBridge.js';
+import { plainExportProject } from '../control/plainExport.js';
 import {
   getProject,
   setAllowedDiagramTypes,
@@ -238,6 +239,11 @@ export default function ProjectStudio() {
         onExportBook={() => {
           pushLog('opening Markdown book preview');
           navigate(`/p/${owner}/${name}/book`);
+        }}
+        onPlainExport={() => {
+          plainExportProject(project)
+            .then((result) => pushLog(`export project ${result.fileName}`))
+            .catch((err) => pushLog(`export project failed: ${err && err.message ? err.message : err}`));
         }}
         onCloseDiagram={() => {
           setActiveKey(null);

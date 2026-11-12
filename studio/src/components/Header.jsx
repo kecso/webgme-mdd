@@ -51,6 +51,7 @@ export default function Header({
   inspectorOpen,
   onOpenSettings,
   onExportBook,
+  onPlainExport,
   onCloseDiagram,
   onCloseProject,
   userLabel
@@ -216,6 +217,15 @@ export default function Header({
               </button>
               {menu === 'functions' ? (
                 <div className="header-menu-panel" role="menu" aria-label="Functions">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="header-menu-item"
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onClick={(event) => run(event, onPlainExport)}
+                  >
+                    Export project
+                  </button>
                   <button
                     type="button"
                     role="menuitem"

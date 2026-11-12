@@ -127,6 +127,48 @@ export const WebGmeBridge = {
     return res.json();
   },
 
+  /**
+   * Regular WebGME project package (.webgmex). Returns null when the client
+   * is not connected so callers can fall back to the local project document.
+   * @param {string} projectId owner+name
+   * @param {string} [branchName]
+   * @returns {Promise<{ hash: string, downloadUrl: string, fileName: string }|null>}
+   */
+  async exportProjectFile(projectId, branchName = 'master') {
+    if (!this.isConnected() || typeof window.gmeClient.exportProjectToFile !== 'function') {
+      return null;
+    }
+    return new Promise((resolve, reject) => {
+      window.gmeClient.exportProjectToFile(
+        projectId,
+        branchName,
+        null,
+        false,
+        false,
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  },
+
+  /**
+   * @param {string} projectId owner+name
+   */
+  async deleteProject(projectId) {
+    if (!this.isConnected() || typeof window.gmeClient.deleteProject !== 'function') {
+      return { ok: false, reason: 'WebGME client not connected' };
+    }
+    await new Promise((resolve, reject) => {
+      window.gmeClient.deleteProject(projectId, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+    return { ok: true };
+  },
+
   async getSeedInfo() {
     if (!this.isConnected()) {
       return null;

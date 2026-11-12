@@ -131,6 +131,13 @@ export function listProjects() {
   return loadStore().projects;
 }
 
+export function dropProject(projectId) {
+  const state = loadStore();
+  state.projects = (state.projects || []).filter((p) => p.id !== projectId);
+  saveStore(state);
+  return state.projects;
+}
+
 export function getProject(projectId) {
   return loadStore().projects.find((p) => p.id === projectId) || null;
 }
