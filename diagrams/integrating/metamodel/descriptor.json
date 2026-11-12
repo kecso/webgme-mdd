@@ -1,0 +1,39 @@
+{
+  "id": "integrating",
+  "name": "Integrating language",
+  "metaConcepts": {
+    "Integration": {
+      "contains": ["SystemElement", "Aspect", "Correspondence", "Rule", "Claim"]
+    },
+    "SystemElement": {
+      "attrs": ["name"]
+    },
+    "Aspect": {
+      "attrs": ["name"],
+      "pointers": {
+        "element": ["SystemElement"],
+        "subject": ["FCO"]
+      }
+    },
+    "Correspondence": {
+      "attrs": ["name", "kind"],
+      "sets": {
+        "ends": ["Aspect"]
+      }
+    },
+    "Rule": {
+      "attrs": ["name"]
+    },
+    "Claim": {
+      "attrs": ["name"],
+      "pointers": {
+        "rule": ["Rule"]
+      },
+      "sets": {
+        "participants": ["Aspect"]
+      }
+    }
+  },
+  "webgmeJson": "./Language.json",
+  "notes": "Draft meta. Aspect.subject points at any FCO. Rule has no predicate. Claim stores no result."
+}
