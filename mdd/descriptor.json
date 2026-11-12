@@ -1,0 +1,11 @@
+{
+  "id": "mdd",
+  "name": "MDD project shell",
+  "metaConcepts": {
+    "Project": {
+      "contains": ["FCO"]
+    }
+  },
+  "seed": "./mdd.webgmex",
+  "notes": "Seed for an empty project. Project is the folder that holds diagram nodes. Languages are added later as libraries named after their diagram directory."
+}

@@ -12,6 +12,8 @@
   ],
   "scripts": {
     "generate": "node scripts/generate-diagram-projects.js",
+    "generate:webgmex": "node scripts/generate-webgmex.js",
+    "generate:mdd": "node scripts/mdd-project.js --write-seed",
     "generate:registry": "node scripts/generate-domain-registry.js",
     "generate:lean": "node scripts/generate-lean-domain.js",
     "validate": "node scripts/validate-catalog.js",
@@ -22,7 +24,8 @@
     "studio:build": "npm run build --workspace=@webgme-mdd/studio",
     "studio:start": "npm run start --workspace=@webgme-mdd/studio",
     "lean:check": "cd lean && lake env lean Integrating/Domain.lean && lake env lean examples/S1_participant_binds/Example.lean && lake env lean ../diagrams/ears/lean/Domain.lean",
-    "test": "npm run validate && npm run test --workspace=@webgme-mdd/router"
+    "test:mdd": "node --test test/mdd-project.test.js",
+    "test": "npm run test:mdd && npm run validate && npm run test --workspace=@webgme-mdd/router"
   },
   "keywords": [
     "webgme",
@@ -32,6 +35,10 @@
     "dsml"
   ],
   "license": "MIT",
+  "devDependencies": {
+    "webgme": "^2.50.1",
+    "webgme-json-importer": "github:kecso/webgme-json-importer#main"
+  },
   "engines": {
     "node": ">=18"
   }

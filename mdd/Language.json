@@ -1,0 +1,177 @@
+{
+  "id": "932e3f01-0f99-54c7-b7bd-47055cc8a76b",
+  "path": "",
+  "guid": "932e3f01-0f99-54c7-b7bd-47055cc8a76b",
+  "attributes": {
+    "name": "ROOT"
+  },
+  "attribute_meta": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "pointers": {
+    "base": null
+  },
+  "pointer_meta": {},
+  "mixins": [],
+  "registry": {
+    "ProjectRegistry": {
+      "FCO_ID": "/1"
+    },
+    "MetaSheets": [
+      {
+        "SetID": "MetaAspectSet_1f992132-16e7-5b1d-b470-c99c1b4cd124",
+        "order": 0,
+        "title": "META"
+      }
+    ]
+  },
+  "sets": {
+    "MetaAspectSet": [
+      "c88da5bb-6ab9-53b7-bc48-be163fead079",
+      "83038887-0e3a-57d0-a288-14869f411515"
+    ],
+    "MetaAspectSet_1f992132-16e7-5b1d-b470-c99c1b4cd124": [
+      "c88da5bb-6ab9-53b7-bc48-be163fead079",
+      "83038887-0e3a-57d0-a288-14869f411515"
+    ]
+  },
+  "member_registry": {
+    "MetaAspectSet": {
+      "c88da5bb-6ab9-53b7-bc48-be163fead079": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "83038887-0e3a-57d0-a288-14869f411515": {
+        "position": {
+          "x": 220,
+          "y": 180
+        }
+      }
+    },
+    "MetaAspectSet_1f992132-16e7-5b1d-b470-c99c1b4cd124": {
+      "c88da5bb-6ab9-53b7-bc48-be163fead079": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "83038887-0e3a-57d0-a288-14869f411515": {
+        "position": {
+          "x": 220,
+          "y": 180
+        }
+      }
+    }
+  },
+  "member_attributes": {
+    "MetaAspectSet": {
+      "c88da5bb-6ab9-53b7-bc48-be163fead079": {},
+      "83038887-0e3a-57d0-a288-14869f411515": {}
+    },
+    "MetaAspectSet_1f992132-16e7-5b1d-b470-c99c1b4cd124": {
+      "c88da5bb-6ab9-53b7-bc48-be163fead079": {},
+      "83038887-0e3a-57d0-a288-14869f411515": {}
+    }
+  },
+  "children": [
+    {
+      "id": "c88da5bb-6ab9-53b7-bc48-be163fead079",
+      "path": "/1",
+      "guid": "c88da5bb-6ab9-53b7-bc48-be163fead079",
+      "attributes": {
+        "name": "FCO"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": null
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "DisplayFormat": "$name"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "83038887-0e3a-57d0-a288-14869f411515",
+      "path": "/a",
+      "guid": "83038887-0e3a-57d0-a288-14869f411515",
+      "attributes": {
+        "name": "Project"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": "c88da5bb-6ab9-53b7-bc48-be163fead079"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 220,
+          "y": 180
+        }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": {
+        "c88da5bb-6ab9-53b7-bc48-be163fead079": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "74eda97e-103e-5401-b09c-5da53da84d5c",
+      "path": "/b",
+      "guid": "74eda97e-103e-5401-b09c-5da53da84d5c",
+      "attributes": {
+        "name": "Project"
+      },
+      "attribute_meta": {},
+      "pointers": {
+        "base": "83038887-0e3a-57d0-a288-14869f411515"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 480,
+          "y": 180
+        }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    }
+  ],
+  "children_meta": {
+    "c88da5bb-6ab9-53b7-bc48-be163fead079": {
+      "min": -1,
+      "max": -1
+    }
+  }
+}

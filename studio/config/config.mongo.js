@@ -18,6 +18,6 @@ config.storage.database.type = 'mongo';
 config.mongo.uri = process.env.WEBGME_MONGO_URI || 'mongodb://127.0.0.1:27017/webgme_mdd_studio';
 
 config.seedProjects.enable = true;
-config.seedProjects.defaultProject = 'EmptyProject';
+config.seedProjects.defaultProject = 'mdd';
 
 module.exports = config;

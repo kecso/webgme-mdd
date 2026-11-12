@@ -12,6 +12,10 @@ var repoRoot = path.join(studioRoot, '..');
 config.plugin.basePaths = config.plugin.basePaths || [];
 config.seedProjects.basePaths = config.seedProjects.basePaths || [];
 
+// mdd.webgmex is the empty project seed. Each diagrams/<id>/metamodel/<id>.webgmex
+// is a language library, looked up by the directory name.
+config.seedProjects.basePaths.push(path.join(repoRoot, 'mdd'));
+
 // Orchestrator plugin (router package)
 config.plugin.basePaths.push(path.join(repoRoot, 'router', 'src', 'plugins'));
 
@@ -24,6 +28,10 @@ if (fs.existsSync(diagramsDir)) {
         var pluginsDir = path.join(diagramsDir, id, 'src', 'plugins');
         if (fs.existsSync(pluginsDir)) {
             config.plugin.basePaths.push(pluginsDir);
+        }
+        var seedDir = path.join(diagramsDir, id, 'metamodel');
+        if (fs.existsSync(path.join(seedDir, id + '.webgmex'))) {
+            config.seedProjects.basePaths.push(seedDir);
         }
     });
 }

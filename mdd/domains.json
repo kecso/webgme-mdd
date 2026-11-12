@@ -1,0 +1,19 @@
+{
+  "systems-engineering": ["requirement", "ears", "c4"],
+  "requirements-management": ["requirement", "ears", "usecase"],
+  "requirements-specification": ["ears"],
+  "safety-critical": ["requirement", "ears"],
+  "llm-assisted-engineering": ["ears"],
+  "uml": ["sequence", "class", "state", "usecase"],
+  "software-architecture": ["class", "c4", "architecture", "block"],
+  "system-context": ["c4"],
+  "object-oriented-design": ["class"],
+  "finite-state-machines": ["state"],
+  "embedded-systems": ["state"],
+  "software-interaction": ["sequence"],
+  "protocols": ["sequence", "state"],
+  "process-modeling": ["flowchart"],
+  "workflows": ["flowchart"],
+  "database-design": ["er"],
+  "data-modeling": ["er"]
+}

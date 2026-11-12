@@ -2,8 +2,10 @@
 /**
  * Domain / project lifecycle for MDSS (webgme-dss DomainManager analogue).
  *
- * Until MDD domain seeds exist, createProject seeds EmptyProject and stamps
- * project kind as MDSS:<domainId>:… Domain library import stays a TODO.
+ * createProject seeds mdd/mdd.webgmex (a Project folder that can hold any FCO)
+ * and mounts each language the selected domains use as a library. The library
+ * name is the diagram directory. updateProject adds any libraries the new
+ * domain selection needs. A library that is already mounted is left in place.
  */
 'use strict';
 
@@ -18,6 +20,39 @@ var REPO_ROOT = path.join(__dirname, '..', '..', '..', '..');
 var REGISTRY_PATH = path.join(REPO_ROOT, 'router', 'src', 'common', 'DomainRegistry.json');
 var CATALOG_PATH = path.join(REPO_ROOT, 'scripts', 'diagram-catalog.json');
 var STORIES_PATH = path.join(REPO_ROOT, 'docs', 'stories', 'stories.json');
+var DOMAINS_PATH = path.join(REPO_ROOT, 'mdd', 'domains.json');
+
+function librariesForDomains(domains) {
+    var map = loadJson(DOMAINS_PATH);
+    var found = {};
+    (domains || []).forEach(function (domain) {
+        (map[domain] || []).forEach(function (id) {
+            found[id] = true;
+        });
+    });
+    return Object.keys(found).sort();
+}
+
+function addLibraries(swm, token, projectId, libraryIds) {
+    return (libraryIds || []).reduce(function (chain, libraryName) {
+        return chain.then(function () {
+            return Q.ninvoke(swm, 'request', {
+                command: CONSTANTS.SERVER_WORKER_REQUESTS.ADD_LIBRARY,
+                webgmeToken: token,
+                projectId: projectId,
+                branchName: 'master',
+                libraryName: libraryName,
+                seed: libraryName
+            }).catch(function (err) {
+                var message = err && err.message ? err.message : String(err);
+                if (message.toLowerCase().indexOf('unique') !== -1) {
+                    return null;
+                }
+                throw err;
+            });
+        });
+    }, Q());
+}
 
 function loadJson(filePath) {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -127,7 +162,8 @@ function initialize(middlewareOpts) {
         var seedInfo;
         var domains;
         var projectName;
-        var returnData = { projectId: null, kind: null };
+        var returnData = { projectId: null, kind: null, libraries: [] };
+        var token;
 
         logger.debug('createProject', req.body);
 
@@ -151,24 +187,32 @@ function initialize(middlewareOpts) {
         }
 
         getNewJWToken(userId)
-            .then(function (token) {
+            .then(function (newToken) {
                 var kind = 'MDSS:' + domains.join(':');
                 var seedProjectParameters = {
                     command: CONSTANTS.SERVER_WORKER_REQUESTS.SEED_PROJECT,
-                    webgmeToken: token,
+                    webgmeToken: newToken,
                     type: 'file',
-                    seedName: 'EmptyProject',
+                    seedName: 'mdd',
                     projectName: projectName.trim(),
                     branchName: 'master',
                     kind: kind
                 };
 
+                token = newToken;
                 returnData.kind = kind;
+                returnData.libraries = librariesForDomains(domains);
                 logger.debug('Seeding', seedProjectParameters);
                 return Q.ninvoke(swm, 'request', seedProjectParameters);
             })
             .then(function (result) {
                 returnData.projectId = result.projectId;
+                return addLibraries(swm, token, returnData.projectId, returnData.libraries)
+                    .then(function () {
+                        return result;
+                    });
+            })
+            .then(function (result) {
                 if (gmeAuth && gmeAuth.metadataStorage && returnData.projectId) {
                     return gmeAuth.metadataStorage.updateProjectInfo(returnData.projectId, {
                         kind: returnData.kind
@@ -191,13 +235,15 @@ function initialize(middlewareOpts) {
 
     /**
      * body: { projectId: string, domains: string[] }
-     * Stamps kind only — library sync awaits DomainSelector-analogue + seeds.
+     * Stamps kind and adds any language libraries the domains require.
      */
     router.post('/updateProject', function (req, res, next) {
+        var userId = getUserId(req);
         var projectId = req.body && req.body.projectId;
         var domains = req.body && Array.isArray(req.body.domains) ? req.body.domains : [];
         var seedInfo;
         var kind;
+        var libraries;
 
         logger.debug('updateProject', req.body);
 
@@ -212,12 +258,16 @@ function initialize(middlewareOpts) {
                 }
             });
             kind = 'MDSS:' + domains.join(':');
+            libraries = librariesForDomains(domains);
         } catch (err) {
             next(err);
             return;
         }
 
-        Q()
+        getNewJWToken(userId)
+            .then(function (token) {
+                return addLibraries(swm, token, projectId, libraries);
+            })
             .then(function () {
                 if (gmeAuth && gmeAuth.metadataStorage) {
                     return gmeAuth.metadataStorage.updateProjectInfo(projectId, { kind: kind });
@@ -228,8 +278,8 @@ function initialize(middlewareOpts) {
                 res.json({
                     projectId: projectId,
                     kind: kind,
-                    librariesSynced: false,
-                    note: 'Domain libraries not synced yet — awaiting MDD seeds / DomainSelector analogue'
+                    libraries: libraries,
+                    librariesSynced: true
                 });
             })
             .catch(function (err) {

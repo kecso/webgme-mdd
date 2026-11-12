@@ -22,6 +22,6 @@ config.authentication.gmeAuth.path = require.resolve(
 );
 
 config.seedProjects.enable = true;
-config.seedProjects.defaultProject = 'EmptyProject';
+config.seedProjects.defaultProject = 'mdd';
 
 module.exports = config;
