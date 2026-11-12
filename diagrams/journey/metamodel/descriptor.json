@@ -23,7 +23,7 @@
     "Make tea: 5: Me"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "UserJourney": {
       "attrs": [
         "name",
         "title"
@@ -43,5 +43,7 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd"
+  "sample": "./../examples/sample.mmd",
+  "leanDomain": "../lean/Domain.lean",
+  "leanNamespace": "JourneyDomain"
 }

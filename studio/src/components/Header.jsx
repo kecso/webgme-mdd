@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { domainLabel } from '../data/modelingDomains.js';
 
 function GearIcon() {
   return (
@@ -52,8 +51,8 @@ export default function Header({
   inspectorOpen,
   onOpenSettings,
   onExportBook,
-  onShowOverview,
-  onShowCanvas,
+  onCloseDiagram,
+  onCloseProject,
   userLabel
 }) {
   const [menu, setMenu] = useState(null);
@@ -78,41 +77,59 @@ export default function Header({
   return (
     <header className="studio-header">
       <div className="brand-block">
-        <Link to="/" className="brand" title="Markdown System Studio">
-          MDSS
-        </Link>
-        {project ? (
-          <span className="project-chip">
-            {project.owner}/{project.name}
-            {project.storyId ? ` · ${project.storyId}` : ''}
-          </span>
-        ) : null}
-        {project ? (
-          <nav className="mode-tabs" aria-label="Project aspects">
-            <button
-              type="button"
-              className={mode === 'overview' ? 'active' : ''}
-              onClick={onShowOverview}
-            >
-              Overview
-            </button>
-            <button
-              type="button"
-              className={mode === 'canvas' ? 'active' : ''}
-              disabled={!active}
-              title={active ? active.name : 'Open a diagram from overview'}
-              onClick={() => active && onShowCanvas?.()}
-            >
-              {active
-                ? `${active.diagramType}${
-                    active.modelingDomainId
-                      ? ` · ${domainLabel(active.modelingDomainId)}`
-                      : ''
-                  }`
-                : 'Diagram'}
-            </button>
-          </nav>
-        ) : null}
+        <nav className="crumbs" aria-label="Location">
+          <Link to="/" className="brand" title="Markdown System Studio">
+            MDSS
+          </Link>
+          {project ? (
+            <>
+              <span className="crumb-sep" aria-hidden>
+                ›
+              </span>
+              <span className={`crumb${mode === 'overview' ? ' current' : ''}`}>
+              <button
+                type="button"
+                className="crumb-label"
+                title="Project"
+                onClick={onCloseDiagram}
+              >
+                {project.owner}/{project.name}
+                {project.storyId ? ` · ${project.storyId}` : ''}
+              </button>
+              <button
+                type="button"
+                className="crumb-close"
+                aria-label="Close project"
+                title="Close project"
+                onClick={onCloseProject}
+              >
+                ×
+              </button>
+            </span>
+            {mode === 'canvas' && active ? (
+              <>
+                <span className="crumb-sep" aria-hidden>
+                  ›
+                </span>
+                <span className="crumb current">
+                  <span className="crumb-label" title={active.diagramType}>
+                    {active.name || active.diagramType}
+                  </span>
+                  <button
+                    type="button"
+                    className="crumb-close"
+                    aria-label="Close diagram"
+                    title="Close diagram"
+                    onClick={onCloseDiagram}
+                  >
+                    ×
+                  </button>
+                </span>
+              </>
+            ) : null}
+            </>
+          ) : null}
+        </nav>
       </div>
       <div className="header-actions">
         {project ? (

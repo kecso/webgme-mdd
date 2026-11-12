@@ -23,7 +23,7 @@
     "line [...]"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "XYChart": {
       "attrs": [
         "name",
         "title",

@@ -2,33 +2,33 @@
 /*eslint-env node, browser*/
 
 /**
- * Minimal webgme-json compatible Language importer.
- * Spec subset aligned with deepforge-dev/webgme-json-importer:
- * attributes, attribute_meta, children_meta, pointer_meta, registry, children, id (@meta:Name)
+ * Apply a Language document onto a WebGME node.
+ * Accepts a webgme-json-importer project (ROOT / FCO / concepts, guid keys)
+ * and the earlier @meta:Name draft.
  */
 define([], function () {
     'use strict';
 
-    function findChildByName(core, parent, name) {
-        const paths = core.getChildrenPaths(parent) || [];
-        // Synchronous path-only search is insufficient; caller should load children.
-        return null;
+    function isImporterDocument(spec) {
+        return !!(spec && spec.guid && spec.pointers && spec.attributes && spec.attributes.name === 'ROOT');
     }
 
-    function ensureMetaChild(core, root, parent, name, existingByName) {
+    function nodeName(childSpec, idx) {
+        if (childSpec.attributes && childSpec.attributes.name) return childSpec.attributes.name;
+        const metaId = childSpec.id || '';
+        if (metaId.indexOf('@meta:') === 0) return metaId.substring(6);
+        return 'Meta' + idx;
+    }
+
+    function ensureMetaChild(core, parent, name, base, existingByName) {
         if (existingByName[name]) {
             return { node: existingByName[name], created: false };
         }
-        // Base new meta nodes on FCO when available
-        let fco = null;
-        const rootChildren = existingByName.__rootChildren || [];
-        // Plugin META map may already expose FCO
         const node = core.createNode({
             parent: parent,
-            base: existingByName.FCO || null
+            base: base || null
         });
         core.setAttribute(node, 'name', name);
-        // Mark as meta by adding to META sheet via setAttribute meta rules on parent containment
         existingByName[name] = node;
         return { node: node, created: true };
     }
@@ -37,9 +37,9 @@ define([], function () {
         Object.keys(attributeMeta || {}).forEach(function (attr) {
             const def = attributeMeta[attr] || {};
             const type = def.type || 'string';
-            // Ensure attribute exists with default
             if (core.getAttribute(node, attr) === undefined) {
-                core.setAttribute(node, attr, def.default != null ? def.default : (type === 'integer' ? 0 : ''));
+                const fallback = def.default != null ? def.default : (type === 'integer' ? 0 : '');
+                core.setAttribute(node, attr, fallback);
             }
             if (typeof core.setAttributeMeta === 'function') {
                 core.setAttributeMeta(node, attr, { type: type });
@@ -50,15 +50,16 @@ define([], function () {
     function applyPointerMeta(core, node, pointerMeta, resolve) {
         Object.keys(pointerMeta || {}).forEach(function (ptr) {
             const def = pointerMeta[ptr];
-            if (typeof core.setPointerMetaTarget !== 'function') return;
+            if (!def || typeof core.setPointerMetaTarget !== 'function') return;
             const min = def.min != null ? def.min : -1;
             const max = def.max != null ? def.max : 1;
             Object.keys(def).forEach(function (key) {
                 if (key === 'min' || key === 'max') return;
                 const target = resolve(key);
                 if (!target) return;
-                const tmin = def[key].min != null ? def[key].min : -1;
-                const tmax = def[key].max != null ? def[key].max : 1;
+                const rule = def[key] || {};
+                const tmin = rule.min != null ? rule.min : -1;
+                const tmax = rule.max != null ? rule.max : 1;
                 core.setPointerMetaTarget(node, ptr, target, tmin, tmax);
             });
             if (typeof core.setPointerMetaLimits === 'function') {
@@ -78,13 +79,180 @@ define([], function () {
                 core.setChildMeta(node, target, lim.min != null ? lim.min : -1, lim.max != null ? lim.max : -1);
             }
         });
-        if (typeof core.setChildrenMetaLimits === 'function') {
+        if (typeof core.setChildrenMetaLimits === 'function' && (childrenMeta.min != null || childrenMeta.max != null)) {
             core.setChildrenMetaLimits(
                 node,
                 childrenMeta.min != null ? childrenMeta.min : -1,
                 childrenMeta.max != null ? childrenMeta.max : -1
             );
         }
+    }
+
+    function applyRegistry(core, node, registry, skip) {
+        Object.keys(registry || {}).forEach(function (key) {
+            if (skip && skip[key]) return;
+            core.setRegistry(node, key, registry[key]);
+        });
+    }
+
+    function remember(byName, byGuid, name, guid, node) {
+        if (name) byName[name] = node;
+        if (guid) byGuid[guid] = node;
+    }
+
+    function resolveId(byName, byGuid, idOrName) {
+        if (!idOrName) return null;
+        if (byGuid[idOrName]) return byGuid[idOrName];
+        if (idOrName.indexOf('@meta:') === 0) return byName[idOrName.substring(6)] || null;
+        return byName[idOrName] || null;
+    }
+
+    function addSetMembers(core, rootNode, spec, byGuid) {
+        if (typeof core.addMember !== 'function') return;
+        const sets = spec.sets || {};
+        const names = Object.keys(sets);
+        if (!names.length) {
+            Object.keys(byGuid).forEach(function (guid) {
+                const node = byGuid[guid];
+                if (!node) return;
+                try { core.addMember(rootNode, 'MetaAspectSet', node); } catch (e) { /* version skew */ }
+            });
+            return;
+        }
+        names.forEach(function (setName) {
+            (sets[setName] || []).forEach(function (memberGuid) {
+                const member = byGuid[memberGuid];
+                if (!member) return;
+                try { core.addMember(rootNode, setName, member); } catch (e) { /* version skew */ }
+                const entry = spec.member_registry && spec.member_registry[setName] && spec.member_registry[setName][memberGuid];
+                if (entry && entry.position && typeof core.setMemberRegistry === 'function') {
+                    try {
+                        core.setMemberRegistry(rootNode, setName, member, 'position', entry.position);
+                    } catch (e2) { /* version skew */ }
+                }
+            });
+        });
+    }
+
+    function applyLegacy(core, rootNode, parent, spec, META, summary) {
+        return core.loadChildren(parent).then(function (children) {
+            const byName = Object.assign({}, META);
+            const byGuid = {};
+            children.forEach(function (ch) {
+                byName[core.getAttribute(ch, 'name')] = ch;
+            });
+            if (META.FCO) byName.FCO = META.FCO;
+
+            if (spec.attributes && spec.attributes.name && spec.attributes.name !== 'ROOT') {
+                core.setAttribute(parent, 'name', spec.attributes.name);
+            }
+            applyAttributeMeta(core, parent, spec.attribute_meta);
+            applyRegistry(core, parent, spec.registry);
+
+            (spec.children || []).forEach(function (childSpec, idx) {
+                const name = nodeName(childSpec, idx);
+                const base = name === 'FCO' ? null : (byName.FCO || META.FCO || null);
+                const result = ensureMetaChild(core, parent, name, base, byName);
+                if (result.created) summary.created += 1;
+                else summary.updated += 1;
+                if (childSpec.attributes) {
+                    Object.keys(childSpec.attributes).forEach(function (attr) {
+                        core.setAttribute(result.node, attr, childSpec.attributes[attr]);
+                    });
+                }
+                applyAttributeMeta(core, result.node, childSpec.attribute_meta);
+                if (childSpec.registry && childSpec.registry.position) {
+                    core.setRegistry(result.node, 'position', childSpec.registry.position);
+                }
+                remember(byName, byGuid, name, childSpec.guid, result.node);
+            });
+
+            const resolve = function (idOrName) {
+                return resolveId(byName, byGuid, idOrName);
+            };
+            applyChildrenMeta(core, parent, spec.children_meta, resolve);
+            (spec.children || []).forEach(function (childSpec, idx) {
+                const node = byName[nodeName(childSpec, idx)];
+                if (!node) return;
+                applyChildrenMeta(core, node, childSpec.children_meta, resolve);
+                applyPointerMeta(core, node, childSpec.pointer_meta, resolve);
+            });
+            addSetMembers(core, rootNode, { sets: {} }, byGuid);
+            return summary;
+        });
+    }
+
+    function applyImporter(core, rootNode, parent, spec, META, summary) {
+        return core.loadChildren(parent).then(function (children) {
+            const byName = Object.assign({}, META);
+            const byGuid = {};
+            children.forEach(function (ch) {
+                byName[core.getAttribute(ch, 'name')] = ch;
+            });
+            if (META.FCO) byName.FCO = META.FCO;
+
+            applyAttributeMeta(core, parent, spec.attribute_meta);
+            applyRegistry(core, parent, spec.registry, { ProjectRegistry: true });
+
+            const childSpecs = (spec.children || []).slice().sort(function (a, b) {
+                const aFco = nodeName(a, 0) === 'FCO' ? 0 : 1;
+                const bFco = nodeName(b, 0) === 'FCO' ? 0 : 1;
+                return aFco - bFco;
+            });
+
+            childSpecs.forEach(function (childSpec, idx) {
+                const name = nodeName(childSpec, idx);
+                if (name === 'FCO' && (META.FCO || byName.FCO)) {
+                    remember(byName, byGuid, 'FCO', childSpec.guid, META.FCO || byName.FCO);
+                    summary.updated += 1;
+                    return;
+                }
+                const baseRef = childSpec.pointers && childSpec.pointers.base;
+                const base = baseRef ? (byGuid[baseRef] || null) : (name === 'FCO' ? null : (byName.FCO || null));
+                const result = ensureMetaChild(core, parent, name, base, byName);
+                if (result.created) summary.created += 1;
+                else summary.updated += 1;
+                if (childSpec.guid && typeof core.setGuid === 'function') {
+                    try { core.setGuid(result.node, childSpec.guid); } catch (e) { /* optional */ }
+                }
+                if (childSpec.attributes) {
+                    Object.keys(childSpec.attributes).forEach(function (attr) {
+                        core.setAttribute(result.node, attr, childSpec.attributes[attr]);
+                    });
+                }
+                applyAttributeMeta(core, result.node, childSpec.attribute_meta);
+                applyRegistry(core, result.node, childSpec.registry);
+                remember(byName, byGuid, name, childSpec.guid, result.node);
+            });
+
+            const resolve = function (idOrName) {
+                return resolveId(byName, byGuid, idOrName);
+            };
+            applyChildrenMeta(core, parent, spec.children_meta, resolve);
+            childSpecs.forEach(function (childSpec, idx) {
+                const name = nodeName(childSpec, idx);
+                if (name === 'FCO' && (META.FCO || byName.FCO) && byGuid[childSpec.guid] === (META.FCO || byName.FCO)) {
+                    return;
+                }
+                const node = childSpec.guid ? byGuid[childSpec.guid] : byName[name];
+                if (!node) return;
+                applyChildrenMeta(core, node, childSpec.children_meta, resolve);
+                applyPointerMeta(core, node, childSpec.pointer_meta, resolve);
+            });
+
+            // The library document allows FCO under ROOT. The node this language
+            // is applied to also has to contain the diagram concept itself.
+            childSpecs.forEach(function (childSpec) {
+                const plugins = childSpec.registry && childSpec.registry.validPlugins;
+                if (!plugins || typeof core.setChildMeta !== 'function') return;
+                const diagramNode = byGuid[childSpec.guid];
+                if (!diagramNode) return;
+                core.setChildMeta(parent, diagramNode, -1, -1);
+            });
+
+            addSetMembers(core, rootNode, spec, byGuid);
+            return summary;
+        });
     }
 
     /**
@@ -94,90 +262,10 @@ define([], function () {
         META = META || {};
         const parent = activeNode || rootNode;
         const summary = { created: 0, updated: 0 };
-
-        return core.loadChildren(parent).then(function (children) {
-            const byName = Object.assign({}, META);
-            children.forEach(function (ch) {
-                byName[core.getAttribute(ch, 'name')] = ch;
-            });
-            if (META.FCO) byName.FCO = META.FCO;
-
-            // Optionally set parent name
-            if (spec.attributes && spec.attributes.name) {
-                core.setAttribute(parent, 'name', spec.attributes.name);
-            }
-            applyAttributeMeta(core, parent, spec.attribute_meta);
-            if (spec.registry) {
-                Object.keys(spec.registry).forEach(function (k) {
-                    core.setRegistry(parent, k, spec.registry[k]);
-                });
-            }
-
-            const childSpecs = spec.children || [];
-            // First pass: create nodes
-            childSpecs.forEach(function (childSpec, idx) {
-                const metaId = childSpec.id || '';
-                const name = metaId.indexOf('@meta:') === 0
-                    ? metaId.substring(6)
-                    : (childSpec.attributes && childSpec.attributes.name) || ('Meta' + idx);
-                const result = ensureMetaChild(core, rootNode, parent, name, byName);
-                if (result.created) summary.created += 1;
-                else summary.updated += 1;
-
-                if (childSpec.attributes) {
-                    Object.keys(childSpec.attributes).forEach(function (a) {
-                        core.setAttribute(result.node, a, childSpec.attributes[a]);
-                    });
-                }
-                applyAttributeMeta(core, result.node, childSpec.attribute_meta);
-                if (childSpec.registry && childSpec.registry.position) {
-                    core.setRegistry(result.node, 'position', childSpec.registry.position);
-                }
-                byName[name] = result.node;
-            });
-
-            function resolve(idOrName) {
-                if (!idOrName) return null;
-                if (idOrName.indexOf('@meta:') === 0) {
-                    return byName[idOrName.substring(6)] || null;
-                }
-                return byName[idOrName] || null;
-            }
-
-            // Second pass: relationships / containment rules
-            applyChildrenMeta(core, parent, spec.children_meta, resolve);
-            childSpecs.forEach(function (childSpec) {
-                const metaId = childSpec.id || '';
-                const name = metaId.indexOf('@meta:') === 0
-                    ? metaId.substring(6)
-                    : (childSpec.attributes && childSpec.attributes.name);
-                const node = byName[name];
-                if (!node) return;
-                applyChildrenMeta(core, node, childSpec.children_meta, resolve);
-                applyPointerMeta(core, node, childSpec.pointer_meta, resolve);
-            });
-
-            // Expose on META sheet of ROOT when possible
-            if (typeof core.addMember === 'function') {
-                try {
-                    const metaAspect = 'MetaAspectSet';
-                    Object.keys(byName).forEach(function (name) {
-                        if (name === 'FCO' || name.indexOf('__') === 0) return;
-                        const n = byName[name];
-                        if (!n || n === parent) return;
-                        try {
-                            core.addMember(rootNode, metaAspect, n);
-                        } catch (e) {
-                            // Different WebGME versions use different meta aspect names
-                        }
-                    });
-                } catch (e) {
-                    // ignore
-                }
-            }
-
-            return summary;
-        });
+        if (isImporterDocument(spec)) {
+            return applyImporter(core, rootNode, parent, spec, META, summary);
+        }
+        return applyLegacy(core, rootNode, parent, spec, META, summary);
     }
 
     return {

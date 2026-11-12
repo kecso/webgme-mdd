@@ -23,7 +23,7 @@
     "    Leaf"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "Mindmap": {
       "attrs": [
         "name",
         "title"

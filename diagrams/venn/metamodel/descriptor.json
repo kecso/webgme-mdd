@@ -17,7 +17,7 @@
     "venn"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "VennDiagram": {
       "attrs": [
         "name",
         "title"
@@ -34,9 +34,11 @@
         "name",
         "label"
       ],
-      "pointers": [
-        "sets"
-      ]
+      "sets": {
+        "members": [
+          "Set"
+        ]
+      }
     }
   },
   "webgmeJson": "./Language.json",

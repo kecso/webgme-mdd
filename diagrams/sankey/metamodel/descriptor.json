@@ -21,7 +21,7 @@
     "Source,Target,Value"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "SankeyDiagram": {
       "attrs": [
         "name",
         "title"

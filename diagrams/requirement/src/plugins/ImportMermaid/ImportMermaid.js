@@ -55,7 +55,7 @@ define([
         }
 
         const parent = self.activeNode;
-        const diagramBase = META.Diagram || META[Object.keys(META).find(function (k) {
+        const diagramBase = META.RequirementDiagram || META[Object.keys(META).find(function (k) {
             return k !== 'FCO' && META[k];
         })];
 

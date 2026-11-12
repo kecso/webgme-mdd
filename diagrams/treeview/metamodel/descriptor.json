@@ -18,7 +18,7 @@
     "treeView"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "TreeView": {
       "attrs": [
         "name",
         "title"

@@ -13,9 +13,9 @@ class _Contained (parent child : Type) where
 
 inductive _Type where
   | _FCO
-  | cDiagram
   | cSection
   | cTask
+  | cUserJourney
   deriving DecidableEq, BEq, Repr
 
 structure FCO where
@@ -23,16 +23,6 @@ structure FCO where
   _type : _Type
   name : String
   deriving Repr
-
--- META concept Diagram
-structure Diagram extends FCO where
-  title : String := ""
-  -- containment allows: Section, Task
-  _childIds : List _NodeId := []
-  deriving Repr
-
-instance : Coe Diagram FCO where
-  coe := Diagram.toFCO
 
 -- META concept Section
 structure Section extends FCO where
@@ -49,6 +39,16 @@ structure Task extends FCO where
 
 instance : Coe Task FCO where
   coe := Task.toFCO
+
+-- META concept UserJourney
+structure UserJourney extends FCO where
+  title : String := ""
+  -- containment allows: Section, Task
+  _childIds : List _NodeId := []
+  deriving Repr
+
+instance : Coe UserJourney FCO where
+  coe := UserJourney.toFCO
 
 /-- Well-formedness scaffold: every node name non-empty (domain-local). -/
 def AllNamesNonEmpty (nodes : List FCO) : Bool :=

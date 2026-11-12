@@ -1,55 +1,134 @@
 {
+  "id": "ceef8a9d-baad-5e50-9784-4ab5dcd98cd7",
+  "path": "",
+  "guid": "ceef8a9d-baad-5e50-9784-4ab5dcd98cd7",
   "attributes": {
-    "name": "Language"
+    "name": "ROOT"
   },
   "attribute_meta": {
     "name": {
       "type": "string"
     }
   },
-  "children_meta": {
-    "min": -1,
-    "max": -1,
-    "@meta:Specification": {
-      "min": -1,
-      "max": -1
-    }
+  "pointers": {
+    "base": null
   },
+  "pointer_meta": {},
+  "mixins": [],
   "registry": {
-    "validPlugins": "ImportEARS ExportEARS ApplyLanguageMeta"
+    "validPlugins": "ImportEARS ApplyLanguageMeta",
+    "ProjectRegistry": {
+      "FCO_ID": "/1"
+    },
+    "MetaSheets": [
+      {
+        "SetID": "MetaAspectSet_a530172c-e839-556f-9544-724266ba4e12",
+        "order": 0,
+        "title": "META"
+      }
+    ]
   },
-  "children": [
-    {
-      "id": "@meta:Specification",
-      "attributes": {
-        "name": "Specification",
-        "title": ""
-      },
-      "attribute_meta": {
-        "name": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
+  "sets": {
+    "MetaAspectSet": [
+      "438a36d8-fccc-5156-adc5-197392823e48",
+      "645629d4-d7d4-5022-adf9-e9c8f19496ee",
+      "a534dcc2-870c-55b5-a211-b034cd900e7d"
+    ],
+    "MetaAspectSet_a530172c-e839-556f-9544-724266ba4e12": [
+      "438a36d8-fccc-5156-adc5-197392823e48",
+      "645629d4-d7d4-5022-adf9-e9c8f19496ee",
+      "a534dcc2-870c-55b5-a211-b034cd900e7d"
+    ]
+  },
+  "member_registry": {
+    "MetaAspectSet": {
+      "438a36d8-fccc-5156-adc5-197392823e48": {
+        "position": {
+          "x": 80,
+          "y": 70
         }
       },
-      "children_meta": {
-        "min": -1,
-        "max": -1,
-        "@meta:EARSRequirement": {
-          "min": -1,
-          "max": -1
+      "645629d4-d7d4-5022-adf9-e9c8f19496ee": {
+        "position": {
+          "x": 240,
+          "y": 100
         }
       },
-      "registry": {
+      "a534dcc2-870c-55b5-a211-b034cd900e7d": {
         "position": {
           "x": 100,
           "y": 100
         }
       }
     },
+    "MetaAspectSet_a530172c-e839-556f-9544-724266ba4e12": {
+      "438a36d8-fccc-5156-adc5-197392823e48": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "645629d4-d7d4-5022-adf9-e9c8f19496ee": {
+        "position": {
+          "x": 240,
+          "y": 100
+        }
+      },
+      "a534dcc2-870c-55b5-a211-b034cd900e7d": {
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      }
+    }
+  },
+  "member_attributes": {
+    "MetaAspectSet": {
+      "438a36d8-fccc-5156-adc5-197392823e48": {},
+      "645629d4-d7d4-5022-adf9-e9c8f19496ee": {},
+      "a534dcc2-870c-55b5-a211-b034cd900e7d": {}
+    },
+    "MetaAspectSet_a530172c-e839-556f-9544-724266ba4e12": {
+      "438a36d8-fccc-5156-adc5-197392823e48": {},
+      "645629d4-d7d4-5022-adf9-e9c8f19496ee": {},
+      "a534dcc2-870c-55b5-a211-b034cd900e7d": {}
+    }
+  },
+  "children": [
     {
-      "id": "@meta:EARSRequirement",
+      "id": "438a36d8-fccc-5156-adc5-197392823e48",
+      "path": "/1",
+      "guid": "438a36d8-fccc-5156-adc5-197392823e48",
+      "attributes": {
+        "name": "FCO"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": null
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "DisplayFormat": "$name"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "645629d4-d7d4-5022-adf9-e9c8f19496ee",
+      "path": "/a",
+      "guid": "645629d4-d7d4-5022-adf9-e9c8f19496ee",
       "attributes": {
         "name": "EARSRequirement",
         "reqId": "",
@@ -102,12 +181,67 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "438a36d8-fccc-5156-adc5-197392823e48"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 240,
           "y": 100
         }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "a534dcc2-870c-55b5-a211-b034cd900e7d",
+      "path": "/b",
+      "guid": "a534dcc2-870c-55b5-a211-b034cd900e7d",
+      "attributes": {
+        "name": "EARSSpecification",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": "438a36d8-fccc-5156-adc5-197392823e48"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 100
+        },
+        "validPlugins": "ImportEARS ExportEARS ApplyLanguageMeta"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": {
+        "645629d4-d7d4-5022-adf9-e9c8f19496ee": {
+          "min": -1,
+          "max": -1
+        }
       }
     }
-  ]
+  ],
+  "children_meta": {
+    "438a36d8-fccc-5156-adc5-197392823e48": {
+      "min": -1,
+      "max": -1
+    }
+  }
 }

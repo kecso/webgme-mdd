@@ -1,67 +1,166 @@
 {
+  "id": "de53b3d7-2474-5391-b1ee-8f64de954ef0",
+  "path": "",
+  "guid": "de53b3d7-2474-5391-b1ee-8f64de954ef0",
   "attributes": {
-    "name": "Language"
+    "name": "ROOT"
   },
   "attribute_meta": {
     "name": {
       "type": "string"
     }
   },
-  "children_meta": {
-    "min": -1,
-    "max": -1,
-    "@meta:Diagram": {
-      "min": -1,
-      "max": -1
-    }
+  "pointers": {
+    "base": null
   },
+  "pointer_meta": {},
+  "mixins": [],
   "registry": {
-    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+    "validPlugins": "ImportMermaid ApplyLanguageMeta",
+    "ProjectRegistry": {
+      "FCO_ID": "/1"
+    },
+    "MetaSheets": [
+      {
+        "SetID": "MetaAspectSet_d912efab-cd5a-5e09-8132-2a6d2ac6b325",
+        "order": 0,
+        "title": "META"
+      }
+    ]
   },
-  "children": [
-    {
-      "id": "@meta:Diagram",
-      "attributes": {
-        "name": "Diagram",
-        "title": "",
-        "orientation": ""
-      },
-      "attribute_meta": {
-        "name": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "orientation": {
-          "type": "string"
+  "sets": {
+    "MetaAspectSet": [
+      "d5646f51-ad9e-5d19-80d2-5add509ef925",
+      "edbe63fb-a89b-55ec-af4e-9735e04240fc",
+      "51eabdb2-e617-5644-87bb-4542ef6d6828",
+      "98a255cb-a85e-588f-b6ef-ff8785ee2367",
+      "d275abd0-5b9d-52fa-84fa-3fd655d9de0c"
+    ],
+    "MetaAspectSet_d912efab-cd5a-5e09-8132-2a6d2ac6b325": [
+      "d5646f51-ad9e-5d19-80d2-5add509ef925",
+      "edbe63fb-a89b-55ec-af4e-9735e04240fc",
+      "51eabdb2-e617-5644-87bb-4542ef6d6828",
+      "98a255cb-a85e-588f-b6ef-ff8785ee2367",
+      "d275abd0-5b9d-52fa-84fa-3fd655d9de0c"
+    ]
+  },
+  "member_registry": {
+    "MetaAspectSet": {
+      "d5646f51-ad9e-5d19-80d2-5add509ef925": {
+        "position": {
+          "x": 80,
+          "y": 70
         }
       },
-      "registry": {
+      "edbe63fb-a89b-55ec-af4e-9735e04240fc": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "51eabdb2-e617-5644-87bb-4542ef6d6828": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "98a255cb-a85e-588f-b6ef-ff8785ee2367": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
         "position": {
           "x": 100,
           "y": 120
         }
-      },
-      "children_meta": {
-        "min": -1,
-        "max": -1,
-        "@meta:Branch": {
-          "min": -1,
-          "max": -1
-        },
-        "@meta:Commit": {
-          "min": -1,
-          "max": -1
-        },
-        "@meta:Merge": {
-          "min": -1,
-          "max": -1
-        }
       }
     },
+    "MetaAspectSet_d912efab-cd5a-5e09-8132-2a6d2ac6b325": {
+      "d5646f51-ad9e-5d19-80d2-5add509ef925": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "edbe63fb-a89b-55ec-af4e-9735e04240fc": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "51eabdb2-e617-5644-87bb-4542ef6d6828": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "98a255cb-a85e-588f-b6ef-ff8785ee2367": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      }
+    }
+  },
+  "member_attributes": {
+    "MetaAspectSet": {
+      "d5646f51-ad9e-5d19-80d2-5add509ef925": {},
+      "edbe63fb-a89b-55ec-af4e-9735e04240fc": {},
+      "51eabdb2-e617-5644-87bb-4542ef6d6828": {},
+      "98a255cb-a85e-588f-b6ef-ff8785ee2367": {},
+      "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {}
+    },
+    "MetaAspectSet_d912efab-cd5a-5e09-8132-2a6d2ac6b325": {
+      "d5646f51-ad9e-5d19-80d2-5add509ef925": {},
+      "edbe63fb-a89b-55ec-af4e-9735e04240fc": {},
+      "51eabdb2-e617-5644-87bb-4542ef6d6828": {},
+      "98a255cb-a85e-588f-b6ef-ff8785ee2367": {},
+      "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {}
+    }
+  },
+  "children": [
     {
-      "id": "@meta:Branch",
+      "id": "d5646f51-ad9e-5d19-80d2-5add509ef925",
+      "path": "/1",
+      "guid": "d5646f51-ad9e-5d19-80d2-5add509ef925",
+      "attributes": {
+        "name": "FCO"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": null
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "DisplayFormat": "$name"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "edbe63fb-a89b-55ec-af4e-9735e04240fc",
+      "path": "/a",
+      "guid": "edbe63fb-a89b-55ec-af4e-9735e04240fc",
       "attributes": {
         "name": "Branch"
       },
@@ -70,15 +169,27 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "d5646f51-ad9e-5d19-80d2-5add509ef925"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 240,
           "y": 120
         }
-      }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Commit",
+      "id": "51eabdb2-e617-5644-87bb-4542ef6d6828",
+      "path": "/b",
+      "guid": "51eabdb2-e617-5644-87bb-4542ef6d6828",
       "attributes": {
         "name": "Commit",
         "commitId": "",
@@ -103,37 +214,49 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "d5646f51-ad9e-5d19-80d2-5add509ef925",
+        "branch": null
+      },
+      "pointer_meta": {
+        "branch": {
+          "min": 0,
+          "max": 1,
+          "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
+            "min": -1,
+            "max": 1
+          },
+          "edbe63fb-a89b-55ec-af4e-9735e04240fc": {
+            "min": -1,
+            "max": 1
+          },
+          "51eabdb2-e617-5644-87bb-4542ef6d6828": {
+            "min": -1,
+            "max": 1
+          },
+          "98a255cb-a85e-588f-b6ef-ff8785ee2367": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      },
+      "mixins": [],
       "registry": {
         "position": {
           "x": 380,
           "y": 120
         }
       },
-      "pointer_meta": {
-        "branch": {
-          "min": 0,
-          "max": 1,
-          "@meta:Diagram": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:Branch": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:Commit": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:Merge": {
-            "min": -1,
-            "max": 1
-          }
-        }
-      }
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Merge",
+      "id": "98a255cb-a85e-588f-b6ef-ff8785ee2367",
+      "path": "/c",
+      "guid": "98a255cb-a85e-588f-b6ef-ff8785ee2367",
       "attributes": {
         "name": "Merge"
       },
@@ -142,29 +265,28 @@
           "type": "string"
         }
       },
-      "registry": {
-        "position": {
-          "x": 520,
-          "y": 120
-        }
+      "pointers": {
+        "base": "d5646f51-ad9e-5d19-80d2-5add509ef925",
+        "into": null,
+        "from": null
       },
       "pointer_meta": {
         "into": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
             "min": -1,
             "max": 1
           },
-          "@meta:Branch": {
+          "edbe63fb-a89b-55ec-af4e-9735e04240fc": {
             "min": -1,
             "max": 1
           },
-          "@meta:Commit": {
+          "51eabdb2-e617-5644-87bb-4542ef6d6828": {
             "min": -1,
             "max": 1
           },
-          "@meta:Merge": {
+          "98a255cb-a85e-588f-b6ef-ff8785ee2367": {
             "min": -1,
             "max": 1
           }
@@ -172,24 +294,93 @@
         "from": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
             "min": -1,
             "max": 1
           },
-          "@meta:Branch": {
+          "edbe63fb-a89b-55ec-af4e-9735e04240fc": {
             "min": -1,
             "max": 1
           },
-          "@meta:Commit": {
+          "51eabdb2-e617-5644-87bb-4542ef6d6828": {
             "min": -1,
             "max": 1
           },
-          "@meta:Merge": {
+          "98a255cb-a85e-588f-b6ef-ff8785ee2367": {
             "min": -1,
             "max": 1
           }
         }
+      },
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "d275abd0-5b9d-52fa-84fa-3fd655d9de0c",
+      "path": "/d",
+      "guid": "d275abd0-5b9d-52fa-84fa-3fd655d9de0c",
+      "attributes": {
+        "name": "GitGraph",
+        "title": "",
+        "orientation": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "orientation": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": "d5646f51-ad9e-5d19-80d2-5add509ef925"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        },
+        "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": {
+        "edbe63fb-a89b-55ec-af4e-9735e04240fc": {
+          "min": -1,
+          "max": -1
+        },
+        "51eabdb2-e617-5644-87bb-4542ef6d6828": {
+          "min": -1,
+          "max": -1
+        },
+        "98a255cb-a85e-588f-b6ef-ff8785ee2367": {
+          "min": -1,
+          "max": -1
+        }
       }
     }
-  ]
+  ],
+  "children_meta": {
+    "d5646f51-ad9e-5d19-80d2-5add509ef925": {
+      "min": -1,
+      "max": -1
+    }
+  }
 }

@@ -25,7 +25,7 @@
     "Owner \"1\" --> \"*\" Animal : owns"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "ClassDiagram": {
       "attrs": [
         "name",
         "title"
@@ -80,5 +80,7 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd"
+  "sample": "./../examples/sample.mmd",
+  "leanDomain": "../lean/Domain.lean",
+  "leanNamespace": "ClassDomain"
 }

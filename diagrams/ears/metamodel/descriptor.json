@@ -25,7 +25,7 @@
     "The <system> shall <response>"
   ],
   "metaConcepts": {
-    "Specification": {
+    "EARSSpecification": {
       "attrs": [
         "name",
         "title"

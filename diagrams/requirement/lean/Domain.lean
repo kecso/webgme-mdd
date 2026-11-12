@@ -13,10 +13,10 @@ class _Contained (parent child : Type) where
 
 inductive _Type where
   | _FCO
-  | cDiagram
   | cRequirement
   | cElement
   | cRelationship
+  | cRequirementDiagram
   deriving DecidableEq, BEq, Repr
 
 structure FCO where
@@ -24,16 +24,6 @@ structure FCO where
   _type : _Type
   name : String
   deriving Repr
-
--- META concept Diagram
-structure Diagram extends FCO where
-  title : String := ""
-  -- containment allows: Requirement, Element, Relationship
-  _childIds : List _NodeId := []
-  deriving Repr
-
-instance : Coe Diagram FCO where
-  coe := Diagram.toFCO
 
 -- META concept Requirement
 structure Requirement extends FCO where
@@ -66,6 +56,16 @@ structure Relationship extends FCO where
 
 instance : Coe Relationship FCO where
   coe := Relationship.toFCO
+
+-- META concept RequirementDiagram
+structure RequirementDiagram extends FCO where
+  title : String := ""
+  -- containment allows: Requirement, Element, Relationship
+  _childIds : List _NodeId := []
+  deriving Repr
+
+instance : Coe RequirementDiagram FCO where
+  coe := RequirementDiagram.toFCO
 
 /-- Well-formedness scaffold: every node name non-empty (domain-local). -/
 def AllNamesNonEmpty (nodes : List FCO) : Bool :=

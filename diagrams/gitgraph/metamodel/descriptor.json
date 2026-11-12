@@ -23,7 +23,7 @@
     "merge develop"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "GitGraph": {
       "attrs": [
         "name",
         "title",

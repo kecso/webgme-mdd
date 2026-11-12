@@ -13,11 +13,11 @@ class _Contained (parent child : Type) where
 
 inductive _Type where
   | _FCO
-  | cDiagram
   | cActor
   | cUseCase
   | cBoundary
   | cLink
+  | cUseCaseDiagram
   deriving DecidableEq, BEq, Repr
 
 structure FCO where
@@ -25,17 +25,6 @@ structure FCO where
   _type : _Type
   name : String
   deriving Repr
-
--- META concept Diagram
-structure Diagram extends FCO where
-  title : String := ""
-  direction : String := ""
-  -- containment allows: Actor, Boundary, Link
-  _childIds : List _NodeId := []
-  deriving Repr
-
-instance : Coe Diagram FCO where
-  coe := Diagram.toFCO
 
 -- META concept Actor
 structure Actor extends FCO where
@@ -73,6 +62,17 @@ structure Link extends FCO where
 
 instance : Coe Link FCO where
   coe := Link.toFCO
+
+-- META concept UseCaseDiagram
+structure UseCaseDiagram extends FCO where
+  title : String := ""
+  direction : String := ""
+  -- containment allows: Actor, Boundary, Link, UseCase
+  _childIds : List _NodeId := []
+  deriving Repr
+
+instance : Coe UseCaseDiagram FCO where
+  coe := UseCaseDiagram.toFCO
 
 /-- Well-formedness scaffold: every node name non-empty (domain-local). -/
 def AllNamesNonEmpty (nodes : List FCO) : Bool :=

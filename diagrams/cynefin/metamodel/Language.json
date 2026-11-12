@@ -1,59 +1,150 @@
 {
+  "id": "9499bb0b-0010-5964-accf-84eff030a60b",
+  "path": "",
+  "guid": "9499bb0b-0010-5964-accf-84eff030a60b",
   "attributes": {
-    "name": "Language"
+    "name": "ROOT"
   },
   "attribute_meta": {
     "name": {
       "type": "string"
     }
   },
-  "children_meta": {
-    "min": -1,
-    "max": -1,
-    "@meta:Diagram": {
-      "min": -1,
-      "max": -1
-    }
+  "pointers": {
+    "base": null
   },
+  "pointer_meta": {},
+  "mixins": [],
   "registry": {
-    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+    "validPlugins": "ImportMermaid ApplyLanguageMeta",
+    "ProjectRegistry": {
+      "FCO_ID": "/1"
+    },
+    "MetaSheets": [
+      {
+        "SetID": "MetaAspectSet_ec717cfa-72eb-5e35-8da0-23b6ec60fd45",
+        "order": 0,
+        "title": "META"
+      }
+    ]
   },
-  "children": [
-    {
-      "id": "@meta:Diagram",
-      "attributes": {
-        "name": "Diagram",
-        "title": ""
-      },
-      "attribute_meta": {
-        "name": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
+  "sets": {
+    "MetaAspectSet": [
+      "5694af61-42f6-50b8-abc1-74798343be18",
+      "de496c47-3d45-5d0f-9234-ceed95c5989c",
+      "2d057fc6-779e-576b-be4c-bc5898cc580a",
+      "984d26b7-cc56-53e5-803d-3a098c59788a"
+    ],
+    "MetaAspectSet_ec717cfa-72eb-5e35-8da0-23b6ec60fd45": [
+      "5694af61-42f6-50b8-abc1-74798343be18",
+      "de496c47-3d45-5d0f-9234-ceed95c5989c",
+      "2d057fc6-779e-576b-be4c-bc5898cc580a",
+      "984d26b7-cc56-53e5-803d-3a098c59788a"
+    ]
+  },
+  "member_registry": {
+    "MetaAspectSet": {
+      "5694af61-42f6-50b8-abc1-74798343be18": {
+        "position": {
+          "x": 80,
+          "y": 70
         }
       },
-      "registry": {
+      "de496c47-3d45-5d0f-9234-ceed95c5989c": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "2d057fc6-779e-576b-be4c-bc5898cc580a": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "984d26b7-cc56-53e5-803d-3a098c59788a": {
         "position": {
           "x": 100,
           "y": 120
         }
-      },
-      "children_meta": {
-        "min": -1,
-        "max": -1,
-        "@meta:Domain": {
-          "min": -1,
-          "max": -1
-        },
-        "@meta:Item": {
-          "min": -1,
-          "max": -1
-        }
       }
     },
+    "MetaAspectSet_ec717cfa-72eb-5e35-8da0-23b6ec60fd45": {
+      "5694af61-42f6-50b8-abc1-74798343be18": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "de496c47-3d45-5d0f-9234-ceed95c5989c": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "2d057fc6-779e-576b-be4c-bc5898cc580a": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "984d26b7-cc56-53e5-803d-3a098c59788a": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      }
+    }
+  },
+  "member_attributes": {
+    "MetaAspectSet": {
+      "5694af61-42f6-50b8-abc1-74798343be18": {},
+      "de496c47-3d45-5d0f-9234-ceed95c5989c": {},
+      "2d057fc6-779e-576b-be4c-bc5898cc580a": {},
+      "984d26b7-cc56-53e5-803d-3a098c59788a": {}
+    },
+    "MetaAspectSet_ec717cfa-72eb-5e35-8da0-23b6ec60fd45": {
+      "5694af61-42f6-50b8-abc1-74798343be18": {},
+      "de496c47-3d45-5d0f-9234-ceed95c5989c": {},
+      "2d057fc6-779e-576b-be4c-bc5898cc580a": {},
+      "984d26b7-cc56-53e5-803d-3a098c59788a": {}
+    }
+  },
+  "children": [
     {
-      "id": "@meta:Domain",
+      "id": "5694af61-42f6-50b8-abc1-74798343be18",
+      "path": "/1",
+      "guid": "5694af61-42f6-50b8-abc1-74798343be18",
+      "attributes": {
+        "name": "FCO"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": null
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "DisplayFormat": "$name"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "de496c47-3d45-5d0f-9234-ceed95c5989c",
+      "path": "/a",
+      "guid": "de496c47-3d45-5d0f-9234-ceed95c5989c",
       "attributes": {
         "name": "Domain",
         "kind": ""
@@ -66,15 +157,27 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "5694af61-42f6-50b8-abc1-74798343be18"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 240,
           "y": 120
         }
-      }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Item",
+      "id": "2d057fc6-779e-576b-be4c-bc5898cc580a",
+      "path": "/b",
+      "guid": "2d057fc6-779e-576b-be4c-bc5898cc580a",
       "attributes": {
         "name": "Item",
         "label": ""
@@ -87,30 +190,89 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "5694af61-42f6-50b8-abc1-74798343be18",
+        "domain": null
+      },
+      "pointer_meta": {
+        "domain": {
+          "min": 0,
+          "max": 1,
+          "984d26b7-cc56-53e5-803d-3a098c59788a": {
+            "min": -1,
+            "max": 1
+          },
+          "de496c47-3d45-5d0f-9234-ceed95c5989c": {
+            "min": -1,
+            "max": 1
+          },
+          "2d057fc6-779e-576b-be4c-bc5898cc580a": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      },
+      "mixins": [],
       "registry": {
         "position": {
           "x": 380,
           "y": 120
         }
       },
-      "pointer_meta": {
-        "domain": {
-          "min": 0,
-          "max": 1,
-          "@meta:Diagram": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:Domain": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:Item": {
-            "min": -1,
-            "max": 1
-          }
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "984d26b7-cc56-53e5-803d-3a098c59788a",
+      "path": "/c",
+      "guid": "984d26b7-cc56-53e5-803d-3a098c59788a",
+      "attributes": {
+        "name": "CynefinDiagram",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": "5694af61-42f6-50b8-abc1-74798343be18"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        },
+        "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": {
+        "de496c47-3d45-5d0f-9234-ceed95c5989c": {
+          "min": -1,
+          "max": -1
+        },
+        "2d057fc6-779e-576b-be4c-bc5898cc580a": {
+          "min": -1,
+          "max": -1
         }
       }
     }
-  ]
+  ],
+  "children_meta": {
+    "5694af61-42f6-50b8-abc1-74798343be18": {
+      "min": -1,
+      "max": -1
+    }
+  }
 }

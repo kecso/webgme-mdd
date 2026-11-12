@@ -31,102 +31,14 @@ function mongoName(id) {
   return `webgme_mdd_${id.replace(/-/g, '_')}`;
 }
 
+const { fromConceptMap, containerName } = require('./language-document');
+
 function buildMetaJson(diagram) {
-  const concepts = diagram.metaConcepts || {};
-  const children = [];
-  const conceptIds = Object.keys(concepts);
-
-  // FCO-like Language root: can contain Diagram
-  const languageChildrenMeta = {
-    min: -1,
-    max: -1
-  };
-
-  for (const conceptName of conceptIds) {
-    const concept = concepts[conceptName];
-    const id = `@meta:${conceptName}`;
-    const node = {
-      id,
-      attributes: {
-        name: conceptName
-      },
-      attribute_meta: {
-        name: { type: 'string' }
-      },
-      registry: {
-        position: { x: 100 + children.length * 140, y: 120 }
-      }
-    };
-
-    for (const attr of concept.attrs || []) {
-      if (attr === 'name') continue;
-      node.attributes[attr] = '';
-      node.attribute_meta[attr] = { type: 'string' };
-    }
-
-    if (concept.pointers && concept.pointers.length) {
-      node.pointer_meta = {};
-      for (const ptr of concept.pointers) {
-        // Default: point at any meta concept; specialized later by diagram authors.
-        const targets = {};
-        for (const other of conceptIds) {
-          targets[`@meta:${other}`] = { min: -1, max: 1 };
-        }
-        node.pointer_meta[ptr] = Object.assign(
-          {
-            min: ptr === 'sets' ? -1 : 0,
-            max: ptr === 'sets' ? -1 : 1
-          },
-          targets
-        );
-      }
-    }
-
-    if (concept.contains && concept.contains.length) {
-      node.children_meta = { min: -1, max: -1 };
-      for (const childName of concept.contains) {
-        node.children_meta[`@meta:${childName}`] = { min: -1, max: -1 };
-      }
-    }
-
-    children.push(node);
-  }
-
-  // Diagram is the typical modeling root under Language instances
-  if (conceptIds.includes('Diagram')) {
-    languageChildrenMeta['@meta:Diagram'] = { min: -1, max: -1 };
-  } else if (conceptIds.length) {
-    languageChildrenMeta[`@meta:${conceptIds[0]}`] = { min: -1, max: -1 };
-  }
-
-  // Allow Diagram to contain other first-class concepts not nested via contains
-  const diagramNode = children.find((c) => c.id === '@meta:Diagram');
-  if (diagramNode) {
-    diagramNode.children_meta = diagramNode.children_meta || { min: -1, max: -1 };
-    for (const conceptName of conceptIds) {
-      if (conceptName === 'Diagram') continue;
-      const containedSomewhere = conceptIds.some((n) =>
-        (concepts[n].contains || []).includes(conceptName)
-      );
-      if (!containedSomewhere || (concepts.Diagram.contains || []).includes(conceptName)) {
-        diagramNode.children_meta[`@meta:${conceptName}`] = { min: -1, max: -1 };
-      }
-    }
-  }
-
-  return {
-    attributes: {
-      name: 'Language'
-    },
-    attribute_meta: {
-      name: { type: 'string' }
-    },
-    children_meta: languageChildrenMeta,
-    registry: {
-      validPlugins: 'ImportMermaid ExportMermaid ApplyLanguageMeta'
-    },
-    children
-  };
+  return fromConceptMap(
+    diagram.id,
+    diagram.metaConcepts || {},
+    'ImportMermaid ExportMermaid ApplyLanguageMeta'
+  );
 }
 
 function pluginMetadata(id, name, description, writeAccess, configStructure) {
@@ -211,7 +123,7 @@ define([
         }
 
         const parent = self.activeNode;
-        const diagramBase = META.Diagram || META[Object.keys(META).find(function (k) {
+        const diagramBase = META.${containerName(diagram.id)} || META[Object.keys(META).find(function (k) {
             return k !== 'FCO' && META[k];
         })];
 
@@ -501,7 +413,7 @@ ${diagram.syntaxHighlights.join('\n')}
 
 | Path | Purpose |
 |------|---------|
-| \`metamodel/Language.json\` | webgme-json metamodel draft |
+| \`metamodel/Language.json\` | webgme-json-importer metamodel |
 | \`examples/sample.mmd\` | Canonical Mermaid sample |
 | \`src/plugins/ImportMermaid\` | Mermaid text → model |
 | \`src/plugins/ExportMermaid\` | model → Mermaid text |
@@ -648,7 +560,7 @@ module.exports = config;
     pluginMetadata(
       'ApplyLanguageMeta',
       'Apply Language Meta',
-      'Create/update META nodes from metamodel/Language.json (webgme-json style)',
+      'Create/update META nodes from metamodel/Language.json (webgme-json-importer)',
       true,
       []
     ) + '\n'

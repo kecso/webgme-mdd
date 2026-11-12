@@ -23,7 +23,7 @@
     "A --> B"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "BlockDiagram": {
       "attrs": [
         "name",
         "title",

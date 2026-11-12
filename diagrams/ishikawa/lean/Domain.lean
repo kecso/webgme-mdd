@@ -13,9 +13,9 @@ class _Contained (parent child : Type) where
 
 inductive _Type where
   | _FCO
-  | cDiagram
   | cCategory
   | cCause
+  | cIshikawaDiagram
   deriving DecidableEq, BEq, Repr
 
 structure FCO where
@@ -23,17 +23,6 @@ structure FCO where
   _type : _Type
   name : String
   deriving Repr
-
--- META concept Diagram
-structure Diagram extends FCO where
-  title : String := ""
-  effect : String := ""
-  -- containment allows: Category
-  _childIds : List _NodeId := []
-  deriving Repr
-
-instance : Coe Diagram FCO where
-  coe := Diagram.toFCO
 
 -- META concept Category
 structure Category extends FCO where
@@ -50,6 +39,17 @@ structure Cause extends FCO where
 
 instance : Coe Cause FCO where
   coe := Cause.toFCO
+
+-- META concept IshikawaDiagram
+structure IshikawaDiagram extends FCO where
+  title : String := ""
+  effect : String := ""
+  -- containment allows: Category, Cause
+  _childIds : List _NodeId := []
+  deriving Repr
+
+instance : Coe IshikawaDiagram FCO where
+  coe := IshikawaDiagram.toFCO
 
 /-- Well-formedness scaffold: every node name non-empty (domain-local). -/
 def AllNamesNonEmpty (nodes : List FCO) : Bool :=

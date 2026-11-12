@@ -51,7 +51,7 @@ define([
         }
 
         const parent = self.activeNode;
-        const specBase = META.Specification || META.EARSRequirement ||
+        const specBase = META.EARSSpecification || META.EARSRequirement ||
             META[Object.keys(META).find(function (k) {
                 return k !== 'FCO' && META[k];
             })];
@@ -64,7 +64,7 @@ define([
         const reqBase = META.EARSRequirement || specBase;
         const specNode = core.createNode({
             parent: parent,
-            base: META.Specification || specBase
+            base: META.EARSSpecification || specBase
         });
         core.setAttribute(specNode, 'name', ast.name || 'EARS Specification');
         if (ast.title) {

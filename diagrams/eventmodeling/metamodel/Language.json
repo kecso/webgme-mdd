@@ -1,71 +1,198 @@
 {
+  "id": "8e8093d3-9c79-5a99-9ba8-b575c9a45429",
+  "path": "",
+  "guid": "8e8093d3-9c79-5a99-9ba8-b575c9a45429",
   "attributes": {
-    "name": "Language"
+    "name": "ROOT"
   },
   "attribute_meta": {
     "name": {
       "type": "string"
     }
   },
-  "children_meta": {
-    "min": -1,
-    "max": -1,
-    "@meta:Diagram": {
-      "min": -1,
-      "max": -1
-    }
+  "pointers": {
+    "base": null
   },
+  "pointer_meta": {},
+  "mixins": [],
   "registry": {
-    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+    "validPlugins": "ImportMermaid ApplyLanguageMeta",
+    "ProjectRegistry": {
+      "FCO_ID": "/1"
+    },
+    "MetaSheets": [
+      {
+        "SetID": "MetaAspectSet_98a46cda-4765-5dbc-9662-555acee02137",
+        "order": 0,
+        "title": "META"
+      }
+    ]
   },
-  "children": [
-    {
-      "id": "@meta:Diagram",
-      "attributes": {
-        "name": "Diagram",
-        "title": ""
-      },
-      "attribute_meta": {
-        "name": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
+  "sets": {
+    "MetaAspectSet": [
+      "ba28f181-6dc3-5635-81d0-6513d4f53bb4",
+      "894d985b-9346-5f43-bb5a-d30a8e29e4f1",
+      "bea1e217-cdb3-5894-b9d2-d59700a83e9e",
+      "5bb80465-f988-579a-864f-bd37857f632c",
+      "1a4cff10-0c07-5ca4-bdef-046659a07949",
+      "ca08b819-9152-5887-95d6-3e0c64eaf6b7",
+      "9086949e-7fd9-5357-98cc-432f0719226b"
+    ],
+    "MetaAspectSet_98a46cda-4765-5dbc-9662-555acee02137": [
+      "ba28f181-6dc3-5635-81d0-6513d4f53bb4",
+      "894d985b-9346-5f43-bb5a-d30a8e29e4f1",
+      "bea1e217-cdb3-5894-b9d2-d59700a83e9e",
+      "5bb80465-f988-579a-864f-bd37857f632c",
+      "1a4cff10-0c07-5ca4-bdef-046659a07949",
+      "ca08b819-9152-5887-95d6-3e0c64eaf6b7",
+      "9086949e-7fd9-5357-98cc-432f0719226b"
+    ]
+  },
+  "member_registry": {
+    "MetaAspectSet": {
+      "ba28f181-6dc3-5635-81d0-6513d4f53bb4": {
+        "position": {
+          "x": 80,
+          "y": 70
         }
       },
-      "registry": {
+      "894d985b-9346-5f43-bb5a-d30a8e29e4f1": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "bea1e217-cdb3-5894-b9d2-d59700a83e9e": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "5bb80465-f988-579a-864f-bd37857f632c": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "1a4cff10-0c07-5ca4-bdef-046659a07949": {
+        "position": {
+          "x": 660,
+          "y": 120
+        }
+      },
+      "ca08b819-9152-5887-95d6-3e0c64eaf6b7": {
+        "position": {
+          "x": 800,
+          "y": 120
+        }
+      },
+      "9086949e-7fd9-5357-98cc-432f0719226b": {
         "position": {
           "x": 100,
           "y": 120
         }
-      },
-      "children_meta": {
-        "min": -1,
-        "max": -1,
-        "@meta:Swimlane": {
-          "min": -1,
-          "max": -1
-        },
-        "@meta:Command": {
-          "min": -1,
-          "max": -1
-        },
-        "@meta:Event": {
-          "min": -1,
-          "max": -1
-        },
-        "@meta:View": {
-          "min": -1,
-          "max": -1
-        },
-        "@meta:Flow": {
-          "min": -1,
-          "max": -1
-        }
       }
     },
+    "MetaAspectSet_98a46cda-4765-5dbc-9662-555acee02137": {
+      "ba28f181-6dc3-5635-81d0-6513d4f53bb4": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "894d985b-9346-5f43-bb5a-d30a8e29e4f1": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "bea1e217-cdb3-5894-b9d2-d59700a83e9e": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "5bb80465-f988-579a-864f-bd37857f632c": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "1a4cff10-0c07-5ca4-bdef-046659a07949": {
+        "position": {
+          "x": 660,
+          "y": 120
+        }
+      },
+      "ca08b819-9152-5887-95d6-3e0c64eaf6b7": {
+        "position": {
+          "x": 800,
+          "y": 120
+        }
+      },
+      "9086949e-7fd9-5357-98cc-432f0719226b": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      }
+    }
+  },
+  "member_attributes": {
+    "MetaAspectSet": {
+      "ba28f181-6dc3-5635-81d0-6513d4f53bb4": {},
+      "894d985b-9346-5f43-bb5a-d30a8e29e4f1": {},
+      "bea1e217-cdb3-5894-b9d2-d59700a83e9e": {},
+      "5bb80465-f988-579a-864f-bd37857f632c": {},
+      "1a4cff10-0c07-5ca4-bdef-046659a07949": {},
+      "ca08b819-9152-5887-95d6-3e0c64eaf6b7": {},
+      "9086949e-7fd9-5357-98cc-432f0719226b": {}
+    },
+    "MetaAspectSet_98a46cda-4765-5dbc-9662-555acee02137": {
+      "ba28f181-6dc3-5635-81d0-6513d4f53bb4": {},
+      "894d985b-9346-5f43-bb5a-d30a8e29e4f1": {},
+      "bea1e217-cdb3-5894-b9d2-d59700a83e9e": {},
+      "5bb80465-f988-579a-864f-bd37857f632c": {},
+      "1a4cff10-0c07-5ca4-bdef-046659a07949": {},
+      "ca08b819-9152-5887-95d6-3e0c64eaf6b7": {},
+      "9086949e-7fd9-5357-98cc-432f0719226b": {}
+    }
+  },
+  "children": [
     {
-      "id": "@meta:Swimlane",
+      "id": "ba28f181-6dc3-5635-81d0-6513d4f53bb4",
+      "path": "/1",
+      "guid": "ba28f181-6dc3-5635-81d0-6513d4f53bb4",
+      "attributes": {
+        "name": "FCO"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": null
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "DisplayFormat": "$name"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "894d985b-9346-5f43-bb5a-d30a8e29e4f1",
+      "path": "/a",
+      "guid": "894d985b-9346-5f43-bb5a-d30a8e29e4f1",
       "attributes": {
         "name": "Swimlane"
       },
@@ -74,15 +201,27 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "ba28f181-6dc3-5635-81d0-6513d4f53bb4"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 240,
           "y": 120
         }
-      }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Command",
+      "id": "bea1e217-cdb3-5894-b9d2-d59700a83e9e",
+      "path": "/b",
+      "guid": "bea1e217-cdb3-5894-b9d2-d59700a83e9e",
       "attributes": {
         "name": "Command",
         "label": ""
@@ -95,15 +234,27 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "ba28f181-6dc3-5635-81d0-6513d4f53bb4"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 380,
           "y": 120
         }
-      }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Event",
+      "id": "5bb80465-f988-579a-864f-bd37857f632c",
+      "path": "/c",
+      "guid": "5bb80465-f988-579a-864f-bd37857f632c",
       "attributes": {
         "name": "Event",
         "label": ""
@@ -116,15 +267,27 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "ba28f181-6dc3-5635-81d0-6513d4f53bb4"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 520,
           "y": 120
         }
-      }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:View",
+      "id": "1a4cff10-0c07-5ca4-bdef-046659a07949",
+      "path": "/d",
+      "guid": "1a4cff10-0c07-5ca4-bdef-046659a07949",
       "attributes": {
         "name": "View",
         "label": ""
@@ -137,15 +300,27 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "ba28f181-6dc3-5635-81d0-6513d4f53bb4"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 660,
           "y": 120
         }
-      }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Flow",
+      "id": "ca08b819-9152-5887-95d6-3e0c64eaf6b7",
+      "path": "/e",
+      "guid": "ca08b819-9152-5887-95d6-3e0c64eaf6b7",
       "attributes": {
         "name": "Flow"
       },
@@ -154,37 +329,36 @@
           "type": "string"
         }
       },
-      "registry": {
-        "position": {
-          "x": 800,
-          "y": 120
-        }
+      "pointers": {
+        "base": "ba28f181-6dc3-5635-81d0-6513d4f53bb4",
+        "src": null,
+        "dst": null
       },
       "pointer_meta": {
         "src": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "9086949e-7fd9-5357-98cc-432f0719226b": {
             "min": -1,
             "max": 1
           },
-          "@meta:Swimlane": {
+          "894d985b-9346-5f43-bb5a-d30a8e29e4f1": {
             "min": -1,
             "max": 1
           },
-          "@meta:Command": {
+          "bea1e217-cdb3-5894-b9d2-d59700a83e9e": {
             "min": -1,
             "max": 1
           },
-          "@meta:Event": {
+          "5bb80465-f988-579a-864f-bd37857f632c": {
             "min": -1,
             "max": 1
           },
-          "@meta:View": {
+          "1a4cff10-0c07-5ca4-bdef-046659a07949": {
             "min": -1,
             "max": 1
           },
-          "@meta:Flow": {
+          "ca08b819-9152-5887-95d6-3e0c64eaf6b7": {
             "min": -1,
             "max": 1
           }
@@ -192,32 +366,105 @@
         "dst": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "9086949e-7fd9-5357-98cc-432f0719226b": {
             "min": -1,
             "max": 1
           },
-          "@meta:Swimlane": {
+          "894d985b-9346-5f43-bb5a-d30a8e29e4f1": {
             "min": -1,
             "max": 1
           },
-          "@meta:Command": {
+          "bea1e217-cdb3-5894-b9d2-d59700a83e9e": {
             "min": -1,
             "max": 1
           },
-          "@meta:Event": {
+          "5bb80465-f988-579a-864f-bd37857f632c": {
             "min": -1,
             "max": 1
           },
-          "@meta:View": {
+          "1a4cff10-0c07-5ca4-bdef-046659a07949": {
             "min": -1,
             "max": 1
           },
-          "@meta:Flow": {
+          "ca08b819-9152-5887-95d6-3e0c64eaf6b7": {
             "min": -1,
             "max": 1
           }
         }
+      },
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 800,
+          "y": 120
+        }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "9086949e-7fd9-5357-98cc-432f0719226b",
+      "path": "/f",
+      "guid": "9086949e-7fd9-5357-98cc-432f0719226b",
+      "attributes": {
+        "name": "EventModelingDiagram",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": "ba28f181-6dc3-5635-81d0-6513d4f53bb4"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        },
+        "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": {
+        "894d985b-9346-5f43-bb5a-d30a8e29e4f1": {
+          "min": -1,
+          "max": -1
+        },
+        "bea1e217-cdb3-5894-b9d2-d59700a83e9e": {
+          "min": -1,
+          "max": -1
+        },
+        "5bb80465-f988-579a-864f-bd37857f632c": {
+          "min": -1,
+          "max": -1
+        },
+        "1a4cff10-0c07-5ca4-bdef-046659a07949": {
+          "min": -1,
+          "max": -1
+        },
+        "ca08b819-9152-5887-95d6-3e0c64eaf6b7": {
+          "min": -1,
+          "max": -1
+        }
       }
     }
-  ]
+  ],
+  "children_meta": {
+    "ba28f181-6dc3-5635-81d0-6513d4f53bb4": {
+      "min": -1,
+      "max": -1
+    }
+  }
 }

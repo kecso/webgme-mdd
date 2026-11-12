@@ -22,7 +22,7 @@
     "e1 - satisfies -> req1"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "RequirementDiagram": {
       "attrs": [
         "name",
         "title"
@@ -57,5 +57,7 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd"
+  "sample": "./../examples/sample.mmd",
+  "leanDomain": "../lean/Domain.lean",
+  "leanNamespace": "RequirementDomain"
 }

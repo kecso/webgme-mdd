@@ -13,10 +13,10 @@ class _Contained (parent child : Type) where
 
 inductive _Type where
   | _FCO
-  | cDiagram
   | cNode
   | cEdge
   | cSubgraph
+  | cFlowChart
   deriving DecidableEq, BEq, Repr
 
 structure FCO where
@@ -24,15 +24,6 @@ structure FCO where
   _type : _Type
   name : String
   deriving Repr
-
--- META concept Diagram
-structure Diagram extends FCO where
-  direction : String := ""
-  title : String := ""
-  deriving Repr
-
-instance : Coe Diagram FCO where
-  coe := Diagram.toFCO
 
 -- META concept Node
 structure Node extends FCO where
@@ -67,6 +58,17 @@ structure Subgraph extends FCO where
 
 instance : Coe Subgraph FCO where
   coe := Subgraph.toFCO
+
+-- META concept FlowChart
+structure FlowChart extends FCO where
+  direction : String := ""
+  title : String := ""
+  -- containment allows: Node, Edge, Subgraph
+  _childIds : List _NodeId := []
+  deriving Repr
+
+instance : Coe FlowChart FCO where
+  coe := FlowChart.toFCO
 
 /-- Well-formedness scaffold: every node name non-empty (domain-local). -/
 def AllNamesNonEmpty (nodes : List FCO) : Bool :=

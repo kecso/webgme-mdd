@@ -13,10 +13,10 @@ class _Contained (parent child : Type) where
 
 inductive _Type where
   | _FCO
-  | cDiagram
   | cState
   | cTransition
   | cNote
+  | cStateDiagram
   deriving DecidableEq, BEq, Repr
 
 structure FCO where
@@ -24,16 +24,6 @@ structure FCO where
   _type : _Type
   name : String
   deriving Repr
-
--- META concept Diagram
-structure Diagram extends FCO where
-  title : String := ""
-  -- containment allows: Note
-  _childIds : List _NodeId := []
-  deriving Repr
-
-instance : Coe Diagram FCO where
-  coe := Diagram.toFCO
 
 -- META concept State
 structure State extends FCO where
@@ -68,6 +58,16 @@ structure Note extends FCO where
 
 instance : Coe Note FCO where
   coe := Note.toFCO
+
+-- META concept StateDiagram
+structure StateDiagram extends FCO where
+  title : String := ""
+  -- containment allows: Note, State, Transition
+  _childIds : List _NodeId := []
+  deriving Repr
+
+instance : Coe StateDiagram FCO where
+  coe := StateDiagram.toFCO
 
 /-- Well-formedness scaffold: every node name non-empty (domain-local). -/
 def AllNamesNonEmpty (nodes : List FCO) : Bool :=

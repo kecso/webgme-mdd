@@ -22,7 +22,7 @@
     "2024 : event"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "Timeline": {
       "attrs": [
         "name",
         "title"

@@ -19,7 +19,7 @@
     "\"Dogs\" : 386"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "PieChart": {
       "attrs": [
         "name",
         "title",

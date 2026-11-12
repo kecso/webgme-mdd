@@ -21,7 +21,7 @@
     "curve c{1,2,3}"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "RadarChart": {
       "attrs": [
         "name",
         "title"

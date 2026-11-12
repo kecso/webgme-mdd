@@ -19,7 +19,7 @@
     "wardley-beta"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "WardleyMap": {
       "attrs": [
         "name",
         "title"

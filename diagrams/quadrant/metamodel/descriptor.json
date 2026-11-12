@@ -22,7 +22,7 @@
     "Campaign A: [0.3, 0.6]"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "QuadrantChart": {
       "attrs": [
         "name",
         "title",

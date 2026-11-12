@@ -1,55 +1,166 @@
 {
+  "id": "cf528690-7579-5804-9f7d-23e01c1e2743",
+  "path": "",
+  "guid": "cf528690-7579-5804-9f7d-23e01c1e2743",
   "attributes": {
-    "name": "Language"
+    "name": "ROOT"
   },
   "attribute_meta": {
     "name": {
       "type": "string"
     }
   },
-  "children_meta": {
-    "min": -1,
-    "max": -1,
-    "@meta:Diagram": {
-      "min": -1,
-      "max": -1
-    }
+  "pointers": {
+    "base": null
   },
+  "pointer_meta": {},
+  "mixins": [],
   "registry": {
-    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+    "validPlugins": "ImportMermaid ApplyLanguageMeta",
+    "ProjectRegistry": {
+      "FCO_ID": "/1"
+    },
+    "MetaSheets": [
+      {
+        "SetID": "MetaAspectSet_dabf4e3a-9ac1-5fbf-ab70-3070da146a38",
+        "order": 0,
+        "title": "META"
+      }
+    ]
   },
-  "children": [
-    {
-      "id": "@meta:Diagram",
-      "attributes": {
-        "name": "Diagram",
-        "title": ""
-      },
-      "attribute_meta": {
-        "name": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
+  "sets": {
+    "MetaAspectSet": [
+      "b30d8b17-67d6-5680-b8bd-9c57e775aa64",
+      "4bfea7b0-c445-54db-82bb-2cc4920eba4d",
+      "deb2d65b-1672-56bc-ae78-1dad030e5e35",
+      "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed",
+      "07cffd35-3f10-5a98-b1c2-31cbd0080128"
+    ],
+    "MetaAspectSet_dabf4e3a-9ac1-5fbf-ab70-3070da146a38": [
+      "b30d8b17-67d6-5680-b8bd-9c57e775aa64",
+      "4bfea7b0-c445-54db-82bb-2cc4920eba4d",
+      "deb2d65b-1672-56bc-ae78-1dad030e5e35",
+      "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed",
+      "07cffd35-3f10-5a98-b1c2-31cbd0080128"
+    ]
+  },
+  "member_registry": {
+    "MetaAspectSet": {
+      "b30d8b17-67d6-5680-b8bd-9c57e775aa64": {
+        "position": {
+          "x": 80,
+          "y": 70
         }
       },
-      "registry": {
+      "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "deb2d65b-1672-56bc-ae78-1dad030e5e35": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "07cffd35-3f10-5a98-b1c2-31cbd0080128": {
         "position": {
           "x": 100,
           "y": 120
         }
-      },
-      "children_meta": {
-        "min": -1,
-        "max": -1,
-        "@meta:Note": {
-          "min": -1,
-          "max": -1
-        }
       }
     },
+    "MetaAspectSet_dabf4e3a-9ac1-5fbf-ab70-3070da146a38": {
+      "b30d8b17-67d6-5680-b8bd-9c57e775aa64": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "deb2d65b-1672-56bc-ae78-1dad030e5e35": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "07cffd35-3f10-5a98-b1c2-31cbd0080128": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      }
+    }
+  },
+  "member_attributes": {
+    "MetaAspectSet": {
+      "b30d8b17-67d6-5680-b8bd-9c57e775aa64": {},
+      "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {},
+      "deb2d65b-1672-56bc-ae78-1dad030e5e35": {},
+      "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {},
+      "07cffd35-3f10-5a98-b1c2-31cbd0080128": {}
+    },
+    "MetaAspectSet_dabf4e3a-9ac1-5fbf-ab70-3070da146a38": {
+      "b30d8b17-67d6-5680-b8bd-9c57e775aa64": {},
+      "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {},
+      "deb2d65b-1672-56bc-ae78-1dad030e5e35": {},
+      "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {},
+      "07cffd35-3f10-5a98-b1c2-31cbd0080128": {}
+    }
+  },
+  "children": [
     {
-      "id": "@meta:State",
+      "id": "b30d8b17-67d6-5680-b8bd-9c57e775aa64",
+      "path": "/1",
+      "guid": "b30d8b17-67d6-5680-b8bd-9c57e775aa64",
+      "attributes": {
+        "name": "FCO"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": null
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "DisplayFormat": "$name"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "4bfea7b0-c445-54db-82bb-2cc4920eba4d",
+      "path": "/a",
+      "guid": "4bfea7b0-c445-54db-82bb-2cc4920eba4d",
       "attributes": {
         "name": "State",
         "kind": "",
@@ -66,27 +177,36 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "b30d8b17-67d6-5680-b8bd-9c57e775aa64"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 240,
           "y": 120
         }
       },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
       "children_meta": {
-        "min": -1,
-        "max": -1,
-        "@meta:State": {
+        "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {
           "min": -1,
           "max": -1
         },
-        "@meta:Transition": {
+        "deb2d65b-1672-56bc-ae78-1dad030e5e35": {
           "min": -1,
           "max": -1
         }
       }
     },
     {
-      "id": "@meta:Transition",
+      "id": "deb2d65b-1672-56bc-ae78-1dad030e5e35",
+      "path": "/b",
+      "guid": "deb2d65b-1672-56bc-ae78-1dad030e5e35",
       "attributes": {
         "name": "Transition",
         "event": "",
@@ -107,29 +227,28 @@
           "type": "string"
         }
       },
-      "registry": {
-        "position": {
-          "x": 380,
-          "y": 120
-        }
+      "pointers": {
+        "base": "b30d8b17-67d6-5680-b8bd-9c57e775aa64",
+        "src": null,
+        "dst": null
       },
       "pointer_meta": {
         "src": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "07cffd35-3f10-5a98-b1c2-31cbd0080128": {
             "min": -1,
             "max": 1
           },
-          "@meta:State": {
+          "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {
             "min": -1,
             "max": 1
           },
-          "@meta:Transition": {
+          "deb2d65b-1672-56bc-ae78-1dad030e5e35": {
             "min": -1,
             "max": 1
           },
-          "@meta:Note": {
+          "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {
             "min": -1,
             "max": 1
           }
@@ -137,27 +256,41 @@
         "dst": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "07cffd35-3f10-5a98-b1c2-31cbd0080128": {
             "min": -1,
             "max": 1
           },
-          "@meta:State": {
+          "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {
             "min": -1,
             "max": 1
           },
-          "@meta:Transition": {
+          "deb2d65b-1672-56bc-ae78-1dad030e5e35": {
             "min": -1,
             "max": 1
           },
-          "@meta:Note": {
+          "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {
             "min": -1,
             "max": 1
           }
         }
-      }
+      },
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Note",
+      "id": "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed",
+      "path": "/c",
+      "guid": "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed",
       "attributes": {
         "name": "Note",
         "text": ""
@@ -170,34 +303,97 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "b30d8b17-67d6-5680-b8bd-9c57e775aa64",
+        "target": null
+      },
+      "pointer_meta": {
+        "target": {
+          "min": 0,
+          "max": 1,
+          "07cffd35-3f10-5a98-b1c2-31cbd0080128": {
+            "min": -1,
+            "max": 1
+          },
+          "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {
+            "min": -1,
+            "max": 1
+          },
+          "deb2d65b-1672-56bc-ae78-1dad030e5e35": {
+            "min": -1,
+            "max": 1
+          },
+          "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      },
+      "mixins": [],
       "registry": {
         "position": {
           "x": 520,
           "y": 120
         }
       },
-      "pointer_meta": {
-        "target": {
-          "min": 0,
-          "max": 1,
-          "@meta:Diagram": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:State": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:Transition": {
-            "min": -1,
-            "max": 1
-          },
-          "@meta:Note": {
-            "min": -1,
-            "max": 1
-          }
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "07cffd35-3f10-5a98-b1c2-31cbd0080128",
+      "path": "/d",
+      "guid": "07cffd35-3f10-5a98-b1c2-31cbd0080128",
+      "attributes": {
+        "name": "StateDiagram",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": "b30d8b17-67d6-5680-b8bd-9c57e775aa64"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        },
+        "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": {
+        "cdc067e8-08c2-5956-b8e4-f9c1f6b4a6ed": {
+          "min": -1,
+          "max": -1
+        },
+        "4bfea7b0-c445-54db-82bb-2cc4920eba4d": {
+          "min": -1,
+          "max": -1
+        },
+        "deb2d65b-1672-56bc-ae78-1dad030e5e35": {
+          "min": -1,
+          "max": -1
         }
       }
     }
-  ]
+  ],
+  "children_meta": {
+    "b30d8b17-67d6-5680-b8bd-9c57e775aa64": {
+      "min": -1,
+      "max": -1
+    }
+  }
 }

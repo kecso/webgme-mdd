@@ -1,55 +1,166 @@
 {
+  "id": "bb52de5f-186d-5240-9a41-418129e20f53",
+  "path": "",
+  "guid": "bb52de5f-186d-5240-9a41-418129e20f53",
   "attributes": {
-    "name": "Language"
+    "name": "ROOT"
   },
   "attribute_meta": {
     "name": {
       "type": "string"
     }
   },
-  "children_meta": {
-    "min": -1,
-    "max": -1,
-    "@meta:Diagram": {
-      "min": -1,
-      "max": -1
-    }
+  "pointers": {
+    "base": null
   },
+  "pointer_meta": {},
+  "mixins": [],
   "registry": {
-    "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+    "validPlugins": "ImportMermaid ApplyLanguageMeta",
+    "ProjectRegistry": {
+      "FCO_ID": "/1"
+    },
+    "MetaSheets": [
+      {
+        "SetID": "MetaAspectSet_a0a256f3-d87a-5b56-aa5a-976ecf140790",
+        "order": 0,
+        "title": "META"
+      }
+    ]
   },
-  "children": [
-    {
-      "id": "@meta:Diagram",
-      "attributes": {
-        "name": "Diagram",
-        "direction": "",
-        "title": ""
-      },
-      "attribute_meta": {
-        "name": {
-          "type": "string"
-        },
-        "direction": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
+  "sets": {
+    "MetaAspectSet": [
+      "78a9a9f4-e9f2-540b-b02b-f91327ad6bda",
+      "2b698326-32ef-5db2-9b74-59fa8467de97",
+      "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec",
+      "4ec96f93-6d70-51b0-b79e-f50723ce06fe",
+      "94f39824-7d3f-5d3a-bd7c-161d62245c42"
+    ],
+    "MetaAspectSet_a0a256f3-d87a-5b56-aa5a-976ecf140790": [
+      "78a9a9f4-e9f2-540b-b02b-f91327ad6bda",
+      "2b698326-32ef-5db2-9b74-59fa8467de97",
+      "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec",
+      "4ec96f93-6d70-51b0-b79e-f50723ce06fe",
+      "94f39824-7d3f-5d3a-bd7c-161d62245c42"
+    ]
+  },
+  "member_registry": {
+    "MetaAspectSet": {
+      "78a9a9f4-e9f2-540b-b02b-f91327ad6bda": {
+        "position": {
+          "x": 80,
+          "y": 70
         }
       },
-      "registry": {
+      "2b698326-32ef-5db2-9b74-59fa8467de97": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "94f39824-7d3f-5d3a-bd7c-161d62245c42": {
         "position": {
           "x": 100,
           "y": 120
         }
-      },
-      "children_meta": {
-        "min": -1,
-        "max": -1
       }
     },
+    "MetaAspectSet_a0a256f3-d87a-5b56-aa5a-976ecf140790": {
+      "78a9a9f4-e9f2-540b-b02b-f91327ad6bda": {
+        "position": {
+          "x": 80,
+          "y": 70
+        }
+      },
+      "2b698326-32ef-5db2-9b74-59fa8467de97": {
+        "position": {
+          "x": 240,
+          "y": 120
+        }
+      },
+      "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {
+        "position": {
+          "x": 520,
+          "y": 120
+        }
+      },
+      "94f39824-7d3f-5d3a-bd7c-161d62245c42": {
+        "position": {
+          "x": 100,
+          "y": 120
+        }
+      }
+    }
+  },
+  "member_attributes": {
+    "MetaAspectSet": {
+      "78a9a9f4-e9f2-540b-b02b-f91327ad6bda": {},
+      "2b698326-32ef-5db2-9b74-59fa8467de97": {},
+      "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {},
+      "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {},
+      "94f39824-7d3f-5d3a-bd7c-161d62245c42": {}
+    },
+    "MetaAspectSet_a0a256f3-d87a-5b56-aa5a-976ecf140790": {
+      "78a9a9f4-e9f2-540b-b02b-f91327ad6bda": {},
+      "2b698326-32ef-5db2-9b74-59fa8467de97": {},
+      "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {},
+      "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {},
+      "94f39824-7d3f-5d3a-bd7c-161d62245c42": {}
+    }
+  },
+  "children": [
     {
-      "id": "@meta:Node",
+      "id": "78a9a9f4-e9f2-540b-b02b-f91327ad6bda",
+      "path": "/1",
+      "guid": "78a9a9f4-e9f2-540b-b02b-f91327ad6bda",
+      "attributes": {
+        "name": "FCO"
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": null
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 80,
+          "y": 70
+        },
+        "DisplayFormat": "$name"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
+    },
+    {
+      "id": "2b698326-32ef-5db2-9b74-59fa8467de97",
+      "path": "/a",
+      "guid": "2b698326-32ef-5db2-9b74-59fa8467de97",
       "attributes": {
         "name": "Node",
         "label": "",
@@ -70,15 +181,27 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "78a9a9f4-e9f2-540b-b02b-f91327ad6bda"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 240,
           "y": 120
         }
-      }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Edge",
+      "id": "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec",
+      "path": "/b",
+      "guid": "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec",
       "attributes": {
         "name": "Edge",
         "label": "",
@@ -99,29 +222,28 @@
           "type": "string"
         }
       },
-      "registry": {
-        "position": {
-          "x": 380,
-          "y": 120
-        }
+      "pointers": {
+        "base": "78a9a9f4-e9f2-540b-b02b-f91327ad6bda",
+        "src": null,
+        "dst": null
       },
       "pointer_meta": {
         "src": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "94f39824-7d3f-5d3a-bd7c-161d62245c42": {
             "min": -1,
             "max": 1
           },
-          "@meta:Node": {
+          "2b698326-32ef-5db2-9b74-59fa8467de97": {
             "min": -1,
             "max": 1
           },
-          "@meta:Edge": {
+          "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {
             "min": -1,
             "max": 1
           },
-          "@meta:Subgraph": {
+          "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {
             "min": -1,
             "max": 1
           }
@@ -129,27 +251,41 @@
         "dst": {
           "min": 0,
           "max": 1,
-          "@meta:Diagram": {
+          "94f39824-7d3f-5d3a-bd7c-161d62245c42": {
             "min": -1,
             "max": 1
           },
-          "@meta:Node": {
+          "2b698326-32ef-5db2-9b74-59fa8467de97": {
             "min": -1,
             "max": 1
           },
-          "@meta:Edge": {
+          "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {
             "min": -1,
             "max": 1
           },
-          "@meta:Subgraph": {
+          "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {
             "min": -1,
             "max": 1
           }
         }
-      }
+      },
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 380,
+          "y": 120
+        }
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": null
     },
     {
-      "id": "@meta:Subgraph",
+      "id": "4ec96f93-6d70-51b0-b79e-f50723ce06fe",
+      "path": "/c",
+      "guid": "4ec96f93-6d70-51b0-b79e-f50723ce06fe",
       "attributes": {
         "name": "Subgraph",
         "label": "",
@@ -166,28 +302,92 @@
           "type": "string"
         }
       },
+      "pointers": {
+        "base": "78a9a9f4-e9f2-540b-b02b-f91327ad6bda"
+      },
+      "pointer_meta": {},
+      "mixins": [],
       "registry": {
         "position": {
           "x": 520,
           "y": 120
         }
       },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
       "children_meta": {
-        "min": -1,
-        "max": -1,
-        "@meta:Node": {
+        "2b698326-32ef-5db2-9b74-59fa8467de97": {
           "min": -1,
           "max": -1
         },
-        "@meta:Edge": {
+        "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {
           "min": -1,
           "max": -1
         },
-        "@meta:Subgraph": {
+        "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {
+          "min": -1,
+          "max": -1
+        }
+      }
+    },
+    {
+      "id": "94f39824-7d3f-5d3a-bd7c-161d62245c42",
+      "path": "/d",
+      "guid": "94f39824-7d3f-5d3a-bd7c-161d62245c42",
+      "attributes": {
+        "name": "FlowChart",
+        "direction": "",
+        "title": ""
+      },
+      "attribute_meta": {
+        "name": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "pointers": {
+        "base": "78a9a9f4-e9f2-540b-b02b-f91327ad6bda"
+      },
+      "pointer_meta": {},
+      "mixins": [],
+      "registry": {
+        "position": {
+          "x": 100,
+          "y": 120
+        },
+        "validPlugins": "ImportMermaid ExportMermaid ApplyLanguageMeta"
+      },
+      "sets": {},
+      "member_registry": {},
+      "member_attributes": {},
+      "children": [],
+      "children_meta": {
+        "2b698326-32ef-5db2-9b74-59fa8467de97": {
+          "min": -1,
+          "max": -1
+        },
+        "03c27f64-f5f6-5fd1-9472-6cf2b941e1ec": {
+          "min": -1,
+          "max": -1
+        },
+        "4ec96f93-6d70-51b0-b79e-f50723ce06fe": {
           "min": -1,
           "max": -1
         }
       }
     }
-  ]
+  ],
+  "children_meta": {
+    "78a9a9f4-e9f2-540b-b02b-f91327ad6bda": {
+      "min": -1,
+      "max": -1
+    }
+  }
 }

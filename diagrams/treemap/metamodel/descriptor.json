@@ -22,7 +22,7 @@
     "  \"Child\": 10"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "Treemap": {
       "attrs": [
         "name",
         "title"

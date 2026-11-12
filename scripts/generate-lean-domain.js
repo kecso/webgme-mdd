@@ -31,13 +31,36 @@ function loadLanguage(diagramId) {
 }
 
 function conceptsFromLanguage(language) {
-  return (language.children || []).map((c) => {
-    const name = metaName(c.id) || c.attributes.name;
-    const attrs = Object.keys(c.attribute_meta || {}).filter((a) => a !== 'name');
-    const pointers = Object.keys(c.pointer_meta || {});
-    const contains = Object.keys(c.children_meta || {}).filter((k) => k !== 'min' && k !== 'max').map(metaName);
-    return { name: sanitize(name), attrs, pointers, contains };
+  const nameById = {};
+  (language.children || []).forEach((c) => {
+    const name = (c.attributes && c.attributes.name) || metaName(c.id);
+    if (c.guid) nameById[c.guid] = name;
+    if (c.id) nameById[c.id] = name;
   });
+  return (language.children || [])
+    .filter((c) => {
+      const name = (c.attributes && c.attributes.name) || metaName(c.id);
+      return name && name !== 'FCO' && name !== 'ROOT';
+    })
+    .map((c) => {
+      const name = (c.attributes && c.attributes.name) || metaName(c.id);
+      const attrs = Object.keys(c.attribute_meta || {}).filter((a) => a !== 'name');
+      const pointers = Object.keys(c.pointer_meta || {}).filter((p) => {
+        if (p === 'base') return false;
+        const max = c.pointer_meta[p] && c.pointer_meta[p].max;
+        return max == null || max === 1;
+      });
+      const sets = Object.keys(c.pointer_meta || {}).filter((p) => {
+        if (p === 'base') return false;
+        const max = c.pointer_meta[p] && c.pointer_meta[p].max;
+        return max != null && max !== 1;
+      });
+      const contains = Object.keys(c.children_meta || {})
+        .filter((k) => k !== 'min' && k !== 'max')
+        .map((k) => nameById[k] || metaName(k))
+        .filter((n) => n && n !== 'FCO');
+      return { name: sanitize(name), attrs, pointers, sets, contains };
+    });
 }
 
 function generateLean(diagramId, concepts) {
@@ -80,12 +103,18 @@ function generateLean(diagramId, concepts) {
     if (c.pointers.length) {
       lines.push(`-- pointers: ${c.pointers.join(', ')} (stored as _NodeId; bind via Integrating/correspondences)`);
     }
+    if (c.sets.length) {
+      lines.push(`-- sets: ${c.sets.join(', ')} (many members; not a pointer)`);
+    }
     lines.push(`structure ${c.name} extends FCO where`);
     for (const a of c.attrs) {
       lines.push(`  ${sanitize(a)} : String := ""`);
     }
     for (const p of c.pointers) {
       lines.push(`  ${sanitize(p)} : _NodeId := ⟨""⟩`);
+    }
+    for (const s of c.sets) {
+      lines.push(`  ${sanitize(s)} : List _NodeId := []`);
     }
     if (c.contains.length) {
       lines.push(`  -- containment allows: ${c.contains.join(', ')}`);

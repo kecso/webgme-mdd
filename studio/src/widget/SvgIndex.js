@@ -90,14 +90,18 @@ export function parseModelIdFromSvgId(svgId, domainId) {
 
 /**
  * Map absolute client bbox → coordinates relative to host element.
+ * `scale` is the CSS transform scale already applied to the host, so the
+ * result is in the host's pre-transform layout pixels.
  * @param {DOMRect} bbox
  * @param {DOMRect} hostBox
+ * @param {number} [scale]
  */
-export function toHostBox(bbox, hostBox) {
+export function toHostBox(bbox, hostBox, scale = 1) {
+  const s = scale || 1;
   return {
-    left: bbox.left - hostBox.left,
-    top: bbox.top - hostBox.top,
-    width: bbox.width,
-    height: bbox.height
+    left: (bbox.left - hostBox.left) / s,
+    top: (bbox.top - hostBox.top) / s,
+    width: bbox.width / s,
+    height: bbox.height / s
   };
 }

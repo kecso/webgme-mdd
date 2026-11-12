@@ -239,8 +239,12 @@ export default function ProjectStudio() {
           pushLog('opening Markdown book preview');
           navigate(`/p/${owner}/${name}/book`);
         }}
-        onShowOverview={() => setMode('overview')}
-        onShowCanvas={() => activeKey && setMode('canvas')}
+        onCloseDiagram={() => {
+          setActiveKey(null);
+          setSelectedId(null);
+          setMode('overview');
+        }}
+        onCloseProject={() => navigate('/projects')}
         userLabel={userLabel}
       />
       <div className={bodyClass}>
@@ -254,6 +258,7 @@ export default function ProjectStudio() {
             />
           ) : activeKey && diagramType ? (
             <DiagramCanvas
+              diagramKey={activeKey}
               domainId={diagramType}
               source={viewSource}
               control={control}

@@ -13,12 +13,12 @@ class _Contained (parent child : Type) where
 
 inductive _Type where
   | _FCO
-  | cDiagram
   | cSwimlane
   | cCommand
   | cEvent
   | cView
   | cFlow
+  | cEventModelingDiagram
   deriving DecidableEq, BEq, Repr
 
 structure FCO where
@@ -26,16 +26,6 @@ structure FCO where
   _type : _Type
   name : String
   deriving Repr
-
--- META concept Diagram
-structure Diagram extends FCO where
-  title : String := ""
-  -- containment allows: Swimlane, Command, Event, View, Flow
-  _childIds : List _NodeId := []
-  deriving Repr
-
-instance : Coe Diagram FCO where
-  coe := Diagram.toFCO
 
 -- META concept Swimlane
 structure Swimlane extends FCO where
@@ -77,6 +67,16 @@ structure Flow extends FCO where
 
 instance : Coe Flow FCO where
   coe := Flow.toFCO
+
+-- META concept EventModelingDiagram
+structure EventModelingDiagram extends FCO where
+  title : String := ""
+  -- containment allows: Swimlane, Command, Event, View, Flow
+  _childIds : List _NodeId := []
+  deriving Repr
+
+instance : Coe EventModelingDiagram FCO where
+  coe := EventModelingDiagram.toFCO
 
 /-- Well-formedness scaffold: every node name non-empty (domain-local). -/
 def AllNamesNonEmpty (nodes : List FCO) : Bool :=

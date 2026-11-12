@@ -20,7 +20,7 @@
     "0-15: \"Source Port\""
   ],
   "metaConcepts": {
-    "Diagram": {
+    "PacketDiagram": {
       "attrs": [
         "name",
         "title"
@@ -36,5 +36,7 @@
     }
   },
   "webgmeJson": "./Language.json",
-  "sample": "./../examples/sample.mmd"
+  "sample": "./../examples/sample.mmd",
+  "leanDomain": "../lean/Domain.lean",
+  "leanNamespace": "PacketDomain"
 }

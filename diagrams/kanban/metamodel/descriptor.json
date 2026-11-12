@@ -20,7 +20,7 @@
     "  [task]"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "Kanban": {
       "attrs": [
         "name",
         "title"

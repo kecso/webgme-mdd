@@ -17,7 +17,7 @@
     "cynefin"
   ],
   "metaConcepts": {
-    "Diagram": {
+    "CynefinDiagram": {
       "attrs": [
         "name",
         "title"

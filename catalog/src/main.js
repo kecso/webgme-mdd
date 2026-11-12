@@ -100,7 +100,9 @@ async function renderDetail(id) {
   ]);
   const meta = await metaRes.json();
   const sample = await sampleRes.text();
-  const concepts = (meta.children || []).map((c) => c.id.replace(/^@meta:/, ''));
+  const concepts = (meta.children || [])
+    .map((c) => (c.attributes && c.attributes.name) || String(c.id || '').replace(/^@meta:/, ''))
+    .filter((name) => name && name !== 'FCO' && name !== 'ROOT');
 
   els.detail.className = 'detail';
   els.detail.innerHTML = `

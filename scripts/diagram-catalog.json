@@ -28,7 +28,7 @@
         "subgraph id[Title] ... end"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "direction", "title"] },
+        "FlowChart": { "attrs": ["name", "direction", "title"] },
         "Node": { "attrs": ["name", "label", "shape", "styleClass"] },
         "Edge": { "attrs": ["name", "label", "lineStyle", "arrowStyle"], "pointers": ["src", "dst"] },
         "Subgraph": { "attrs": ["name", "label", "direction"], "contains": ["Node", "Edge", "Subgraph"] }
@@ -56,7 +56,7 @@
         "alt ok ... else ... end"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "autonumber", "title"] },
+        "SequenceDiagram": { "attrs": ["name", "autonumber", "title"] },
         "Participant": { "attrs": ["name", "alias", "kind"] },
         "Message": { "attrs": ["name", "label", "arrowType", "activate"], "pointers": ["from", "to"] },
         "Fragment": { "attrs": ["name", "kind", "label"], "contains": ["Message", "Fragment", "Note"] },
@@ -84,7 +84,7 @@
         "Owner \"1\" --> \"*\" Animal : owns"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "ClassDiagram": { "attrs": ["name", "title"] },
         "Class": { "attrs": ["name", "stereotype", "isInterface", "isAbstract"] },
         "Member": { "attrs": ["name", "visibility", "type", "classifier"] },
         "Method": { "attrs": ["name", "visibility", "returnType", "parameters", "classifier"] },
@@ -112,7 +112,7 @@
         "state Busy { ... }"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "StateDiagram": { "attrs": ["name", "title"] },
         "State": { "attrs": ["name", "kind", "label"], "contains": ["State", "Transition"] },
         "Transition": { "attrs": ["name", "event", "guard", "action"], "pointers": ["src", "dst"] },
         "Note": { "attrs": ["name", "text"], "pointers": ["target"] }
@@ -137,7 +137,7 @@
         "CUSTOMER { string name PK }"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "ERDiagram": { "attrs": ["name", "title"] },
         "Entity": { "attrs": ["name"] },
         "Attribute": { "attrs": ["name", "dataType", "key", "comment"] },
         "Relationship": { "attrs": ["name", "label", "srcCard", "dstCard"], "pointers": ["src", "dst"] }
@@ -162,7 +162,7 @@
         "Make tea: 5: Me"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "UserJourney": { "attrs": ["name", "title"] },
         "Section": { "attrs": ["name"] },
         "Task": { "attrs": ["name", "score", "actors"] }
       },
@@ -187,7 +187,7 @@
         "Design :a1, 2026-01-01, 7d"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "dateFormat", "axisFormat", "excludes"] },
+        "GanttChart": { "attrs": ["name", "title", "dateFormat", "axisFormat", "excludes"] },
         "Section": { "attrs": ["name"] },
         "Task": { "attrs": ["name", "taskId", "status", "start", "end", "duration", "after"] }
       },
@@ -202,7 +202,7 @@
       "capabilities": ["Titled pie slices with numeric values", "Optional showData"],
       "syntaxHighlights": ["pie title Pets", "\"Dogs\" : 386"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "showData"] },
+        "PieChart": { "attrs": ["name", "title", "showData"] },
         "Slice": { "attrs": ["name", "label", "value"] }
       },
       "sample": "pie showData\n  title Diagram coverage\n  \"Stable\" : 16\n  \"Beta\" : 10\n  \"Experimental\" : 4"
@@ -224,7 +224,7 @@
         "Campaign A: [0.3, 0.6]"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "xAxisLeft", "xAxisRight", "yAxisBottom", "yAxisTop"] },
+        "QuadrantChart": { "attrs": ["name", "title", "xAxisLeft", "xAxisRight", "yAxisBottom", "yAxisTop"] },
         "Quadrant": { "attrs": ["name", "label", "index"] },
         "Point": { "attrs": ["name", "label", "x", "y"] }
       },
@@ -247,7 +247,7 @@
         "e1 - satisfies -> req1"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "RequirementDiagram": { "attrs": ["name", "title"] },
         "Requirement": { "attrs": ["name", "reqId", "text", "risk", "verifymethod", "type"] },
         "Element": { "attrs": ["name", "elementType", "docRef"] },
         "Relationship": { "attrs": ["name", "kind"], "pointers": ["src", "dst"] }
@@ -273,7 +273,7 @@
         "merge develop"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "orientation"] },
+        "GitGraph": { "attrs": ["name", "title", "orientation"] },
         "Branch": { "attrs": ["name"] },
         "Commit": { "attrs": ["name", "commitId", "tag", "commitType", "msg"], "pointers": ["branch"] },
         "Merge": { "attrs": ["name"], "pointers": ["into", "from"] }
@@ -298,7 +298,7 @@
         "Rel(user, sys, \"Uses\")"
       ],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "level", "title"] },
+        "C4Diagram": { "attrs": ["name", "level", "title"] },
         "Person": { "attrs": ["name", "alias", "description", "external"] },
         "System": { "attrs": ["name", "alias", "description", "external", "kind"] },
         "Container": { "attrs": ["name", "alias", "technology", "description", "kind"] },
@@ -316,7 +316,7 @@
       "capabilities": ["Hierarchical radial/outline mind maps", "Icons and class styling", "Markdown-ish indentation"],
       "syntaxHighlights": ["mindmap", "root((idea))", "  Branch", "    Leaf"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "Mindmap": { "attrs": ["name", "title"] },
         "Node": { "attrs": ["name", "label", "shape", "icon"], "contains": ["Node"] }
       },
       "sample": "mindmap\n  root((WebGME-MDD))\n    Diagrams\n      Flowchart\n      Sequence\n      Class\n    Plugins\n      Import\n      Export\n    Domains\n      Software\n      Systems"
@@ -330,7 +330,7 @@
       "capabilities": ["Sections with time periods and events", "Multi-event periods"],
       "syntaxHighlights": ["timeline", "title History", "section 2024", "2024 : event"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "Timeline": { "attrs": ["name", "title"] },
         "Section": { "attrs": ["name"] },
         "Period": { "attrs": ["name", "label"] },
         "Event": { "attrs": ["name", "text"] }
@@ -346,7 +346,7 @@
       "capabilities": ["Columns with ticket cards", "Metadata on tickets"],
       "syntaxHighlights": ["kanban", "Todo", "  [task]"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "Kanban": { "attrs": ["name", "title"] },
         "Column": { "attrs": ["name"] },
         "Ticket": { "attrs": ["name", "label", "assigned", "meta"] }
       },
@@ -361,7 +361,7 @@
       "capabilities": ["Weighted source-target flows", "CSV-like link rows"],
       "syntaxHighlights": ["sankey-beta", "Source,Target,Value"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "SankeyDiagram": { "attrs": ["name", "title"] },
         "Node": { "attrs": ["name", "label"] },
         "Link": { "attrs": ["name", "value"], "pointers": ["src", "dst"] }
       },
@@ -376,7 +376,7 @@
       "capabilities": ["Bar and line series", "Categorical or numeric axes", "Titles and axis labels"],
       "syntaxHighlights": ["xychart-beta", "x-axis [...]", "bar [...]", "line [...]"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "xAxis", "yAxis"] },
+        "XYChart": { "attrs": ["name", "title", "xAxis", "yAxis"] },
         "Series": { "attrs": ["name", "kind", "values"] }
       },
       "sample": "xychart-beta\n  title \"Diagrams by status\"\n  x-axis [stable, beta, experimental]\n  y-axis \"Count\" 0 --> 20\n  bar [16, 10, 4]"
@@ -390,7 +390,7 @@
       "capabilities": ["Nested blocks/columns/spaces", "Edges between blocks", "Width/composite layouts"],
       "syntaxHighlights": ["block-beta", "columns 3", "A B C", "A --> B"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "columns"] },
+        "BlockDiagram": { "attrs": ["name", "title", "columns"] },
         "Block": { "attrs": ["name", "label", "width", "kind"], "contains": ["Block"] },
         "Edge": { "attrs": ["name", "label"], "pointers": ["src", "dst"] }
       },
@@ -405,7 +405,7 @@
       "capabilities": ["Bit-field packet layouts", "Start-end bit ranges with labels"],
       "syntaxHighlights": ["packet-beta", "0-15: \"Source Port\""],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "PacketDiagram": { "attrs": ["name", "title"] },
         "Field": { "attrs": ["name", "startBit", "endBit", "label"] }
       },
       "sample": "packet-beta\n  0-15: \"Source Port\"\n  16-31: \"Dest Port\"\n  32-63: \"Sequence Number\""
@@ -419,7 +419,7 @@
       "capabilities": ["Groups, services, edges", "Icons for cloud resources", "Directional service links"],
       "syntaxHighlights": ["architecture-beta", "group api", "service db", "api:L --> R:db"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "ArchitectureDiagram": { "attrs": ["name", "title"] },
         "Group": { "attrs": ["name", "icon"], "contains": ["Service", "Group"] },
         "Service": { "attrs": ["name", "icon", "inGroup"] },
         "Edge": { "attrs": ["name", "srcSide", "dstSide"], "pointers": ["src", "dst"] }
@@ -435,7 +435,7 @@
       "capabilities": ["Polar axes with numeric series", "Multiple overlays"],
       "syntaxHighlights": ["radar-beta", "axis a[\"A\"], b[\"B\"]", "curve c{1,2,3}"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "RadarChart": { "attrs": ["name", "title"] },
         "Axis": { "attrs": ["name", "label"] },
         "Curve": { "attrs": ["name", "label", "values"] }
       },
@@ -450,7 +450,7 @@
       "capabilities": ["Nested hierarchical areas", "Numeric values drive area"],
       "syntaxHighlights": ["treemap-beta", "\"Root\"", "  \"Child\": 10"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "Treemap": { "attrs": ["name", "title"] },
         "Node": { "attrs": ["name", "label", "value"], "contains": ["Node"] }
       },
       "sample": "treemap-beta\n\"webgme-mdd\"\n  \"diagrams\": 24\n  \"docs\": 6\n  \"plugins\": 8"
@@ -464,7 +464,7 @@
       "capabilities": ["Effect spine with cause categories", "Nested causes"],
       "syntaxHighlights": ["ishikawa-beta", "Effect", "Category", "  Cause"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "effect"] },
+        "IshikawaDiagram": { "attrs": ["name", "title", "effect"] },
         "Category": { "attrs": ["name"] },
         "Cause": { "attrs": ["name"], "contains": ["Cause"] }
       },
@@ -479,7 +479,7 @@
       "capabilities": ["Actors and use cases", "Include/extend/generalization links", "System boundaries"],
       "syntaxHighlights": ["usecase-beta", "actor User", "User --> (Login)"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "direction"] },
+        "UseCaseDiagram": { "attrs": ["name", "title", "direction"] },
         "Actor": { "attrs": ["name", "label"] },
         "UseCase": { "attrs": ["name", "label"] },
         "Boundary": { "attrs": ["name", "label"], "contains": ["UseCase"] },
@@ -496,7 +496,7 @@
       "capabilities": ["Events, commands, views/swimlanes", "Timeline of system behavior"],
       "syntaxHighlights": ["eventmodeling-beta"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "EventModelingDiagram": { "attrs": ["name", "title"] },
         "Swimlane": { "attrs": ["name"] },
         "Command": { "attrs": ["name", "label"] },
         "Event": { "attrs": ["name", "label"] },
@@ -514,9 +514,9 @@
       "capabilities": ["Set overlaps and intersection labels"],
       "syntaxHighlights": ["venn"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "VennDiagram": { "attrs": ["name", "title"] },
         "Set": { "attrs": ["name", "label"] },
-        "Intersection": { "attrs": ["name", "label"], "pointers": ["sets"] }
+        "Intersection": { "attrs": ["name", "label"], "sets": { "members": ["Set"] } }
       },
       "sample": "%% Venn support varies by Mermaid build\nvenn\n  title Domains\n  A Software\n  B Systems\n  C Data"
     },
@@ -529,7 +529,7 @@
       "capabilities": ["Indented hierarchical trees"],
       "syntaxHighlights": ["treeView"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "TreeView": { "attrs": ["name", "title"] },
         "Node": { "attrs": ["name", "label"], "contains": ["Node"] }
       },
       "sample": "treeView\n  webgme-mdd\n    diagrams\n      flowchart\n      sequence\n    docs\n      findings"
@@ -543,7 +543,7 @@
       "capabilities": ["Value chain vs evolution axes", "Components and dependencies"],
       "syntaxHighlights": ["wardley-beta"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "WardleyMap": { "attrs": ["name", "title"] },
         "Component": { "attrs": ["name", "visibility", "evolution"] },
         "Dependency": { "attrs": ["name"], "pointers": ["src", "dst"] }
       },
@@ -558,7 +558,7 @@
       "capabilities": ["Clear/Complicated/Complex/Chaotic/Confused domains placement"],
       "syntaxHighlights": ["cynefin"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title"] },
+        "CynefinDiagram": { "attrs": ["name", "title"] },
         "Domain": { "attrs": ["name", "kind"] },
         "Item": { "attrs": ["name", "label"], "pointers": ["domain"] }
       },
@@ -573,7 +573,7 @@
       "capabilities": ["Railroad/syntax diagrams from IR, EBNF, ABNF, PEG flavors"],
       "syntaxHighlights": ["railroad"],
       "metaConcepts": {
-        "Diagram": { "attrs": ["name", "title", "flavor"] },
+        "RailroadDiagram": { "attrs": ["name", "title", "flavor"] },
         "Rule": { "attrs": ["name", "expression"] },
         "Term": { "attrs": ["name", "kind", "value"] }
       },
@@ -711,7 +711,7 @@
         "The <system> shall <response>"
       ],
       "metaConcepts": {
-        "Specification": { "attrs": ["name", "title"] },
+        "EARSSpecification": { "attrs": ["name", "title"] },
         "EARSRequirement": {
           "attrs": [
             "reqId",
