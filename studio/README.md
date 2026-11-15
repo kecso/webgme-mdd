@@ -12,7 +12,7 @@ This package is a **valid WebGME project** in the **webgme-dss** sense: `webgme-
 
 ```bash
 npm install   # from repo root
-npm run studio
+npm run studio:demo
 # → http://127.0.0.1:3947
 ```
 
@@ -24,8 +24,8 @@ Default storage is **in-memory** (no MongoDB). Projects vanish when the process 
 
 ```bash
 npm install
-npm run studio:build    # Vite → studio/public/app + copy gme-dist
-npm run studio:start    # webgme-engine on :3988
+npm run studio:build      # Vite → studio/public/app + copy gme-dist
+npm run studio:webgme     # webgme-engine on :3988
 # → http://127.0.0.1:3988
 ```
 
@@ -34,7 +34,7 @@ Or from this package:
 ```bash
 cd studio
 npm run build
-npm start
+npm run webgme
 ```
 
 Optional Mongo later:

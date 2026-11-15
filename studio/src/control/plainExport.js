@@ -1,11 +1,12 @@
 /**
- * Plain project export.
+ * Project export for the running studio.
  *
- * A connected WebGME client downloads the regular .webgmex package.
- * The local demo has no storage project, so it downloads the project document.
+ * studio:webgme downloads the storage package (.webgmex).
+ * studio:demo downloads the local project document.
  */
 
 import { WebGmeBridge } from './WebGmeBridge.js';
+import { isDemoRuntime } from './runtime.js';
 
 function triggerDownload(href, fileName) {
   const a = document.createElement('a');
@@ -23,36 +24,27 @@ function downloadProjectDocument(project) {
   });
   const url = URL.createObjectURL(blob);
   triggerDownload(url, fileName);
-  URL.revokeObjectURL(url);
+  // Revoking in the same turn cancels the download in some browsers.
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
   return { kind: 'json', fileName };
 }
 
-function missingInStorage(err) {
-  const message = String(err && err.message ? err.message : err).toLowerCase();
-  return message.includes('does not exist') || message.includes('not found') || message.includes('no such');
-}
-
 /**
- * @param {object} project demoStore project
+ * @param {object} project
  * @returns {Promise<{ kind: 'webgmex'|'json', fileName: string }>}
  */
 export async function plainExportProject(project) {
   if (!project) throw new Error('No project to export');
-  if (!WebGmeBridge.isConnected()) {
-    return downloadProjectDocument(project);
+  if (isDemoRuntime()) return downloadProjectDocument(project);
+  const result = await WebGmeBridge.exportProjectFile(project.id, 'master');
+  if (!result || !result.downloadUrl) {
+    throw new Error('WebGME did not return a project package');
   }
-  try {
-    const result = await WebGmeBridge.exportProjectFile(project.id, 'master');
-    if (!result) return downloadProjectDocument(project);
-    const prefix = window.gmeClient.mountedPath || '';
-    const href = result.downloadUrl.startsWith('/')
-      ? `${prefix}${result.downloadUrl}`
-      : result.downloadUrl;
-    const fileName = result.fileName || `${project.name}.webgmex`;
-    triggerDownload(href, fileName);
-    return { kind: 'webgmex', fileName };
-  } catch (err) {
-    if (missingInStorage(err)) return downloadProjectDocument(project);
-    throw err;
-  }
+  const prefix = window.gmeClient.mountedPath || '';
+  const href = result.downloadUrl.startsWith('/')
+    ? `${prefix}${result.downloadUrl}`
+    : result.downloadUrl;
+  const fileName = result.fileName || `${project.name}.webgmex`;
+  triggerDownload(href, fileName);
+  return { kind: 'webgmex', fileName };
 }

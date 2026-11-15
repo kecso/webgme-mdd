@@ -170,8 +170,8 @@ Do **not** block on full bidirectional Mermaid editing before the shell and expo
 
 `studio/` is now a **valid WebGME host** (DSS-shaped): `webgme-setup.json`, `config/`, `server.js`, AppRouter + DomainManager, `plugin.basePaths` for `router` + `diagrams/*`, React via `client.appDir`.
 
-- **Vite demo** (port **3947**): view-first SPA + demo store (`npm run studio`).  
-- **Engine host** (port **3988**): `npm run studio:build && npm run studio:start` (in-memory storage by default; `NODE_ENV=mongo` for MongoDB).  
+- **Local demo** (port **3947**): view-first SPA + demo store (`npm run studio:demo`).  
+- **WebGME host** (port **3988**): `npm run studio:build && npm run studio:webgme` (in-memory storage by default; `NODE_ENV=mongo` for MongoDB).  
 - Widget: `DiagramCanvas` + `SelectionOverlay` + `SvgIndex` (selection intents only).  
 - Control: `DiagramControl` — owns Apply / re-render; **manual** Monaco Apply with `computeSourceDelta` placeholder.  
 - Hideable Monaco: `SourceEditorPanel` (live-editor–like source; no auto WebGME write).  

@@ -62,15 +62,17 @@ export default function ProjectOverview({
   const allowed = project.allowedDiagramTypes || [];
   const connections = integrationView(project.integrating);
 
+  const enabled = project.enabledModelingDomains || [];
+  const allowedText = allowed.length ? allowed.map(diagramLabel).join(', ') : 'none';
   let lead = 'S1 demo.';
-  if (project.profile === 'domain' && project.profileDomain) {
-    lead = `${domainLabel(project.profileDomain)}. Allowed: ${
-      allowed.length ? allowed.map(diagramLabel).join(', ') : 'none'
-    }.`;
+  if (project.profile === 'story') {
+    lead = 'S1 demo.';
+  } else if (enabled.length) {
+    lead = `${enabled.map(domainLabel).join(', ')}. Allowed: ${allowedText}.`;
   } else if (project.profile === 'empty') {
     lead = allowed.length
-      ? `Empty project. Allowed: ${allowed.map(diagramLabel).join(', ')}.`
-      : 'Empty project. Open Diagrams and add the ones you need, then use +.';
+      ? `Empty project. Allowed: ${allowedText}.`
+      : 'Empty project. Open Domains and add the ones you need, then use +.';
   }
 
   return (

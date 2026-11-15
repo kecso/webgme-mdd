@@ -1,6 +1,6 @@
 /**
- * Local demo project store until WebGME gmeClient + DomainManager exist.
- * Persists in localStorage.
+ * Project store for the local demo runtime (studio:demo).
+ * The WebGME host does not read this. Persists in localStorage.
  *
  * Project fields:
  *   profile — 'story' | 'domain' | 'empty'
@@ -182,6 +182,18 @@ export function createProject({
  */
 export function resetS1DemoProject() {
   return upsertProject(buildS1DemoProject());
+}
+
+export function setProjectLanguages(projectId, { allowedDiagramTypes, enabledModelingDomains }) {
+  const project = getProject(projectId);
+  if (!project) return null;
+  if (Array.isArray(allowedDiagramTypes)) {
+    project.allowedDiagramTypes = [...allowedDiagramTypes];
+  }
+  if (Array.isArray(enabledModelingDomains)) {
+    project.enabledModelingDomains = [...enabledModelingDomains];
+  }
+  return upsertProject(project);
 }
 
 export function setAllowedDiagramTypes(projectId, allowedDiagramTypes) {

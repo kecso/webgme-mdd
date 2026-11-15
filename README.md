@@ -15,7 +15,7 @@ Monorepo that surveys **all current Mermaid diagram families** and packages each
 ```bash
 npm install
 npm run catalog   # findings browser → http://127.0.0.1:3847
-npm run studio    # MDSS Vite demo → http://127.0.0.1:3947
+npm run studio:demo    # local demo → http://127.0.0.1:3947
 ```
 
 Open the catalog to filter diagrams and META samples; open **MDSS** for story-centered projects, Mermaid view + Monaco Apply, and **Export book** (browsable Markdown).
@@ -23,8 +23,8 @@ Open the catalog to filter diagrams and META samples; open **MDSS** for story-ce
 WebGME host (in-memory by default — no Mongo; DSS-style engine + React `appDir`):
 
 ```bash
-npm run studio:build   # Vite → studio/public/app + gme-dist
-npm run studio:start   # webgme-engine → http://127.0.0.1:3988
+npm run studio:build     # Vite → studio/public/app + gme-dist
+npm run studio:webgme    # webgme-engine → http://127.0.0.1:3988
 ```
 
 ```bash

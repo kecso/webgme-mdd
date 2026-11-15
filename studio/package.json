@@ -4,10 +4,12 @@
   "private": true,
   "description": "Markdown System Studio (MDSS) — webgme-engine host + React SPA (webgme-dss pattern)",
   "scripts": {
+    "demo": "vite --config vite.config.mjs --host 0.0.0.0 --port 3947",
     "dev": "vite --config vite.config.mjs --host 0.0.0.0 --port 3947",
     "build": "vite build --config vite.config.mjs && node scripts/copy-gme-dist.js",
     "copy:gme-dist": "node scripts/copy-gme-dist.js",
     "preview": "vite preview --config vite.config.mjs --host 0.0.0.0 --port 3947",
+    "webgme": "node server.js",
     "start": "node server.js",
     "postinstall": "node scripts/copy-gme-dist.js"
   },

@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import mermaid from 'mermaid';
-import { getProject } from '../data/demoStore.js';
+import { getProject, loadProject } from '../data/projectDocument.js';
+import { isDemoRuntime } from '../control/runtime.js';
 import {
   bookToBundle,
   buildMarkdownBook,
@@ -21,7 +22,31 @@ export default function BookPreview() {
   const [stories, setStories] = useState(null);
   const [renderError, setRenderError] = useState(null);
 
-  const project = getProject(projectId);
+  const [project, setProject] = useState(() => (isDemoRuntime() ? getProject(projectId) : null));
+  const [projectReady, setProjectReady] = useState(isDemoRuntime());
+
+  useEffect(() => {
+    if (isDemoRuntime()) {
+      setProject(getProject(projectId));
+      setProjectReady(true);
+      return undefined;
+    }
+    let cancelled = false;
+    loadProject(projectId)
+      .then((loaded) => {
+        if (cancelled) return;
+        setProject(loaded);
+        setProjectReady(true);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setProject(null);
+        setProjectReady(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId]);
 
   useEffect(() => {
     fetch('/api/stories')
@@ -75,6 +100,14 @@ export default function BookPreview() {
       cancelled = true;
     };
   }, [file?.path, file?.content]);
+
+  if (!projectReady) {
+    return (
+      <div className="page">
+        <p>Opening project…</p>
+      </div>
+    );
+  }
 
   if (!project || !book) {
     return (

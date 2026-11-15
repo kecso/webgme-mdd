@@ -83,7 +83,15 @@ export default defineConfig({
       output: {
         entryFileNames: 'app.build.js',
         chunkFileNames: 'chunks/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
+        assetFileNames(assetInfo) {
+          const names = assetInfo.names || [];
+          const isCss = names.some((name) => name.endsWith('.css'))
+            || String(assetInfo.name || '').endsWith('.css');
+          // WebGME serves public/index.html, not Vite's generated HTML, so the
+          // stylesheet path has to stay stable across builds.
+          if (isCss) return 'assets/studio.css';
+          return 'assets/[name]-[hash][extname]';
+        }
       }
     }
   }

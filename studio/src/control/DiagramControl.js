@@ -8,7 +8,8 @@
  * re-import text via a clever operation delta instead of wipe+reinsert.
  */
 
-import { setDiagramSource } from '../data/demoStore.js';
+import { setDiagramSource } from '../data/projectDocument.js';
+import { isDemoRuntime } from './runtime.js';
 
 /**
  * @typedef {object} ApplyResult
@@ -74,8 +75,7 @@ export class DiagramControl {
       return { status: 'applied-local', message: 'No changes vs baseline', delta };
     }
 
-    // --- Demo / view path: update local store + refresh view immediately ---
-    setDiagramSource(this.projectId, diagramKey, {
+    await setDiagramSource(this.projectId, diagramKey, {
       diagramType: domainId,
       modelingDomainId,
       name,
@@ -94,13 +94,16 @@ export class DiagramControl {
     // 5. On success, ExportMermaid again and setBaseline; then widget re-renders.
     // 6. On conflict / unparseable: keep buffer, surface error, do not commit.
     this.onLog(
-      'TODO: ImportDelta — local view updated; WebGME Core delta apply not wired yet'
+      isDemoRuntime()
+        ? 'TODO: ImportDelta — demo view updated; WebGME Core delta apply not wired yet'
+        : 'View saved on the WebGME project. Core delta apply is not wired yet'
     );
 
     return {
       status: 'pending-delta',
-      message:
-        'View updated locally. WebGME delta re-import is TODO (manual apply keeps wipe/replace off the table).',
+      message: isDemoRuntime()
+        ? 'Demo view updated. WebGME delta re-import is TODO.'
+        : 'View saved on the project. WebGME delta re-import is TODO.',
       delta
     };
   }

@@ -11,6 +11,14 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="<%=mountedPath%>/app/assets/studio.css" />
+    <script>
+      // webgme.classes evals onGMEInit before the module script can define it.
+      window.__mdssGmeInitPending = false;
+      window.onGMEInit = function () {
+        window.__mdssGmeInitPending = true;
+      };
+    </script>
     <script src="<%=mountedPath%>/gme-dist/webgme.classes.build.js"></script>
     <title>Markdown System Studio</title>
   </head>

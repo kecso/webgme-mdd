@@ -57,7 +57,8 @@ export const WebGmeBridge = {
    */
   async connect() {
     if (this.isConnected()) {
-      return { connected: true, user: { _id: 'gme', displayName: 'WebGME user' } };
+      const id = window.gmeClient.getUserId() || 'guest';
+      return { connected: true, user: { _id: id, displayName: id } };
     }
     return { connected: false, user: { _id: 'local', displayName: 'Local demo' } };
   },
@@ -103,6 +104,29 @@ export const WebGmeBridge = {
     if (!res.ok) {
       const text = await res.text();
       throw new Error(text || `createProject failed (${res.status})`);
+    }
+    return res.json();
+  },
+
+  /**
+   * Mount diagram seeds that are not already libraries, and merge domains into kind.
+   * @param {string} projectId
+   * @param {string[]} libraries diagram seed ids
+   * @param {string[]} [domains] modeling domains to record
+   */
+  async addLibraries(projectId, libraries, domains = []) {
+    if (!this.isConnected()) {
+      return { ok: false, reason: 'WebGME client not connected' };
+    }
+    const res = await fetch(mountedApi('/DomainManager/addLibraries'), {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId, libraries, domains })
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(text || `addLibraries failed (${res.status})`);
     }
     return res.json();
   },

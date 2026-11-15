@@ -5,7 +5,9 @@
  * createProject seeds mdd/mdd.webgmex (a Project folder that can hold any FCO)
  * and mounts each language the selected domains use as a library. The library
  * name is the diagram directory. updateProject adds any libraries the new
- * domain selection needs. A library that is already mounted is left in place.
+ * domain selection needs. addLibraries mounts more diagram seeds on an existing
+ * project. A library that is already mounted is left in place. Nothing here
+ * removes a library.
  */
 'use strict';
 
@@ -21,6 +23,24 @@ var REGISTRY_PATH = path.join(REPO_ROOT, 'router', 'src', 'common', 'DomainRegis
 var CATALOG_PATH = path.join(REPO_ROOT, 'scripts', 'diagram-catalog.json');
 var STORIES_PATH = path.join(REPO_ROOT, 'docs', 'stories', 'stories.json');
 var DOMAINS_PATH = path.join(REPO_ROOT, 'mdd', 'domains.json');
+
+function domainsFromKind(kind) {
+    var raw = String(kind || '');
+    if (raw.indexOf('MDSS:') !== 0) return [];
+    return raw.slice('MDSS:'.length).split(':').filter(Boolean);
+}
+
+function kindForDomains(domains) {
+    var found = {};
+    (domains || []).forEach(function (domain) {
+        found[domain] = true;
+    });
+    return 'MDSS:' + Object.keys(found).sort().join(':');
+}
+
+function seedPath(libraryId) {
+    return path.join(REPO_ROOT, 'diagrams', libraryId, 'metamodel', libraryId + '.webgmex');
+}
 
 function librariesForDomains(domains) {
     var map = loadJson(DOMAINS_PATH);
@@ -280,6 +300,68 @@ function initialize(middlewareOpts) {
                     kind: kind,
                     libraries: libraries,
                     librariesSynced: true
+                });
+            })
+            .catch(function (err) {
+                logger.error(err);
+                next(err);
+            });
+    });
+
+    /**
+     * body: { projectId: string, libraries: string[], domains?: string[] }
+     * Mounts diagram seeds that are not already libraries. Domains are merged
+     * into the project kind. Existing libraries and domains stay.
+     */
+    router.post('/addLibraries', function (req, res, next) {
+        var userId = getUserId(req);
+        var projectId = req.body && req.body.projectId;
+        var libraries = req.body && Array.isArray(req.body.libraries) ? req.body.libraries : [];
+        var domains = req.body && Array.isArray(req.body.domains) ? req.body.domains : [];
+        var domainMap;
+
+        logger.debug('addLibraries', req.body);
+
+        try {
+            if (typeof projectId !== 'string' || !projectId) {
+                throw new Error('body.projectId is required');
+            }
+            domainMap = loadJson(DOMAINS_PATH);
+            libraries = libraries.filter(function (id, index) {
+                return libraries.indexOf(id) === index;
+            });
+            libraries.forEach(function (id) {
+                if (typeof id !== 'string' || !/^[0-9A-Za-z_]+$/.test(id) || !fs.existsSync(seedPath(id))) {
+                    throw new Error('No seed for library [' + id + ']');
+                }
+            });
+            domains.forEach(function (domain) {
+                if (!Object.prototype.hasOwnProperty.call(domainMap, domain)) {
+                    throw new Error('Selected domain [' + domain + '] is not available');
+                }
+            });
+        } catch (err) {
+            next(err);
+            return;
+        }
+
+        getNewJWToken(userId)
+            .then(function (token) {
+                return addLibraries(swm, token, projectId, libraries);
+            })
+            .then(function () {
+                if (!domains.length || !gmeAuth || !gmeAuth.metadataStorage) return null;
+                return gmeAuth.metadataStorage.getProject(projectId).then(function (data) {
+                    var current = data && data.info ? domainsFromKind(data.info.kind) : [];
+                    var kind = kindForDomains(current.concat(domains));
+                    return gmeAuth.metadataStorage.updateProjectInfo(projectId, { kind: kind });
+                });
+            })
+            .then(function () {
+                res.json({
+                    projectId: projectId,
+                    libraries: libraries,
+                    domains: domains
                 });
             })
             .catch(function (err) {

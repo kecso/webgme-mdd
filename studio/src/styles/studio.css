@@ -809,11 +809,20 @@ button.crumb-label:hover {
   padding: 1rem 1.1rem 1.1rem;
 }
 
+.modal h3 {
+  margin: 0.85rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .domain-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 0.45rem;
-  margin: 1rem 0;
+  margin: 0.45rem 0 1rem;
 }
 
 .check {
@@ -823,6 +832,10 @@ button.crumb-label:hover {
   font-size: 0.88rem;
   padding: 0.35rem;
   border-radius: 6px;
+}
+
+.check.is-locked {
+  color: var(--muted);
 }
 
 .check small {
@@ -1233,10 +1246,71 @@ button.crumb-label:hover {
   margin-bottom: 0.25rem;
 }
 
+.fab-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0 0.75rem 0.35rem;
+}
+
+.fab-tabs button {
+  flex: 1;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.35rem 0.2rem 0.45rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.fab-tabs button.on {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+.drop-zone {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 1rem 0.75rem;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--muted);
+  text-align: center;
+}
+
+.drop-zone p {
+  margin: 0;
+}
+
+.drop-zone input {
+  display: none;
+}
+
+.drop-zone.over {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
 .fab-form {
   display: grid;
   gap: 0.65rem;
   padding: 0 1rem 1rem;
+}
+
+.fab-form textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: 0.85rem/1.4 'IBM Plex Mono', ui-monospace, monospace;
+  resize: vertical;
 }
 
 .fab-form input,
@@ -1250,6 +1324,10 @@ button.crumb-label:hover {
   background: var(--bg);
   color: var(--text);
   font: inherit;
+}
+
+.fab-form .drop-zone input {
+  display: none;
 }
 
 .modal-wide {

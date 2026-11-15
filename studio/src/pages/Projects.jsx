@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createProject, dropProject, listProjects, resetS1DemoProject } from '../data/demoStore.js';
+import {
+  createProject,
+  dropProject,
+  listProjects,
+  resetS1DemoProject
+} from '../data/projectDocument.js';
 import { plainExportProject } from '../control/plainExport.js';
-import { WebGmeBridge } from '../control/WebGmeBridge.js';
+import { isDemoRuntime } from '../control/runtime.js';
 import {
   S1_MODELING_DOMAINS,
   diagramLabel,
@@ -44,15 +49,23 @@ function projectMeta(project) {
 }
 
 export default function Projects() {
+  const demo = isDemoRuntime();
   const [projects, setProjects] = useState([]);
-  const [name, setName] = useState('my-mdd');
+  const [name, setName] = useState(demo ? 'my-mdd' : 'my_mdd');
   const [profileChoice, setProfileChoice] = useState('empty');
   const [notice, setNotice] = useState('');
   const [busyId, setBusyId] = useState(null);
+  const [creating, setCreating] = useState(false);
   const navigate = useNavigate();
 
+  const refresh = () => {
+    listProjects()
+      .then(setProjects)
+      .catch((err) => setNotice(err && err.message ? err.message : 'Could not list projects'));
+  };
+
   useEffect(() => {
-    setProjects(listProjects());
+    refresh();
   }, []);
 
   const allowed =
@@ -75,18 +88,12 @@ export default function Projects() {
     const label = project.title || project.name;
     if (!window.confirm(`Drop ${label}? This removes it from the project list.`)) return;
     try {
-      await WebGmeBridge.deleteProject(project.id);
+      await dropProject(project.id);
+      setProjects(await listProjects());
+      setNotice(`Dropped ${label}`);
     } catch (err) {
-      const message = String(err && err.message ? err.message : err).toLowerCase();
-      const missing = message.includes('does not exist') || message.includes('not found');
-      if (!missing) {
-        setNotice(err && err.message ? err.message : 'Could not drop the project');
-        return;
-      }
+      setNotice(err && err.message ? err.message : 'Could not drop the project');
     }
-    dropProject(project.id);
-    setProjects(listProjects());
-    setNotice(`Dropped ${label}`);
   };
 
   return (
@@ -132,35 +139,44 @@ export default function Projects() {
           ))}
         </ul>
         {notice ? <p className="hint">{notice}</p> : null}
-        <p className="hint" style={{ marginTop: '0.85rem' }}>
-          <button
-            type="button"
-            className="btn tiny"
-            onClick={() => {
-              resetS1DemoProject();
-              setProjects(listProjects());
-            }}
-          >
-            Reset S1 demo
-          </button>
-        </p>
+        {demo ? (
+          <p className="hint" style={{ marginTop: '0.85rem' }}>
+            <button
+              type="button"
+              className="btn tiny"
+              onClick={() => {
+                resetS1DemoProject();
+                refresh();
+              }}
+            >
+              Reset S1 demo
+            </button>
+          </p>
+        ) : null}
       </section>
 
       <section className="panel">
         <h2>Create</h2>
         <form
           className="create-form"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            const safe = name.trim().replace(/[^\w-]+/g, '-') || 'project';
             const empty = profileChoice === 'empty';
-            const p = createProject({
-              name: safe,
+            const spec = {
+              name: demo ? name.trim().replace(/[^\w-]+/g, '-') || 'project' : name.trim(),
               profile: empty ? 'empty' : 'domain',
               profileDomain: empty ? null : profileChoice,
               allowedDiagramTypes: empty ? [] : diagramsForDomain(profileChoice)
-            });
-            navigate(`/p/${p.owner}/${p.name}`);
+            };
+            setCreating(true);
+            setNotice('');
+            try {
+              const project = await createProject(spec);
+              navigate(`/p/${project.owner}/${project.name}`);
+            } catch (err) {
+              setNotice(err && err.message ? err.message : 'Could not create the project');
+              setCreating(false);
+            }
           }}
         >
           <label>
@@ -182,12 +198,15 @@ export default function Projects() {
             </select>
           </label>
           <p className="hint">
+            {demo
+              ? 'Saved in this browser only.'
+              : 'Saved as a WebGME project. The name uses letters, digits, and underscores.'}
             {profileChoice === 'empty'
-              ? 'No diagrams yet. Add the ones this project needs after it is created.'
-              : `Allows ${allowed.map(diagramLabel).join(', ')}. You can add other S1 diagrams later.`}
+              ? ' No diagrams yet. Add the ones this project needs after it is created.'
+              : ` Allows ${allowed.map(diagramLabel).join(', ')}. You can add other S1 diagrams later.`}
           </p>
-          <button type="submit" className="btn primary">
-            Create project
+          <button type="submit" className="btn primary" disabled={creating}>
+            {creating ? 'Creating…' : 'Create project'}
           </button>
         </form>
       </section>

@@ -11,19 +11,22 @@ import { DiagramControl } from '../control/DiagramControl.js';
 import { WebGmeBridge } from '../control/WebGmeBridge.js';
 import { plainExportProject } from '../control/plainExport.js';
 import {
+  extendProjectLanguages,
   getProject,
-  setAllowedDiagramTypes,
-  setDiagramSource,
-  upsertProject
-} from '../data/demoStore.js';
-import { inferModelingDomain } from '../data/modelingDomains.js';
+  loadProject,
+  setDiagramSource
+} from '../data/projectDocument.js';
+import { upsertProject } from '../data/demoStore.js';
+import { isDemoRuntime } from '../control/runtime.js';
+import { inferModelingDomain, diagramsForDomain } from '../data/modelingDomains.js';
 
 export default function ProjectStudio() {
   const { owner, name } = useParams();
   const navigate = useNavigate();
   const projectId = `${owner}+${name}`;
 
-  const [project, setProject] = useState(() => getProject(projectId));
+  const [project, setProject] = useState(() => (isDemoRuntime() ? getProject(projectId) : null));
+  const [projectReady, setProjectReady] = useState(isDemoRuntime());
   const [catalog, setCatalog] = useState(null);
   const [mode, setMode] = useState('overview'); // overview | canvas
   const [activeKey, setActiveKey] = useState(null);
@@ -37,7 +40,7 @@ export default function ProjectStudio() {
   const [log, setLog] = useState([]);
   const [applyBusy, setApplyBusy] = useState(false);
   const [applyMsg, setApplyMsg] = useState('');
-  const [userLabel, setUserLabel] = useState('Local demo');
+  const [userLabel, setUserLabel] = useState(isDemoRuntime() ? 'Local demo' : '');
 
   const pushLog = useCallback((msg) => {
     setLog((prev) => [...prev, `${new Date().toLocaleTimeString()}  ${msg}`]);
@@ -57,18 +60,52 @@ export default function ProjectStudio() {
   const control = controlRef.current;
 
   useEffect(() => {
+    let cancelled = false;
     WebGmeBridge.connect().then((r) => {
+      if (cancelled) return;
       if (r.user?.displayName) setUserLabel(r.user.displayName);
-      pushLog(r.connected ? 'WebGME connected' : 'Demo mode (WebGME bridge TODO)');
+      pushLog(r.connected ? `WebGME runtime (${r.user._id})` : 'Demo runtime');
     });
-    WebGmeBridge.openProject(projectId);
+    WebGmeBridge.openProject(projectId).catch((err) => {
+      if (!cancelled) pushLog(`open project failed: ${err && err.message ? err.message : err}`);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [projectId, pushLog]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (isDemoRuntime()) {
+      setProject(getProject(projectId));
+      setProjectReady(true);
+      setMode('overview');
+      setActiveKey(null);
+      return undefined;
+    }
+    setProjectReady(false);
+    loadProject(projectId).then((loaded) => {
+      if (cancelled) return;
+      setProject(loaded);
+      setProjectReady(true);
+      setMode('overview');
+      setActiveKey(null);
+    }).catch(() => {
+      if (cancelled) return;
+      setProject(null);
+      setProjectReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId]);
 
   useEffect(() => {
     fetch('/api/catalog')
       .then((r) => r.json())
       .then((cat) => {
         setCatalog(cat);
+        if (!isDemoRuntime()) return;
         // Backfill modelingDomainId on legacy diagram instances
         const p = getProject(projectId);
         if (!p) return;
@@ -91,19 +128,14 @@ export default function ProjectStudio() {
       .catch((e) => pushLog(`catalog load failed: ${e.message}`));
   }, [projectId, pushLog]);
 
-  useEffect(() => {
-    setProject(getProject(projectId));
-    setMode('overview');
-    setActiveKey(null);
-  }, [projectId]);
-
   const active = activeKey && project?.diagrams?.[activeKey];
   const diagramType = active?.diagramType || null;
   const dirty = draftSource !== viewSource;
 
   const ensureSample = useCallback(
-    async (diagramTypeId, diagramKey, diagramName, modelingDomainId) => {
-      let source = project?.diagrams?.[diagramKey]?.source;
+    async (diagramTypeId, diagramKey, diagramName, modelingDomainId, providedSource) => {
+      let source = providedSource;
+      if (!source) source = project?.diagrams?.[diagramKey]?.source;
       if (!source) {
         const res = await fetch(`/api/sample/${diagramTypeId}`);
         source = res.ok
@@ -111,13 +143,13 @@ export default function ProjectStudio() {
           : diagramTypeId === 'ears'
             ? 'REQ-001 [ubiquitous]\nThe system shall start.\n'
             : `flowchart TD\n  A[${diagramName}] --> B[Edit me]`;
-        const next = setDiagramSource(projectId, diagramKey, {
+        const next = await setDiagramSource(projectId, diagramKey, {
           diagramType: diagramTypeId,
           modelingDomainId,
           name: diagramName,
           source
         });
-        setProject({ ...next });
+        if (next) setProject({ ...next });
       }
       control.setBaseline(diagramKey, source);
       setViewSource(source);
@@ -146,38 +178,36 @@ export default function ProjectStudio() {
     if (mode !== 'canvas' && activeKey) setMode('canvas');
   };
 
-  const onCreateDiagram = async ({ diagramType: typeId, name: diagramName }) => {
+  const onCreateDiagram = async ({ diagramType: typeId, name: diagramName, source: importedSource }) => {
     const allowed = project.allowedDiagramTypes || [];
     if (!allowed.includes(typeId)) {
       pushLog(`create blocked: ${typeId} is not an allowed diagram on this project`);
       return;
     }
 
-    let modelingDomainId = null;
-    if (project.profile === 'domain') {
+    const enabled = project.enabledModelingDomains || [];
+    let modelingDomainId = enabled.find((id) => diagramsForDomain(id).includes(typeId)) || null;
+    if (!modelingDomainId && project.profile === 'domain') {
       modelingDomainId = project.profileDomain;
-    } else if (project.profile === 'story') {
-      modelingDomainId = inferModelingDomain(
-        catalog,
-        typeId,
-        project.enabledModelingDomains
-      );
+    } else if (!modelingDomainId && project.profile === 'story') {
+      modelingDomainId = inferModelingDomain(catalog, typeId, enabled);
     }
 
     const count =
       Object.values(project.diagrams).filter((d) => d.diagramType === typeId).length + 1;
     const finalName = diagramName || `${typeId}-${count}`;
     const key = `${modelingDomainId || 'project'}:${typeId}:${finalName}`;
-    const next = setDiagramSource(projectId, key, {
+    const initial = typeof importedSource === 'string' ? importedSource : '';
+    const next = await setDiagramSource(projectId, key, {
       modelingDomainId,
       diagramType: typeId,
       name: finalName,
-      source: ''
+      source: initial
     });
-    setProject({ ...next });
+    if (next) setProject({ ...next });
     setActiveKey(key);
     setMode('canvas');
-    await ensureSample(typeId, key, finalName, modelingDomainId);
+    await ensureSample(typeId, key, finalName, modelingDomainId, initial || undefined);
     setSourceOpen(true);
   };
 
@@ -192,7 +222,7 @@ export default function ProjectStudio() {
         name: active?.name || activeKey,
         source: draftSource
       });
-      setProject(getProject(projectId));
+      setProject(getProject(projectId) || project);
       setApplyMsg(result.message || result.status);
     } catch (e) {
       setApplyMsg(e.message || String(e));
@@ -200,6 +230,14 @@ export default function ProjectStudio() {
       setApplyBusy(false);
     }
   };
+
+  if (!projectReady) {
+    return (
+      <div className="page">
+        <p>Opening project…</p>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -315,11 +353,19 @@ export default function ProjectStudio() {
       <ProjectSettings
         project={project}
         open={settingsOpen}
+        libraryHost={!isDemoRuntime()}
         onClose={() => setSettingsOpen(false)}
-        onSaved={(types) => {
-          const p = setAllowedDiagramTypes(projectId, types);
-          setProject({ ...p });
-          pushLog(`allowed diagrams → ${types.length ? types.join(', ') : 'none'}`);
+        onSaved={async ({ diagramTypes, domains }) => {
+          const saved = await extendProjectLanguages(projectId, { diagramTypes, domains });
+          if (saved) setProject({ ...saved });
+          const added = (diagramTypes || []).filter(
+            (id) => !(project.allowedDiagramTypes || []).includes(id)
+          );
+          pushLog(
+            added.length
+              ? `added libraries ${added.join(', ')}`
+              : 'domains unchanged'
+          );
         }}
       />
     </div>
