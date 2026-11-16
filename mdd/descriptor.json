@@ -7,5 +7,5 @@
     }
   },
   "seed": "./mdd.webgmex",
-  "notes": "Seed for an empty project. Project is the folder that holds diagram nodes. Languages are added later as libraries named after their diagram directory."
+  "notes": "Seed for an empty project. The Project concept is the folder that holds diagram nodes. The seed does not contain a Project instance. Languages are added later as libraries named after their diagram directory."
 }

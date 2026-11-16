@@ -29,11 +29,24 @@ function MemoryMetadataStorage(mainLogger /*, gmeConfig*/) {
         return deferred.promise.nodeify(callback);
     }
 
+    // Callers such as SafeStorage.getProjects delete info and hooks on the
+    // object they receive. Mongo returns a plain document, so that is safe.
+    // These records are the stored objects, so hand back a copy.
+    function projectView(projectData) {
+        projectData.hooks = projectData.hooks || {};
+        projectData.info = projectData.info || {};
+        return {
+            _id: projectData._id,
+            owner: projectData.owner,
+            name: projectData.name,
+            info: Object.assign({}, projectData.info),
+            hooks: Object.assign({}, projectData.hooks)
+        };
+    }
+
     function getProjects(callback) {
         var result = Object.keys(projects).map(function (id) {
-            var project = projects[id];
-            project.hooks = project.hooks || {};
-            return project;
+            return projectView(projects[id]);
         });
         return Q.resolve(result).nodeify(callback);
     }
@@ -43,8 +56,7 @@ function MemoryMetadataStorage(mainLogger /*, gmeConfig*/) {
         if (!projectData) {
             return Q.reject(new Error('no such project [' + projectId + ']')).nodeify(callback);
         }
-        projectData.hooks = projectData.hooks || {};
-        return Q.resolve(projectData).nodeify(callback);
+        return Q.resolve(projectView(projectData)).nodeify(callback);
     }
 
     function addProject(ownerId, projectName, info, callback) {
@@ -144,6 +156,7 @@ function MemoryMetadataStorage(mainLogger /*, gmeConfig*/) {
             return Q.reject(new Error('no such project [' + projectId + ']')).nodeify(callback);
         }
 
+        projectData.info = projectData.info || {};
         CONSTANTS.STORAGE.PROJECT_INFO_KEYS.forEach(function (infoKey) {
             projectData.info[infoKey] = info[infoKey] || projectData.info[infoKey];
         });

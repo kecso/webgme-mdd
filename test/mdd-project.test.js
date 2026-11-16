@@ -28,14 +28,17 @@ function metaNode(host, name, library) {
   });
 }
 
-async function folderNode(host) {
-  const metaPaths = new Set(
-    Object.values(host.core.getAllMetaNodes(host.root)).map((node) => host.core.getPath(node))
-  );
+function folderNode(host) {
+  return metaNode(host, 'Project', '');
+}
+
+async function projectInstanceCount(host) {
+  const concept = folderNode(host);
+  const conceptPath = host.core.getPath(concept);
   const children = await host.core.loadChildren(host.root);
-  return children.find((node) =>
-    host.core.getAttribute(node, 'name') === 'Project' && !metaPaths.has(host.core.getPath(node))
-  );
+  return children.filter((node) =>
+    host.core.getAttribute(node, 'name') === 'Project' && host.core.getPath(node) !== conceptPath
+  ).length;
 }
 
 test('an empty project is the Project shell and no libraries', async () => {
@@ -44,9 +47,11 @@ test('an empty project is the Project shell and no libraries', async () => {
     assert.deepEqual(described.libraries, []);
     assert.deepEqual(namesIn(described, ''), ['FCO', 'Project']);
     assert.equal(described.folder.name, 'Project');
-    assert.equal(described.folder.base, 'Project');
+    assert.equal(described.folder.base, 'FCO');
 
     const project = metaNode(host, 'Project', '');
+    assert.equal(described.folder.path, host.core.getPath(project));
+    assert.equal(await projectInstanceCount(host), 0);
     const fco = host.core.getFCO(host.root);
     const rules = host.core.getChildrenMeta(project);
     const rule = rules[host.core.getPath(fco)];
@@ -61,7 +66,8 @@ test('requirements-specification mounts the ears library', async () => {
     assert.deepEqual(described.libraries, ['ears']);
     assert.ok(namesIn(described, 'ears').includes('EARSSpecification'));
     assert.deepEqual(namesIn(described, ''), ['FCO', 'Project']);
-    assert.equal(described.folder.base, 'Project');
+    assert.equal(described.folder.base, 'FCO');
+    assert.equal(await projectInstanceCount(host), 0);
   });
 });
 
@@ -97,9 +103,9 @@ test('a language can be added after the project exists', async () => {
   });
 });
 
-test('a library diagram node is a valid child of the Project folder', async () => {
+test('a library diagram node is a valid child of the Project concept', async () => {
   await withProject({ domains: ['requirements-specification'] }, async (host) => {
-    const folder = await folderNode(host);
+    const folder = folderNode(host);
     const ears = metaNode(host, 'EARSSpecification', 'ears');
     assert.ok(folder);
     assert.ok(ears);

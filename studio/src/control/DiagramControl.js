@@ -96,7 +96,7 @@ export class DiagramControl {
     this.onLog(
       isDemoRuntime()
         ? 'TODO: ImportDelta — demo view updated; WebGME Core delta apply not wired yet'
-        : 'View saved on the WebGME project. Core delta apply is not wired yet'
+        : 'Saved the diagram source on its node. Parsing that text into elements is not wired yet'
     );
 
     return {

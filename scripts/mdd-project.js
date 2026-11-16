@@ -4,9 +4,10 @@
  * MDD project shell and language libraries.
  *
  * The shell (mdd/mdd.webgmex) defines one meta concept, Project, which can
- * contain any FCO. A Project node in the seed is the folder diagrams live in.
- * Each selected language is mounted as a WebGME library. The library name is
- * the diagram directory (ears, state, c4, …).
+ * contain any FCO. That concept is the folder diagrams live in. Seeding a
+ * project does not create another Project instance. Each selected language
+ * is mounted as a WebGME library. The library name is the diagram directory
+ * (ears, state, c4, …).
  *
  *   node scripts/mdd-project.js --write-seed
  */
@@ -55,29 +56,11 @@ function buildShellDocument() {
     position: { x: 220, y: 180 }
   }], 'Project', '');
   const fcoGuid = guidFor('mdd', 'FCO');
-  const projectGuid = guidFor('mdd', 'Project');
-  const folderGuid = guidFor('mdd', 'ProjectFolder');
   const project = (doc.children || []).find((child) => child.attributes && child.attributes.name === 'Project');
   if (!project) throw new Error('Shell document is missing the Project concept');
   project.children_meta = {
     [fcoGuid]: { min: -1, max: -1 }
   };
-  doc.children.push({
-    id: folderGuid,
-    path: '/b',
-    guid: folderGuid,
-    attributes: { name: FOLDER_NAME },
-    attribute_meta: {},
-    pointers: { base: projectGuid },
-    pointer_meta: {},
-    mixins: [],
-    registry: { position: { x: 480, y: 180 } },
-    sets: {},
-    member_registry: {},
-    member_attributes: {},
-    children: [],
-    children_meta: null
-  });
   return doc;
 }
 
@@ -214,10 +197,8 @@ async function addLanguage(host, libraryId) {
 
 async function describeProject(core, root) {
   const metaNodes = Object.values(core.getAllMetaNodes(root));
-  const metaPaths = new Set(metaNodes.map((node) => core.getPath(node)));
-  const children = await core.loadChildren(root);
-  const folder = children.find((node) =>
-    core.getAttribute(node, 'name') === FOLDER_NAME && !metaPaths.has(core.getPath(node))
+  const folder = metaNodes.find((node) =>
+    core.getAttribute(node, 'name') === FOLDER_NAME && !(core.getNamespace(node) || '')
   );
   let folderInfo = null;
   if (folder) {

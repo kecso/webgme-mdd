@@ -14,7 +14,8 @@ import {
   extendProjectLanguages,
   getProject,
   loadProject,
-  setDiagramSource
+  setDiagramSource,
+  createDiagramNode
 } from '../data/projectDocument.js';
 import { upsertProject } from '../data/demoStore.js';
 import { isDemoRuntime } from '../control/runtime.js';
@@ -66,9 +67,6 @@ export default function ProjectStudio() {
       if (r.user?.displayName) setUserLabel(r.user.displayName);
       pushLog(r.connected ? `WebGME runtime (${r.user._id})` : 'Demo runtime');
     });
-    WebGmeBridge.openProject(projectId).catch((err) => {
-      if (!cancelled) pushLog(`open project failed: ${err && err.message ? err.message : err}`);
-    });
     return () => {
       cancelled = true;
     };
@@ -90,15 +88,16 @@ export default function ProjectStudio() {
       setProjectReady(true);
       setMode('overview');
       setActiveKey(null);
-    }).catch(() => {
+    }).catch((err) => {
       if (cancelled) return;
+      pushLog(`open project failed: ${err && err.message ? err.message : err}`);
       setProject(null);
       setProjectReady(true);
     });
     return () => {
       cancelled = true;
     };
-  }, [projectId]);
+  }, [projectId, pushLog]);
 
   useEffect(() => {
     fetch('/api/catalog')
@@ -166,12 +165,16 @@ export default function ProjectStudio() {
     setMode('canvas');
     const inst = project.diagrams[key];
     if (!inst) return;
-    await ensureSample(
-      inst.diagramType,
-      key,
-      inst.name,
-      inst.modelingDomainId
-    );
+    try {
+      await ensureSample(
+        inst.diagramType,
+        key,
+        inst.name,
+        inst.modelingDomainId
+      );
+    } catch (err) {
+      pushLog(`diagram source was not saved: ${err && err.message ? err.message : err}`);
+    }
   };
 
   const revealDiagram = () => {
@@ -196,18 +199,47 @@ export default function ProjectStudio() {
     const count =
       Object.values(project.diagrams).filter((d) => d.diagramType === typeId).length + 1;
     const finalName = diagramName || `${typeId}-${count}`;
-    const key = `${modelingDomainId || 'project'}:${typeId}:${finalName}`;
     const initial = typeof importedSource === 'string' ? importedSource : '';
-    const next = await setDiagramSource(projectId, key, {
-      modelingDomainId,
-      diagramType: typeId,
-      name: finalName,
-      source: initial
-    });
+    let next;
+    let key;
+    if (isDemoRuntime()) {
+      key = `${modelingDomainId || 'project'}:${typeId}:${finalName}`;
+      next = await setDiagramSource(projectId, key, {
+        modelingDomainId,
+        diagramType: typeId,
+        name: finalName,
+        source: initial
+      });
+    } else {
+      try {
+        next = await createDiagramNode(projectId, {
+          diagramType: typeId,
+          name: finalName,
+          source: initial
+        });
+        key = Object.keys(next.diagrams).find((id) => {
+          const diagram = next.diagrams[id];
+          return diagram.name === finalName && diagram.diagramType === typeId;
+        });
+        if (!key) {
+          if (next) setProject({ ...next });
+          pushLog(`created ${finalName}, but the project read-back has no matching node`);
+          return;
+        }
+        pushLog(`created ${finalName} at ${key}`);
+      } catch (err) {
+        pushLog(`diagram node was not created: ${err && err.message ? err.message : err}`);
+        return;
+      }
+    }
     if (next) setProject({ ...next });
     setActiveKey(key);
     setMode('canvas');
-    await ensureSample(typeId, key, finalName, modelingDomainId, initial || undefined);
+    try {
+      await ensureSample(typeId, key, finalName, modelingDomainId, initial || undefined);
+    } catch (err) {
+      pushLog(`diagram source was not saved: ${err && err.message ? err.message : err}`);
+    }
     setSourceOpen(true);
   };
 

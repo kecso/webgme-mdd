@@ -141,31 +141,6 @@
           "max": -1
         }
       }
-    },
-    {
-      "id": "74eda97e-103e-5401-b09c-5da53da84d5c",
-      "path": "/b",
-      "guid": "74eda97e-103e-5401-b09c-5da53da84d5c",
-      "attributes": {
-        "name": "Project"
-      },
-      "attribute_meta": {},
-      "pointers": {
-        "base": "83038887-0e3a-57d0-a288-14869f411515"
-      },
-      "pointer_meta": {},
-      "mixins": [],
-      "registry": {
-        "position": {
-          "x": 480,
-          "y": 180
-        }
-      },
-      "sets": {},
-      "member_registry": {},
-      "member_attributes": {},
-      "children": [],
-      "children_meta": null
     }
   ],
   "children_meta": {

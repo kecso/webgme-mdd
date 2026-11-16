@@ -41,9 +41,8 @@ function projectMeta(project) {
   const n = Object.keys(project.diagrams || {}).length;
   const diagrams = `${n} diagram${n === 1 ? '' : 's'}`;
   if (project.id === 'demo+s1-aeb') return `S1 demo · ${diagrams}`;
-  if (project.profile === 'domain' && project.profileDomain) {
-    return `${domainLabel(project.profileDomain)} · ${diagrams}`;
-  }
+  const domains = project.enabledModelingDomains || [];
+  if (domains.length) return `${domains.map(domainLabel).join(', ')} · ${diagrams}`;
   if (project.profile === 'empty') return `Empty · ${diagrams}`;
   return diagrams;
 }

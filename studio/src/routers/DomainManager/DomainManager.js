@@ -2,8 +2,9 @@
 /**
  * Domain / project lifecycle for MDSS (webgme-dss DomainManager analogue).
  *
- * createProject seeds mdd/mdd.webgmex (a Project folder that can hold any FCO)
- * and mounts each language the selected domains use as a library. The library
+ * createProject seeds mdd/mdd.webgmex. The shared Project concept is the
+ * folder that can hold any FCO. Seeding does not add a Project instance.
+ * It mounts each language the selected domains use as a library. The library
  * name is the diagram directory. updateProject adds any libraries the new
  * domain selection needs. addLibraries mounts more diagram seeds on an existing
  * project. A library that is already mounted is left in place. Nothing here
@@ -16,7 +17,8 @@ var path = require('path'),
     express = require('express'),
     Q = require('q'),
     router = express.Router(),
-    CONSTANTS = requireJS('common/Constants');
+    CONSTANTS = requireJS('common/Constants'),
+    projectModel = require('../../control/projectModel.cjs');
 
 var REPO_ROOT = path.join(__dirname, '..', '..', '..', '..');
 var REGISTRY_PATH = path.join(REPO_ROOT, 'router', 'src', 'common', 'DomainRegistry.json');
@@ -51,6 +53,52 @@ function librariesForDomains(domains) {
         });
     });
     return Object.keys(found).sort();
+}
+
+function readStoredProject(safeStorage, gmeConfig, logger, record) {
+    var id = record._id || (record.owner + '+' + record.name);
+    var plus = id.indexOf('+');
+    var owner = record.owner || id.slice(0, plus);
+    var name = record.name || id.slice(plus + 1);
+    var username = gmeConfig.authentication.guestAccount;
+    return safeStorage.openProject({ projectId: id, username: username })
+        .then(function (project) {
+            return project.getBranchHash('master').then(function (branchHash) {
+                if (!branchHash) {
+                    return { libraries: [], diagrams: {} };
+                }
+                var Core = requireJS('common/core/coreQ');
+                var core = new Core(project, { globConf: gmeConfig, logger: logger });
+                return Q.ninvoke(project, 'loadObject', branchHash)
+                    .then(function (commit) {
+                        return core.loadRoot(commit.root);
+                    })
+                    .then(function (root) {
+                        return projectModel.modelFacts(core, root);
+                    });
+            });
+        })
+        .then(function (facts) {
+            return projectModel.projectView({
+                id: id,
+                owner: owner,
+                name: name,
+                kind: record.info && record.info.kind,
+                libraries: facts.libraries,
+                diagrams: facts.diagrams
+            });
+        })
+        .catch(function (err) {
+            logger.warn('Could not read ' + id + ': ' + (err && err.message ? err.message : err));
+            return projectModel.projectView({
+                id: id,
+                owner: owner,
+                name: name,
+                kind: record.info && record.info.kind,
+                libraries: [],
+                diagrams: {}
+            });
+        });
 }
 
 function addLibraries(swm, token, projectId, libraryIds) {
@@ -104,6 +152,8 @@ function initialize(middlewareOpts) {
         ensureAuthenticated = middlewareOpts.ensureAuthenticated,
         swm = middlewareOpts.workerManager,
         gmeAuth = middlewareOpts.gmeAuth,
+        safeStorage = middlewareOpts.safeStorage,
+        gmeConfig = middlewareOpts.gmeConfig,
         getUserId = middlewareOpts.getUserId;
 
     function getNewJWToken(userId) {
@@ -172,6 +222,37 @@ function initialize(middlewareOpts) {
         } catch (err) {
             next(err);
         }
+    });
+
+    router.get('/projects', function (req, res, next) {
+        gmeAuth.metadataStorage.getProjects()
+            .then(function (rows) {
+                return Q.all((rows || []).map(function (record) {
+                    return readStoredProject(safeStorage, gmeConfig, logger, record);
+                }));
+            })
+            .then(function (projects) {
+                res.json(projects);
+            })
+            .catch(function (err) {
+                logger.error(err);
+                next(err);
+            });
+    });
+
+    router.get('/project/:owner/:name', function (req, res, next) {
+        var projectId = req.params.owner + '+' + req.params.name;
+        gmeAuth.metadataStorage.getProject(projectId)
+            .then(function (record) {
+                return readStoredProject(safeStorage, gmeConfig, logger, record);
+            })
+            .then(function (project) {
+                res.json(project);
+            })
+            .catch(function (err) {
+                logger.error(err);
+                next(err);
+            });
     });
 
     /**

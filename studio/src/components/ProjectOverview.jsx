@@ -28,7 +28,7 @@ export default function ProjectOverview({
         {
           modelingDomainId: project.profileDomain || '_diagrams',
           name:
-            project.profile === 'domain'
+            project.profile === 'domain' && project.profileDomain
               ? domainLabel(project.profileDomain)
               : 'Diagrams',
           diagramTypes: project.allowedDiagramTypes || [],

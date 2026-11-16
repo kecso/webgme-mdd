@@ -17,8 +17,10 @@ config.authentication.allowGuests = true;
 // In-memory data layer (no MongoDB). Data is lost on process exit.
 // For Mongo later: NODE_ENV=mongo npm start  (see config.mongo.js).
 config.storage.database.type = 'memory';
-config.authentication.gmeAuth.path = require.resolve(
-    'webgme-engine/src/server/middleware/auth/memorygmeauth'
+// Our copy returns project records by value. The engine copy hands back the
+// stored object, and the project list then deletes info from it.
+config.authentication.gmeAuth.path = path.join(
+    __dirname, '..', '..', 'scripts', 'gme-memory-auth', 'memorygmeauth.js'
 );
 
 config.seedProjects.enable = true;

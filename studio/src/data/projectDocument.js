@@ -1,15 +1,15 @@
 /**
  * Project catalog for the running studio.
  *
- * The demo runtime keeps projects in localStorage. The WebGME runtime uses
- * storage: DomainManager seeds the project, and the studio document (diagram
- * text, allowed types) is saved on the project description until that text
- * is applied into the model.
+ * studio:demo keeps a browser store because that process has no WebGME project.
+ * studio:webgme reads the project: libraries, kind, and the diagram nodes under
+ * the Project concept. Diagram text is the source attribute on those nodes.
  */
 
 import { WebGmeBridge } from '../control/WebGmeBridge.js';
 import { isDemoRuntime } from '../control/runtime.js';
-import { diagramsForDomain } from './modelingDomains.js';
+import { legacyDiagrams } from '../control/projectModel.cjs';
+import { placeDiagramOnClient, writeDiagramSource } from '../control/diagramNode.cjs';
 import {
   createProject as createDemoProject,
   dropProject as dropDemoProject,
@@ -21,7 +21,6 @@ import {
   setProjectLanguages as setDemoProjectLanguages
 } from './demoStore.js';
 
-const DOC_PREFIX = 'mdss:';
 const PROJECT_NAME = /^[0-9A-Za-z_]+$/;
 
 const cache = new Map();
@@ -36,67 +35,28 @@ export function assertStorageName(raw) {
   return name;
 }
 
-function parseDomains(kind) {
-  const raw = String(kind || '');
-  if (!raw.startsWith('MDSS:')) return [];
-  return raw.slice('MDSS:'.length).split(':').filter(Boolean);
-}
-
-function blankDocument(name, domains) {
-  const profileDomain = domains.length === 1 ? domains[0] : null;
+function projectIdParts(projectId) {
+  const plus = projectId.indexOf('+');
   return {
-    title: name,
-    storyId: 'S1',
-    profile: profileDomain ? 'domain' : 'empty',
-    profileDomain,
-    allowedDiagramTypes: profileDomain ? diagramsForDomain(profileDomain) : [],
-    enabledModelingDomains: domains,
-    diagrams: {},
-    correspondences: [],
-    integrating: null
+    owner: projectId.slice(0, plus),
+    name: projectId.slice(plus + 1)
   };
 }
 
-function readDocument(description, name, kind) {
-  if (typeof description === 'string' && description.startsWith(DOC_PREFIX)) {
-    try {
-      const parsed = JSON.parse(description.slice(DOC_PREFIX.length));
-      if (parsed && typeof parsed === 'object') return parsed;
-    } catch {
-      /* fall through to the kind stamp */
-    }
+async function remember(project) {
+  cache.set(project.id, project);
+  return project;
+}
+
+async function waitForLibraries(libraryIds) {
+  const client = typeof window !== 'undefined' ? window.gmeClient : null;
+  if (!client || typeof client.getLibraryNames !== 'function' || !libraryIds.length) return;
+  const deadline = Date.now() + 2000;
+  while (Date.now() < deadline) {
+    const names = client.getLibraryNames() || [];
+    if (libraryIds.every((id) => names.includes(id))) return;
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
-  return blankDocument(name, parseDomains(kind));
-}
-
-function projectFromRecord(record) {
-  const id = record._id || `${record.owner}+${record.name}`;
-  const plus = id.indexOf('+');
-  const owner = record.owner || id.slice(0, plus);
-  const name = record.name || id.slice(plus + 1);
-  const info = record.info || {};
-  const doc = readDocument(info.description, name, info.kind);
-  return {
-    id,
-    owner,
-    name,
-    ...doc,
-    title: doc.title || name
-  };
-}
-
-function documentPayload(project) {
-  return {
-    title: project.title,
-    storyId: project.storyId,
-    profile: project.profile,
-    profileDomain: project.profileDomain,
-    allowedDiagramTypes: project.allowedDiagramTypes,
-    enabledModelingDomains: project.enabledModelingDomains,
-    diagrams: project.diagrams,
-    correspondences: project.correspondences,
-    integrating: project.integrating
-  };
 }
 
 async function readJson(res) {
@@ -105,27 +65,55 @@ async function readJson(res) {
   return text ? JSON.parse(text) : null;
 }
 
-async function persist(project) {
-  cache.set(project.id, project);
-  const res = await fetch(
-    `/api/projects/${encodeURIComponent(project.owner)}/${encodeURIComponent(project.name)}`,
-    {
-      method: 'PATCH',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ description: DOC_PREFIX + JSON.stringify(documentPayload(project)) })
+async function fetchModel(owner, name) {
+  const res = await fetch(`/DomainManager/project/${encodeURIComponent(owner)}/${encodeURIComponent(name)}`, {
+    credentials: 'same-origin'
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || `Could not read project (${res.status})`);
+  }
+  return readJson(res);
+}
+
+async function adoptLegacyText(project) {
+  const { owner, name } = projectIdParts(project.id);
+  const res = await fetch(`/api/projects/${encodeURIComponent(owner)}/${encodeURIComponent(name)}`, {
+    credentials: 'same-origin'
+  });
+  if (!res.ok) return project;
+  const record = await readJson(res);
+  const legacy = legacyDiagrams(record && record.info && record.info.description);
+  if (!legacy.length) return project;
+  let changed = false;
+  for (const inst of legacy) {
+    const existing = Object.values(project.diagrams).find(
+      (diagram) => diagram.name === inst.name && diagram.diagramType === inst.diagramType
+    );
+    if (existing) {
+      if (!existing.source && inst.source) {
+        await writeDiagramSource(existing.nodePath, inst.source);
+        changed = true;
+      }
+      continue;
     }
-  );
-  await readJson(res);
-  return project;
+    await placeDiagramOnClient({
+      diagramType: inst.diagramType,
+      name: inst.name,
+      source: inst.source || ''
+    });
+    changed = true;
+  }
+  if (!changed) return project;
+  return fetchModel(owner, name);
 }
 
 export function listProjects() {
   if (isDemoRuntime()) return Promise.resolve(listDemoProjects());
-  return fetch('/api/projects', { credentials: 'same-origin' })
+  return fetch('/DomainManager/projects', { credentials: 'same-origin' })
     .then(readJson)
     .then((rows) => {
-      const projects = (rows || []).map(projectFromRecord);
+      const projects = rows || [];
       cache.clear();
       projects.forEach((project) => cache.set(project.id, project));
       return projects;
@@ -139,21 +127,11 @@ export function getProject(projectId) {
 
 export async function loadProject(projectId) {
   if (isDemoRuntime()) return getDemoProject(projectId);
-  const cached = cache.get(projectId);
-  if (cached) return cached;
-  const plus = projectId.indexOf('+');
-  const owner = projectId.slice(0, plus);
-  const name = projectId.slice(plus + 1);
-  const res = await fetch(
-    `/api/projects/${encodeURIComponent(owner)}/${encodeURIComponent(name)}`,
-    { credentials: 'same-origin' }
-  );
-  if (!res.ok) return null;
-  const record = await readJson(res);
-  if (!record) return null;
-  const project = projectFromRecord(record);
-  cache.set(project.id, project);
-  return project;
+  const { owner, name } = projectIdParts(projectId);
+  await WebGmeBridge.openProject(projectId);
+  let project = await fetchModel(owner, name);
+  project = await adoptLegacyText(project);
+  return remember(project);
 }
 
 export async function createProject(spec) {
@@ -164,18 +142,8 @@ export async function createProject(spec) {
     projectName,
     domains
   });
-  const projectId = created.projectId;
-  const plus = projectId.indexOf('+');
-  const project = {
-    id: projectId,
-    owner: projectId.slice(0, plus),
-    name: projectId.slice(plus + 1),
-    ...blankDocument(projectName, domains)
-  };
-  if (Array.isArray(spec.allowedDiagramTypes)) {
-    project.allowedDiagramTypes = [...spec.allowedDiagramTypes];
-  }
-  return persist(project);
+  const { owner, name } = projectIdParts(created.projectId);
+  return remember(await fetchModel(owner, name));
 }
 
 export async function dropProject(projectId) {
@@ -206,40 +174,44 @@ export async function extendProjectLanguages(projectId, { diagramTypes = [], dom
   );
   if (!isDemoRuntime() && (addedLibraries.length || addedDomains.length)) {
     await WebGmeBridge.addLibraries(projectId, addedLibraries, addedDomains);
+    await waitForLibraries(addedLibraries);
   }
   if (isDemoRuntime()) {
     return setDemoProjectLanguages(projectId, { allowedDiagramTypes, enabledModelingDomains });
   }
-  return persist({
-    ...current,
-    allowedDiagramTypes,
-    enabledModelingDomains
-  });
+  const { owner, name } = projectIdParts(projectId);
+  return remember(await fetchModel(owner, name));
 }
 
 export async function setAllowedDiagramTypes(projectId, allowedDiagramTypes) {
   if (isDemoRuntime()) return setDemoAllowedDiagramTypes(projectId, allowedDiagramTypes);
-  const project = cache.get(projectId);
-  if (!project) return null;
-  return persist({
-    ...project,
-    allowedDiagramTypes: [...allowedDiagramTypes]
-  });
+  return cache.get(projectId) || null;
 }
 
 export async function setDiagramSource(projectId, diagramKey, patch) {
   if (isDemoRuntime()) return setDemoDiagramSource(projectId, diagramKey, patch);
   const project = cache.get(projectId);
   if (!project) return null;
-  const prev = project.diagrams[diagramKey] || {};
+  const prev = project.diagrams[diagramKey];
+  if (!prev) return project;
+  if (typeof patch.source === 'string' && patch.source !== prev.source) {
+    await WebGmeBridge.openProject(projectId);
+    await writeDiagramSource(diagramKey, patch.source);
+  }
   const diagrams = {
     ...project.diagrams,
     [diagramKey]: {
       ...prev,
-      ...patch,
-      diagramType: patch.diagramType || prev.diagramType,
-      modelingDomainId: patch.modelingDomainId || prev.modelingDomainId
+      source: typeof patch.source === 'string' ? patch.source : prev.source,
+      name: patch.name || prev.name
     }
   };
-  return persist({ ...project, diagrams });
+  return remember({ ...project, diagrams });
+}
+
+export async function createDiagramNode(projectId, { diagramType, name, source }) {
+  await WebGmeBridge.openProject(projectId);
+  await placeDiagramOnClient({ diagramType, name, source: source || '' });
+  const { owner, name: projectName } = projectIdParts(projectId);
+  return remember(await fetchModel(owner, projectName));
 }
