@@ -78,6 +78,11 @@ export default defineConfig({
   build: {
     outDir: 'public/app',
     emptyOutDir: true,
+    // EarsAst.js is CommonJS outside this package. Without it here, Vite leaves
+    // a bare module.exports in the browser bundle and the studio never mounts.
+    commonjsOptions: {
+      include: [/node_modules/, /packages\/shared\/cjs\/EarsAst\.js/, /\.cjs$/]
+    },
     rollupOptions: {
       input: path.resolve(__dirname, 'index.html'),
       output: {

@@ -203,6 +203,16 @@ export function setAllowedDiagramTypes(projectId, allowedDiagramTypes) {
   return upsertProject(project);
 }
 
+export function setDiagramOptions(projectId, diagramKey, options) {
+  const project = getProject(projectId);
+  if (!project || !project.diagrams[diagramKey]) return null;
+  project.diagrams[diagramKey] = {
+    ...project.diagrams[diagramKey],
+    options: { ...options }
+  };
+  return upsertProject(project);
+}
+
 export function setDiagramSource(projectId, diagramKey, patch) {
   const project = getProject(projectId);
   if (!project) return null;

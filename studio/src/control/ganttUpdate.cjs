@@ -16,10 +16,13 @@
  * - Section does not contain Task, and Task has no section pointer, so a task
  *   is a child of the diagram even while a section is open. Section membership
  *   is not stored.
- * - moveLine sets the own attribute order. A kind change deletes the old node.
+ * - moveLine sets the own attribute order. A kind change deletes the old node
+ *   when that node is not a named section or task. A section or task id with
+ *   no remaining definition, and no task that says `after` that id, is deleted
+ *   at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, dropUnindexed } = require('./lineWalk.cjs');
 
 const STATUS = new Set(['done', 'active', 'crit', 'milestone']);
 const ELEMENT = new Set(['section', 'task']);
@@ -147,13 +150,20 @@ function onAdd(ctx, op) {
   }
 }
 
+function liveNames(line, live) {
+  const info = classifyGanttLine(line.text);
+  if (info.kind === 'section' && info.name) live.add(info.name);
+  if (info.kind === 'task') {
+    if (info.taskId) live.add(info.taskId);
+    if (info.after) live.add(info.after);
+  }
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine || !beforeLine.nodePath) return;
   const info = classifyGanttLine(beforeLine.text);
   if (!ELEMENT.has(info.kind)) return;
-  deleteGanttElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'section') forget(ctx.names, info.name);
-  if (info.kind === 'task') forget(ctx.names, info.taskId);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -161,11 +171,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyGanttLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteGanttElement(ctx.api, nodePath);
-      if (before.kind === 'section') forget(ctx.names, before.name);
-      if (before.kind === 'task') forget(ctx.names, before.taskId);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -204,7 +210,8 @@ function walkGanttUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

@@ -24,19 +24,24 @@
       "attrs": [
         "name",
         "title"
-      ]
+      ],
+      "contains": ["Column"]
     },
     "Column": {
       "attrs": [
-        "name"
-      ]
+        "name",
+        "label",
+        "order"
+      ],
+      "contains": ["Ticket"]
     },
     "Ticket": {
       "attrs": [
         "name",
         "label",
         "assigned",
-        "meta"
+        "meta",
+        "order"
       ]
     }
   },

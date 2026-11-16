@@ -23,10 +23,12 @@
  *   the following prose line sets the text, until `end note`. One prose line
  *   is the note text; a later prose line replaces it.
  * - `state "long" as id` is not applied.
- * - moveLine sets the own attribute order. A kind change deletes the old node.
+ * - moveLine sets the own attribute order. A kind change deletes the old node
+ *   when that node is not a named state. A state with no remaining declaration
+ *   or transition or note is deleted at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget, writeChanged, lineAt } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, writeChanged, lineAt, dropUnindexed } = require('./lineWalk.cjs');
 
 const ELEMENT = new Set(['state', 'transition', 'note']);
 
@@ -233,8 +235,17 @@ function onRemove(ctx, beforeLine) {
     return;
   }
   if (!beforeLine.nodePath || !ELEMENT.has(info.kind)) return;
-  deleteStateElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'state') forget(ctx.names, info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
+}
+
+function liveNames(line, live) {
+  const info = classifyStateLine(line.text);
+  if (info.kind === 'state' && info.name) live.add(info.name);
+  if (info.kind === 'transition') {
+    if (info.src) live.add(info.src);
+    if (info.dst) live.add(info.dst);
+  }
+  if (info.kind === 'note' && info.target) live.add(info.target);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -242,10 +253,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyStateLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteStateElement(ctx.api, nodePath);
-      if (before.kind === 'state') forget(ctx.names, before.name);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -298,7 +306,8 @@ function walkStateUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

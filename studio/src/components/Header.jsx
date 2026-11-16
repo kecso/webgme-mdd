@@ -50,6 +50,9 @@ export default function Header({
   onToggleInspector,
   inspectorOpen,
   onOpenSettings,
+  diagramOptions,
+  diagramOptionValues,
+  onToggleDiagramOption,
   onExportBook,
   onPlainExport,
   onCloseDiagram,
@@ -57,13 +60,14 @@ export default function Header({
   userLabel
 }) {
   const [menu, setMenu] = useState(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [branch, setBranch] = useState(null);
+  const diagramChoices = diagramOptions || [];
   const gearRef = useRef(null);
   const functionRef = useRef(null);
 
   const closeMenus = useCallback(() => {
     setMenu(null);
-    setSettingsOpen(false);
+    setBranch(null);
   }, []);
 
   useMenuCloser(menu === 'gear', gearRef, closeMenus);
@@ -145,7 +149,7 @@ export default function Header({
                 title="Settings"
                 onClick={() => {
                   setMenu((current) => (current === 'gear' ? null : 'gear'));
-                  setSettingsOpen(false);
+                  setBranch(null);
                 }}
               >
                 <GearIcon />
@@ -170,20 +174,20 @@ export default function Header({
                   >
                     {inspectorOpen ? 'Hide logs' : 'Show logs'}
                   </button>
-                  <div className={`header-menu-branch${settingsOpen ? ' open' : ''}`}>
+                  <div className={`header-menu-branch${branch === 'settings' ? ' open' : ''}`}>
                     <button
                       type="button"
                       role="menuitem"
                       className="header-menu-item"
-                      aria-expanded={settingsOpen}
-                      onClick={() => setSettingsOpen((open) => !open)}
+                      aria-expanded={branch === 'settings'}
+                      onClick={() => setBranch((current) => (current === 'settings' ? null : 'settings'))}
                     >
                       <span>Settings</span>
                       <span className="header-menu-chevron" aria-hidden>
                         ›
                       </span>
                     </button>
-                    {settingsOpen ? (
+                    {branch === 'settings' ? (
                       <div className="header-submenu" role="menu" aria-label="Settings">
                         <button
                           type="button"
@@ -197,6 +201,40 @@ export default function Header({
                       </div>
                     ) : null}
                   </div>
+                  {diagramChoices.length ? (
+                    <div className={`header-menu-branch${branch === 'diagram' ? ' open' : ''}`}>
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="header-menu-item"
+                        aria-expanded={branch === 'diagram'}
+                        onClick={() => setBranch((current) => (current === 'diagram' ? null : 'diagram'))}
+                      >
+                        <span>Diagram</span>
+                        <span className="header-menu-chevron" aria-hidden>
+                          ›
+                        </span>
+                      </button>
+                      {branch === 'diagram' ? (
+                        <div className="header-submenu" role="menu" aria-label="Diagram">
+                          {diagramChoices.map((option) => (
+                            <label
+                              key={option.id}
+                              className="header-menu-item header-menu-check"
+                              title={option.title || ''}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={!!(diagramOptionValues && diagramOptionValues[option.id])}
+                                onChange={() => onToggleDiagramOption?.(option.id)}
+                              />
+                              <span>{option.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
             </div>
@@ -210,7 +248,7 @@ export default function Header({
                 title="Functions"
                 onClick={() => {
                   setMenu((current) => (current === 'functions' ? null : 'functions'));
-                  setSettingsOpen(false);
+                  setBranch(null);
                 }}
               >
                 <FunctionIcon />

@@ -17,10 +17,12 @@
  * - Member and method lines are not applied. Class does not contain Member or
  *   Method, and neither has an owner pointer, so a line inside `{ }` cannot be
  *   stored on its class. Those lines are skipped until `}`.
- * - moveLine sets the own attribute order. A kind change deletes the old node.
+ * - moveLine sets the own attribute order. A kind change deletes the old node
+ *   when that node is not a named class. A class with no remaining declaration
+ *   or relationship is deleted at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget, skip, writeChanged } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, skip, writeChanged, dropUnindexed } = require('./lineWalk.cjs');
 
 const MEMBER_REASON = 'Class does not contain members or methods, and they have no owner, so this line is not applied.';
 const ELEMENT = new Set(['class', 'relationship']);
@@ -165,12 +167,20 @@ function addRelationship(ctx, op, info) {
   return bind(ctx, op.lineId, nodePath);
 }
 
+function liveNames(line, live) {
+  const info = classifyClassLine(line.text);
+  if (info.kind === 'class' && info.name) live.add(info.name);
+  if (info.kind === 'relationship') {
+    if (info.src) live.add(info.src);
+    if (info.dst) live.add(info.dst);
+  }
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine || !beforeLine.nodePath) return;
   const info = classifyClassLine(beforeLine.text);
   if (!ELEMENT.has(info.kind)) return;
-  deleteClassElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'class') forget(ctx.names, info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -178,10 +188,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyClassLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteClassElement(ctx.api, nodePath);
-      if (before.kind === 'class') forget(ctx.names, before.name);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -219,7 +226,8 @@ function walkClassUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

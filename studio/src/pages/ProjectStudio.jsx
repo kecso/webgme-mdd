@@ -15,10 +15,13 @@ import {
   getProject,
   loadProject,
   setDiagramSource,
+  setDiagramOptions,
   createDiagramNode
 } from '../data/projectDocument.js';
+import { optionsForDiagram } from '../data/diagramOptions.js';
 import { upsertProject } from '../data/demoStore.js';
 import { isDemoRuntime } from '../control/runtime.js';
+import { readDiagramBindings } from '../control/diagramNode.cjs';
 import { inferModelingDomain, diagramsForDomain } from '../data/modelingDomains.js';
 
 export default function ProjectStudio() {
@@ -150,8 +153,15 @@ export default function ProjectStudio() {
         });
         if (next) setProject({ ...next });
       }
+      const lineCount = String(source).split(/\r\n|\n|\r/).length;
+      const stored = String(diagramKey).startsWith('/')
+        ? await readDiagramBindings(diagramKey)
+        : { nodePaths: [], names: {} };
+      const aligned = stored.nodePaths.length === lineCount;
       control.setBaseline(diagramKey, source, {
-        diagramNodePath: String(diagramKey).startsWith('/') ? diagramKey : null
+        diagramNodePath: String(diagramKey).startsWith('/') ? diagramKey : null,
+        nodePaths: aligned ? stored.nodePaths : [],
+        names: aligned ? stored.names : {}
       });
       setViewSource(source);
       setDraftSource(source);
@@ -254,9 +264,11 @@ export default function ProjectStudio() {
         domainId: diagramType,
         modelingDomainId: active?.modelingDomainId,
         name: active?.name || activeKey,
-        source: draftSource
+        source: draftSource,
+        options: active?.options || {}
       });
       setProject(getProject(projectId) || project);
+      if (result.status === 'type-change') window.alert(result.message);
       setApplyMsg(result.message || result.status);
     } catch (e) {
       setApplyMsg(e.message || String(e));
@@ -308,6 +320,14 @@ export default function ProjectStudio() {
           setInspectorOpen((v) => !v);
         }}
         onOpenSettings={() => setSettingsOpen(true)}
+        diagramOptions={mode === 'canvas' ? optionsForDiagram(diagramType) : []}
+        diagramOptionValues={active?.options || {}}
+        onToggleDiagramOption={(id) => {
+          const next = { ...(active?.options || {}), [id]: !(active?.options || {})[id] };
+          Promise.resolve(setDiagramOptions(projectId, activeKey, next)).then((updated) => {
+            if (updated) setProject(updated);
+          });
+        }}
         onExportBook={() => {
           pushLog('opening Markdown book preview');
           navigate(`/p/${owner}/${name}/book`);
@@ -373,7 +393,8 @@ export default function ProjectStudio() {
               const nodePaths = Array.isArray(inst?.lineNodes) ? inst.lineNodes : [];
               control.openEditor(key, draftSource, {
                 diagramNodePath: inst?.nodePath || (String(key).startsWith('/') ? key : null),
-                nodePaths
+                nodePaths,
+                names: inst?.lineNames || {}
               });
             }}
             onContentChange={(key, event) => control.noteContentChange(key, event)}

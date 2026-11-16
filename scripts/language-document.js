@@ -194,7 +194,7 @@ function buildDocument(diagramId, concepts, mainName, validPlugins) {
       if (pointerMeta[ptr].max === 1) pointers[ptr] = null;
     });
     let contains = Object.assign({}, concept.contains || {});
-    if (isMain) {
+    if (isMain && !concept.explicitContains) {
       concepts.forEach((other) => {
         if (other.name === concept.name) return;
         if (!contains[other.name]) contains[other.name] = { min: -1, max: -1 };
@@ -409,6 +409,7 @@ function fromConceptMap(diagramId, conceptMap, validPlugins) {
       });
     }
     const contains = {};
+    const declaredContains = Array.isArray(concept.contains);
     (concept.contains || []).forEach((childName) => {
       contains[childName] = { min: -1, max: -1 };
     });
@@ -418,6 +419,7 @@ function fromConceptMap(diagramId, conceptMap, validPlugins) {
       attributeMeta,
       pointerMeta,
       contains,
+      explicitContains: declaredContains,
       position: { x: 100 + (index % 4) * 220, y: 180 + Math.floor(index / 4) * 160 },
       registry: {}
     };

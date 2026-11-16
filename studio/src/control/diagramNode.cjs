@@ -7,6 +7,8 @@
  */
 
 const SOURCE_ATTRIBUTE = 'source';
+const LINE_NODES_ATTRIBUTE = 'lineNodes';
+const LINE_NAMES_ATTRIBUTE = 'lineNames';
 
 const DIAGRAM_CONCEPT = {
   architecture: 'ArchitectureDiagram',
@@ -127,7 +129,8 @@ function clientDiagramApi(client) {
   };
 }
 
-function loadChildren(client, nodeId) {
+function loadNode(client, nodeId, depth) {
+  const children = typeof depth === 'number' ? depth : 0;
   return new Promise((resolve, reject) => {
     let settled = false;
     const guid = client.addUI({}, () => {
@@ -143,8 +146,50 @@ function loadChildren(client, nodeId) {
       client.removeUI(guid);
       reject(new Error('The project model did not finish loading.'));
     }, 8000);
-    client.updateTerritory(guid, { [nodeId]: { children: 1 } });
+    client.updateTerritory(guid, { [nodeId]: { children } });
   });
+}
+
+function loadChildren(client, nodeId) {
+  return loadNode(client, nodeId, 1);
+}
+
+function parseStoredJson(value) {
+  if (Array.isArray(value)) return value;
+  if (value && typeof value === 'object') return value;
+  if (typeof value !== 'string' || !value) return null;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
+function bindingsFromValues(lineNodesValue, lineNamesValue) {
+  const nodes = parseStoredJson(lineNodesValue);
+  const names = parseStoredJson(lineNamesValue);
+  return {
+    nodePaths: Array.isArray(nodes) ? nodes : [],
+    names: names && typeof names === 'object' && !Array.isArray(names) ? names : {}
+  };
+}
+
+async function readDiagramBindings(nodePath) {
+  const client = gmeClient();
+  if (!client || !nodePath || !String(nodePath).startsWith('/')) {
+    return { nodePaths: [], names: {} };
+  }
+  try {
+    await loadNode(client, nodePath, 0);
+  } catch {
+    return { nodePaths: [], names: {} };
+  }
+  const node = client.getNode(nodePath);
+  if (!node || typeof node.getAttribute !== 'function') return { nodePaths: [], names: {} };
+  return bindingsFromValues(
+    node.getAttribute(LINE_NODES_ATTRIBUTE),
+    node.getAttribute(LINE_NAMES_ATTRIBUTE)
+  );
 }
 
 function commitAttribute(client, nodePath, name, value) {
@@ -206,8 +251,13 @@ async function writeDiagramSource(nodePath, source) {
 module.exports = {
   DIAGRAM_CONCEPT,
   SOURCE_ATTRIBUTE,
+  LINE_NODES_ATTRIBUTE,
+  LINE_NAMES_ATTRIBUTE,
   placeDiagramNode,
   clientDiagramApi,
   placeDiagramOnClient,
-  writeDiagramSource
+  writeDiagramSource,
+  loadNode,
+  bindingsFromValues,
+  readDiagramBindings
 };

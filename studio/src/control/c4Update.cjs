@@ -20,10 +20,13 @@
  * - Rel_Back and the direction-specific Rel forms are not applied.
  * - A Boundary block that wraps other lines in braces is not applied. Nested
  *   elements stay on the diagram.
- * - moveLine sets the own attribute order. A kind change deletes the old node.
+ * - moveLine sets the own attribute order. A kind change deletes the old node
+ *   when that node is not a named element. Changing Person to System still
+ *   replaces the node, because the concept changed. An element with no
+ *   remaining declaration or relation is deleted at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget, skip } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, skip, dropUnindexed } = require('./lineWalk.cjs');
 
 const END_REASON = 'This relation end is not an element line yet, so that pointer is not set.';
 const ELEMENT = new Set(['element', 'relation']);
@@ -224,12 +227,20 @@ function addRelation(ctx, op, info) {
   return bind(ctx, op.lineId, nodePath);
 }
 
+function liveNames(line, live) {
+  const info = classifyC4Line(line.text);
+  if (info.kind === 'element' && info.name) live.add(info.name);
+  if (info.kind === 'relation') {
+    if (info.src) live.add(info.src);
+    if (info.dst) live.add(info.dst);
+  }
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine || !beforeLine.nodePath) return;
   const info = classifyC4Line(beforeLine.text);
   if (!ELEMENT.has(info.kind)) return;
-  deleteC4Element(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'element') forget(ctx.names, info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -237,9 +248,11 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyC4Line(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind || (after.kind === 'element' && before.concept !== after.concept)) {
-    if (nodePath && ELEMENT.has(before.kind)) {
+    if (before.kind === 'element' && after.kind === 'element' && nodePath) {
       deleteC4Element(ctx.api, nodePath);
-      if (before.kind === 'element') forget(ctx.names, before.name);
+      forget(ctx.names, before.name);
+    } else {
+      dropUnindexed(ctx.api, ctx.names, nodePath);
     }
     return onAdd(ctx, op);
   }
@@ -285,7 +298,8 @@ function walkC4Update(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

@@ -7,6 +7,11 @@
  * Lines that already point at a node are indexed first. Names carried on the
  * baseline fill ids that no current line owns, such as a participant that was
  * created from a message.
+ *
+ * After the line operations, a named element that the remaining lines neither
+ * define nor reference is deleted. The line's own node is deleted immediately
+ * only when that node is not one of those names, which is how a connection is
+ * removed while its ends wait for this check.
  */
 
 function walkLines(baseline, lineOperations, api, handle) {
@@ -49,6 +54,12 @@ function walkLines(baseline, lineOperations, api, handle) {
     }
     applyWorking(working, op, nodePath);
   });
+  if (handle.finish) handle.finish(ctx);
+  if (handle.liveNames) {
+    const live = new Set();
+    ctx.working.forEach((line) => handle.liveNames(line, live));
+    releaseUnreferenced(ctx.api, ctx.names, live);
+  }
   return {
     steps: (api && api.steps) || [],
     bindings: ctx.bindings,
@@ -69,6 +80,37 @@ function remember(names, name, nodePath) {
 
 function forget(names, name) {
   if (name) names.delete(name);
+}
+
+function isIndexed(names, nodePath) {
+  if (!names || !nodePath) return false;
+  for (const path of names.values()) {
+    if (path === nodePath) return true;
+  }
+  return false;
+}
+
+function dropUnindexed(api, names, nodePath) {
+  if (!nodePath || isIndexed(names, nodePath)) return;
+  api.deleteNode(nodePath);
+}
+
+function releaseUnreferenced(api, names, live) {
+  const livePaths = new Set();
+  names.forEach((nodePath, name) => {
+    if (live.has(name) && nodePath) livePaths.add(nodePath);
+  });
+  const dropped = [];
+  const removed = new Set();
+  names.forEach((nodePath, name) => {
+    if (live.has(name)) return;
+    if (nodePath && !livePaths.has(nodePath) && !removed.has(nodePath)) {
+      api.deleteNode(nodePath);
+      removed.add(nodePath);
+    }
+    dropped.push(name);
+  });
+  dropped.forEach((name) => names.delete(name));
 }
 
 function skip(ctx, lineId, reason) {
@@ -123,5 +165,8 @@ module.exports = {
   forget,
   skip,
   writeChanged,
-  lineAt
+  lineAt,
+  isIndexed,
+  dropUnindexed,
+  releaseUnreferenced
 };

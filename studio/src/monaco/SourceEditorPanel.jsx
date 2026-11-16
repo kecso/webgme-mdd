@@ -54,9 +54,9 @@ export default function SourceEditorPanel({
           <button
             type="button"
             className="btn primary"
-            disabled={applyBusy || !dirty}
+            disabled={applyBusy || !diagramKey || diagramKey === '—'}
             onClick={() => onApply()}
-            title="Fold the edits into diagram operations"
+            title="Write the diagram text and its elements"
           >
             {applyBusy ? 'Applying…' : 'Apply to model'}
           </button>

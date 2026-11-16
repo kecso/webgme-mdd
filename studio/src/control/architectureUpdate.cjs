@@ -14,10 +14,12 @@
  * - `id:Side --> Side:id` is an Edge. The side letters are srcSide and dstSide.
  *   The ends are services or groups already declared. A missing end is not
  *   invented, and that pointer is left unset.
- * - moveLine sets the own attribute order. A kind change deletes the old node.
+ * - moveLine sets the own attribute order. A kind change deletes the old node
+ *   when that node is not a named group or service. A group or service with no
+ *   remaining declaration or edge is deleted at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget, skip } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, skip, dropUnindexed } = require('./lineWalk.cjs');
 
 const END_REASON = 'This edge end is not a group or service line yet, so that pointer is not set.';
 const ELEMENT = new Set(['group', 'service', 'edge']);
@@ -164,12 +166,21 @@ function addEdge(ctx, op, info) {
   return bind(ctx, op.lineId, nodePath);
 }
 
+function liveNames(line, live) {
+  const info = classifyArchitectureLine(line.text);
+  if ((info.kind === 'group' || info.kind === 'service') && info.name) live.add(info.name);
+  if (info.kind === 'service' && info.inGroup) live.add(info.inGroup);
+  if (info.kind === 'edge') {
+    if (info.src) live.add(info.src);
+    if (info.dst) live.add(info.dst);
+  }
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine || !beforeLine.nodePath) return;
   const info = classifyArchitectureLine(beforeLine.text);
   if (!ELEMENT.has(info.kind)) return;
-  deleteArchitectureElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'group' || info.kind === 'service') forget(ctx.names, info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -177,10 +188,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyArchitectureLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteArchitectureElement(ctx.api, nodePath);
-      if (before.name) forget(ctx.names, before.name);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -226,7 +234,8 @@ function walkArchitectureUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

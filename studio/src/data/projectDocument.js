@@ -10,6 +10,7 @@ import { WebGmeBridge } from '../control/WebGmeBridge.js';
 import { isDemoRuntime } from '../control/runtime.js';
 import { legacyDiagrams } from '../control/projectModel.cjs';
 import { placeDiagramOnClient, writeDiagramSource } from '../control/diagramNode.cjs';
+import { commitDiagramUpdate } from '../control/applyModel.cjs';
 import {
   createProject as createDemoProject,
   dropProject as dropDemoProject,
@@ -18,12 +19,46 @@ import {
   resetS1DemoProject,
   setAllowedDiagramTypes as setDemoAllowedDiagramTypes,
   setDiagramSource as setDemoDiagramSource,
+  setDiagramOptions as setDemoDiagramOptions,
   setProjectLanguages as setDemoProjectLanguages
 } from './demoStore.js';
 
 const PROJECT_NAME = /^[0-9A-Za-z_]+$/;
 
 const cache = new Map();
+const OPTION_KEY = 'mdss-diagram-options';
+
+function readOptionBag() {
+  if (typeof localStorage === 'undefined') return {};
+  try {
+    return JSON.parse(localStorage.getItem(OPTION_KEY) || '{}') || {};
+  } catch (err) {
+    return {};
+  }
+}
+
+function writeOptionBag(bag) {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(OPTION_KEY, JSON.stringify(bag));
+}
+
+function rememberOptions(projectId, diagramKey, options) {
+  const bag = readOptionBag();
+  if (!bag[projectId]) bag[projectId] = {};
+  bag[projectId][diagramKey] = options;
+  writeOptionBag(bag);
+}
+
+function attachOptions(project) {
+  if (!project || !project.diagrams) return project;
+  const saved = readOptionBag()[project.id] || {};
+  const diagrams = { ...project.diagrams };
+  Object.keys(saved).forEach((key) => {
+    if (!diagrams[key]) return;
+    diagrams[key] = { ...diagrams[key], options: saved[key] };
+  });
+  return { ...project, diagrams };
+}
 
 export { resetS1DemoProject };
 
@@ -131,7 +166,7 @@ export async function loadProject(projectId) {
   await WebGmeBridge.openProject(projectId);
   let project = await fetchModel(owner, name);
   project = await adoptLegacyText(project);
-  return remember(project);
+  return remember(attachOptions(project));
 }
 
 export async function createProject(spec) {
@@ -186,6 +221,39 @@ export async function extendProjectLanguages(projectId, { diagramTypes = [], dom
 export async function setAllowedDiagramTypes(projectId, allowedDiagramTypes) {
   if (isDemoRuntime()) return setDemoAllowedDiagramTypes(projectId, allowedDiagramTypes);
   return cache.get(projectId) || null;
+}
+
+export async function applyDiagramModel(projectId, diagramKey, spec) {
+  if (isDemoRuntime()) throw new Error('The demo copy does not write diagram elements.');
+  await WebGmeBridge.openProject(projectId);
+  const client = typeof window !== 'undefined' ? window.gmeClient : null;
+  const outcome = await commitDiagramUpdate(client, spec);
+  const project = cache.get(projectId);
+  const prev = project && project.diagrams[diagramKey];
+  if (!prev) return { project, outcome };
+  const diagrams = {
+    ...project.diagrams,
+    [diagramKey]: {
+      ...prev,
+      source: spec.source,
+      lineNodes: outcome.status === 'applied' ? outcome.lineNodes : prev.lineNodes,
+      lineNames: outcome.status === 'applied' ? outcome.names : prev.lineNames
+    }
+  };
+  return { project: await remember({ ...project, diagrams }), outcome };
+}
+
+export function setDiagramOptions(projectId, diagramKey, options) {
+  const next = { ...(options || {}) };
+  rememberOptions(projectId, diagramKey, next);
+  if (isDemoRuntime()) return setDemoDiagramOptions(projectId, diagramKey, next);
+  const project = cache.get(projectId);
+  if (!project || !project.diagrams || !project.diagrams[diagramKey]) return null;
+  const diagrams = {
+    ...project.diagrams,
+    [diagramKey]: { ...project.diagrams[diagramKey], options: next }
+  };
+  return remember({ ...project, diagrams });
 }
 
 export async function setDiagramSource(projectId, diagramKey, patch) {

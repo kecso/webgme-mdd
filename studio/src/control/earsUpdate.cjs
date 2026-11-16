@@ -16,11 +16,12 @@
  * - Clause splits match EarsAst: While / When / Where / If / The … shall ….
  *   When the sentence does not match, text is still stored. A ubiquitous
  *   sentence that does not match keeps the whole sentence as response.
- * - Removing the header deletes the requirement. Removing a sentence clears
- *   text and the clause fields. moveLine on the header sets order.
+ * - Removing the header deletes the requirement when no remaining line still
+ *   names that id. Removing a sentence clears text and the clause fields.
+ *   moveLine on the header sets order.
  */
 
-const { walkLines, bind, remember, forget, lineAt } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, lineAt, dropUnindexed } = require('./lineWalk.cjs');
 
 const PATTERN_ALIASES = {
   ubiquitous: 'ubiquitous',
@@ -250,12 +251,16 @@ function addBody(ctx, op, at) {
   return null;
 }
 
+function liveNames(line, live) {
+  const info = classifyEarsLine(line.text);
+  if (info.kind === 'requirement' && info.reqId) live.add(info.reqId);
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine) return;
   const info = classifyEarsLine(beforeLine.text);
-  if (info.kind === 'requirement' && beforeLine.nodePath) {
-    deleteEarsRequirement(ctx.api, beforeLine.nodePath);
-    forget(ctx.names, info.reqId);
+  if (info.kind === 'requirement') {
+    dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
     return;
   }
   if (info.kind === 'body') {
@@ -271,10 +276,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyEarsLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (before.kind === 'requirement' && nodePath) {
-      deleteEarsRequirement(ctx.api, nodePath);
-      forget(ctx.names, before.reqId);
-    }
+    if (before.kind === 'requirement') dropUnindexed(ctx.api, ctx.names, nodePath);
     if (before.kind === 'body') onRemove(ctx, beforeLine);
     return onAdd(ctx, op);
   }
@@ -313,7 +315,8 @@ function walkEarsUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

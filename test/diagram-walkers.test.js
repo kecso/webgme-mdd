@@ -14,6 +14,7 @@ const { walkC4Update } = require('../studio/src/control/c4Update.cjs');
 const { walkArchitectureUpdate } = require('../studio/src/control/architectureUpdate.cjs');
 const { walkUsecaseUpdate } = require('../studio/src/control/usecaseUpdate.cjs');
 const { walkGanttUpdate } = require('../studio/src/control/ganttUpdate.cjs');
+const { walkKanbanUpdate, formatKanbanItem } = require('../studio/src/control/kanbanUpdate.cjs');
 const { createMddProject } = require('../scripts/mdd-project');
 const { placeDiagramNode } = require('../studio/src/control/diagramNode.cjs');
 
@@ -35,6 +36,13 @@ function recordingApi() {
     },
     deleteNode(nodePath) {
       steps.push({ call: 'deleteNode', nodePath });
+    },
+    delAttribute(nodePath, name) {
+      steps.push({ call: 'delAttribute', nodePath, name });
+    },
+    moveNode(nodePath, parentPath) {
+      steps.push({ call: 'moveNode', nodePath, parentPath });
+      return nodePath;
     }
   };
 }
@@ -148,7 +156,8 @@ test('sequence edits retarget, adopt, and ignore lines that are not elements', (
   const retarget = calls(api, 'setPointer').find((step) => step.nodePath === '/Message/2' && step.name === 'to');
   assert.equal(retarget.targetPath, created(api, 'Participant', 'HMI').nodePath);
   assert.equal(calls(api, 'setAttribute').some((step) => step.nodePath === '/Fragment/3' && step.name === 'kind' && step.value === 'loop'), true);
-  assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/Participant/1'), true);
+  assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/Participant/1'), false);
+  assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/Participant/9'), true);
   assert.equal(calls(api, 'setAttribute').some((step) => step.name === 'order' && step.value === 1), true);
   assert.equal(created(api, 'Note', 'ln8').attributes.text, 'wait');
 });
@@ -166,6 +175,25 @@ test('a later participant declaration adopts the node a message created', () => 
   const radar = created(api, 'Participant', 'RadarECU');
   assert.equal(calls(api, 'createChild').filter((step) => step.baseName === 'Participant' && step.attributes.name === 'RadarECU').length, 1);
   assert.equal(calls(api, 'setAttribute').some((step) => step.nodePath === radar.nodePath && step.name === 'kind' && step.value === 'actor'), true);
+});
+
+test('removing a message that is the only mention of its participants deletes them', () => {
+  const api = recordingApi();
+  const walked = walkSequenceUpdate(
+    {
+      diagramNodePath: '/a/d',
+      lines: [{ id: 'm', text: 'API->>DB: read', nodePath: '/Message/2' }],
+      names: { API: '/kept/API', DB: '/kept/DB' }
+    },
+    [{ op: 'removeLine', lineId: 'm', text: 'API->>DB: read' }],
+    api
+  );
+  assert.deepEqual(calls(api, 'deleteNode').map((step) => step.nodePath).sort(), [
+    '/Message/2',
+    '/kept/API',
+    '/kept/DB'
+  ]);
+  assert.deepEqual(walked.names, {});
 });
 
 test('state transitions, composites, and notes follow the open state', () => {
@@ -425,15 +453,202 @@ test('gantt tasks keep their ids and are not stored inside the section', () => {
   assert.equal(milestone.attributes.end, '2026-11-09');
 });
 
-test('block and kanban are marked as needing further design', () => {
+test('a gantt task id that another task still names with after is kept', () => {
+  const api = recordingApi();
+  const walked = walkGanttUpdate(
+    {
+      diagramNodePath: '/a/d',
+      lines: [
+        { id: 'a', text: 'Survey :done, a1, 2026-11-01, 3d', nodePath: '/Task/1' },
+        { id: 'b', text: 'Draft :active, a2, after a1, 5d', nodePath: '/Task/2' }
+      ],
+      names: { a1: '/Task/1', a2: '/Task/2' }
+    },
+    [{ op: 'removeLine', lineId: 'a', text: 'Survey :done, a1, 2026-11-01, 3d' }],
+    api
+  );
+  assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/Task/1'), false);
+  assert.equal(walked.names.a1, '/Task/1');
+  assert.equal(walked.names.a2, '/Task/2');
+});
+
+test('block is marked as needing further design', () => {
   const block = walkDiagramUpdate('block', { diagramNodePath: '/a/d', lines: [] }, adds(['Catalog Catalog']), recordingApi());
-  const kanban = walkDiagramUpdate('kanban', { diagramNodePath: '/a/d', lines: [] }, adds(['  [Card]']), recordingApi());
   const missing = walkDiagramUpdate('pie', { diagramNodePath: '/a/d', lines: [] }, [], recordingApi());
   assert.equal(block.status, 'needs-design');
   assert.match(block.reason, /one line operation is not one block/);
-  assert.equal(kanban.status, 'needs-design');
-  assert.match(kanban.reason, /no column/);
   assert.equal(missing.status, 'unsupported');
+});
+
+test('kanban columns contain tickets, and a ticket without an id inherits its name', () => {
+  const api = recordingApi();
+  const walked = walkKanbanUpdate(
+    { diagramNodePath: '/a/d', lines: [] },
+    adds([
+      'kanban',
+      '  Todo',
+      '    [Write the card]',
+      '    docs[Draft the note]@{ assigned: \'ada\', ticket: \'MC-1\' }',
+      '  Doing',
+      '    [Review]'
+    ]),
+    api
+  );
+  const columns = calls(api, 'createChild').filter((step) => step.baseName === 'Column');
+  const tickets = calls(api, 'createChild').filter((step) => step.baseName === 'Ticket');
+  assert.deepEqual(columns.map((step) => step.attributes.name), ['Todo', 'Doing']);
+  assert.equal(columns[0].parentPath, '/a/d');
+  assert.equal(tickets[0].parentPath, columns[0].nodePath);
+  assert.equal(tickets[1].parentPath, columns[0].nodePath);
+  assert.equal(tickets[2].parentPath, columns[1].nodePath);
+  assert.equal(Object.prototype.hasOwnProperty.call(tickets[0].attributes, 'name'), false);
+  assert.equal(tickets[0].attributes.label, 'Write the card');
+  assert.equal(tickets[1].attributes.name, 'docs');
+  assert.equal(tickets[1].attributes.label, 'Draft the note');
+  assert.equal(tickets[1].attributes.assigned, 'ada');
+  assert.match(tickets[1].attributes.meta, /MC-1/);
+  assert.deepEqual(
+    calls(api, 'setAttribute').filter((step) => step.name === 'order').map((step) => step.value),
+    ['0', '0', '1', '1', '0']
+  );
+  assert.equal(formatKanbanItem({ id: '', label: 'Write the card', meta: '' }, 'ticket'), '    [Write the card]');
+  assert.equal(formatKanbanItem({ id: 'docs', label: 'Draft the note', meta: '' }, 'ticket'), '    docs[Draft the note]');
+  assert.equal(calls(api, 'deleteNode').length, 0);
+});
+
+test('a kanban bracket line is a column when it sets the column indent', () => {
+  const api = recordingApi();
+  const walked = walkKanbanUpdate(
+    { diagramNodePath: '/a/d', lines: [] },
+    adds(['kanban', '    [Loose]', '  Todo']),
+    api
+  );
+  const columns = calls(api, 'createChild').filter((step) => step.baseName === 'Column');
+  const tickets = calls(api, 'createChild').filter((step) => step.baseName === 'Ticket');
+  assert.equal(columns.length, 1);
+  assert.equal(columns[0].parentPath, '/a/d');
+  assert.equal(Object.prototype.hasOwnProperty.call(columns[0].attributes, 'name'), false);
+  assert.equal(columns[0].attributes.label, 'Loose');
+  assert.equal(tickets.length, 1);
+  assert.equal(tickets[0].parentPath, columns[0].nodePath);
+  assert.equal(tickets[0].attributes.name, 'Todo');
+  assert.equal(walked.skipped.length, 0);
+  assert.equal(formatKanbanItem({ id: '', label: 'Doing', meta: '' }, 'column'), '  [Doing]');
+});
+
+test('a bare kanban id shows its own text and does not reuse an earlier label', () => {
+  const api = recordingApi();
+  walkKanbanUpdate(
+    { diagramNodePath: '/a/d', lines: [] },
+    adds(['kanban', '  Todo', '    t1[one]', '    t1[2]', '    t1']),
+    api
+  );
+  const tickets = calls(api, 'createChild').filter((step) => step.baseName === 'Ticket');
+  assert.deepEqual(tickets.map((step) => step.attributes.label), ['one', '2', 't1']);
+  assert.deepEqual(tickets.map((step) => step.attributes.name), ['t1', 't1', 't1']);
+});
+
+test('kanban keeps each column line, and each ticket line, on its own node', () => {
+  const api = recordingApi();
+  walkKanbanUpdate(
+    { diagramNodePath: '/a/d', lines: [] },
+    adds([
+      'kanban',
+      '  id1[First]',
+      '    t1[Alpha]',
+      '    t1[Beta]',
+      '  id1[Second]',
+      '    t1[Alpha]',
+      '  [Doing]',
+      '    [C]',
+      '  [Doing]',
+      '    [D]'
+    ]),
+    api
+  );
+  const columns = calls(api, 'createChild').filter((step) => step.baseName === 'Column');
+  const tickets = calls(api, 'createChild').filter((step) => step.baseName === 'Ticket');
+  assert.deepEqual(columns.map((step) => step.attributes.name), ['id1', 'id1', undefined, undefined]);
+  assert.deepEqual(columns.map((step) => step.attributes.label), ['First', 'Second', 'Doing', 'Doing']);
+  assert.deepEqual(tickets.map((step) => step.attributes.label), ['Alpha', 'Beta', 'Alpha', 'C', 'D']);
+  assert.deepEqual(tickets.map((step) => step.attributes.name), ['t1', 't1', 't1', undefined, undefined]);
+  assert.equal(tickets[0].parentPath, columns[0].nodePath);
+  assert.equal(tickets[1].parentPath, columns[0].nodePath);
+  assert.equal(tickets[2].parentPath, columns[1].nodePath);
+  assert.equal(tickets[3].parentPath, columns[2].nodePath);
+  assert.equal(tickets[4].parentPath, columns[3].nodePath);
+  assert.deepEqual(
+    calls(api, 'setAttribute').filter((step) => step.name === 'order').map((step) => step.value),
+    ['0', '0', '1', '1', '0', '2', '0', '3', '0']
+  );
+});
+
+test('moving a kanban ticket line moves that ticket into the column above it', () => {
+  const api = recordingApi();
+  const walked = walkKanbanUpdate(
+    {
+      diagramNodePath: '/a/d',
+      lines: [
+        { id: 'h', text: 'kanban', nodePath: null },
+        { id: 'c1', text: '  Todo', nodePath: '/Column/1' },
+        { id: 't', text: '    [Write the card]', nodePath: '/Ticket/1' },
+        { id: 'c2', text: '  Doing', nodePath: '/Column/2' }
+      ],
+      names: { 'column:Todo': '/Column/1', 'column:Doing': '/Column/2' }
+    },
+    [{ op: 'moveLine', lineId: 't', text: '    [Write the card]', index: 4 }],
+    api
+  );
+  const moved = calls(api, 'moveNode');
+  assert.equal(moved.length, 1);
+  assert.equal(moved[0].nodePath, '/Ticket/1');
+  assert.equal(moved[0].parentPath, '/Column/2');
+  assert.equal(calls(api, 'createChild').length, 0);
+  assert.equal(calls(api, 'deleteNode').length, 0);
+});
+
+test('retyping the same kanban text is a new ticket, and a column move keeps its node', () => {
+  const retyped = recordingApi();
+  walkKanbanUpdate({
+    diagramNodePath: '/a/d',
+    lines: [
+      { id: 'h', text: 'kanban', nodePath: null },
+      { id: 'c1', text: '  Todo', nodePath: '/Column/1' },
+      { id: 't', text: '    [Write the card]', nodePath: '/Ticket/9' },
+      { id: 'c2', text: '  Doing', nodePath: '/Column/2' }
+    ],
+    names: { 'column:Todo': '/Column/1', 'column:Doing': '/Column/2' }
+  }, [
+    { op: 'removeLine', lineId: 't', text: '    [Write the card]' },
+    { op: 'addLine', lineId: 't2', text: '    [Write the card]', index: 3 }
+  ], retyped);
+  const created = calls(retyped, 'createChild').filter((step) => step.baseName === 'Ticket');
+  assert.equal(created.length, 1);
+  assert.equal(created[0].parentPath, '/Column/2');
+  assert.equal(created[0].attributes.label, 'Write the card');
+  assert.equal(calls(retyped, 'deleteNode').some((step) => step.nodePath === '/Ticket/9'), true);
+  assert.equal(calls(retyped, 'moveNode').length, 0);
+
+  const moved = recordingApi();
+  walkKanbanUpdate({
+    diagramNodePath: '/a/d',
+    lines: [
+      { id: 'h', text: 'kanban', nodePath: null },
+      { id: 'c1', text: '  Todo', nodePath: '/Column/1' },
+      { id: 'a', text: '    [A]', nodePath: '/Ticket/1' },
+      { id: 'c2', text: '  Doing', nodePath: '/Column/2' },
+      { id: 'b', text: '    [B]', nodePath: '/Ticket/2' }
+    ]
+  }, [{ op: 'moveLine', lineId: 'c2', text: '  Doing', index: 1 }], moved);
+  assert.equal(calls(moved, 'createChild').length, 0);
+  assert.equal(calls(moved, 'deleteNode').length, 0);
+  assert.deepEqual(calls(moved, 'moveNode'), [
+    { call: 'moveNode', nodePath: '/Ticket/2', parentPath: '/Column/1' }
+  ]);
+  assert.deepEqual(
+    calls(moved, 'setAttribute').filter((step) => step.name === 'order').map((step) => [step.nodePath, step.value]),
+    [['/Column/2', '0'], ['/Column/1', '1'], ['/Ticket/2', '1']]
+  );
 });
 
 test('the dispatcher runs the flowchart walker for a flowchart line', () => {
@@ -597,7 +812,7 @@ test('sequence edits rename, retarget, and close else branches', () => {
         { id: 't', text: 'title Kept', nodePath: '/a/d' },
         { id: 'm', text: 'API->>DB: read', nodePath: '/Message/2' }
       ],
-      names: { API: '/Participant/1', DB: '/Participant/4' }
+      names: { API: '/kept/API', DB: '/kept/DB' }
     },
     [
       { op: 'updateText', lineId: 'missing', text: 'actor API', index: 0 },
@@ -606,9 +821,10 @@ test('sequence edits rename, retarget, and close else branches', () => {
     ],
     edges
   );
-  assert.equal(calls(edges, 'setAttribute').some((step) => step.nodePath === '/Participant/1' && step.name === 'kind' && step.value === 'actor'), true);
-  assert.equal(calls(edges, 'deleteNode').length, 0);
-  assert.equal(calls(edges, 'setPointer').some((step) => step.name === 'from' && step.targetPath !== '/Participant/4'), true);
+  assert.equal(calls(edges, 'setAttribute').some((step) => step.nodePath === '/kept/API' && step.name === 'kind' && step.value === 'actor'), true);
+  assert.equal(calls(edges, 'deleteNode').some((step) => step.nodePath === '/kept/API'), true);
+  assert.equal(calls(edges, 'deleteNode').some((step) => step.nodePath === '/kept/DB'), false);
+  assert.equal(calls(edges, 'setPointer').some((step) => step.name === 'from' && step.targetPath !== '/kept/DB'), true);
   assert.equal(calls(edges, 'setPointer').some((step) => step.name === 'to'), false);
   assert.equal(classifySequenceLine().kind, 'comment');
   assert.equal(classifySequenceLine(null).kind, 'comment');
@@ -636,23 +852,23 @@ test('a line that changes kind replaces the element it used to be', () => {
   assert.equal(calls(stateApi, 'setAttribute').some((step) => step.nodePath === '/Note/1' && step.value === 'still parked'), true);
   assert.equal(calls(stateApi, 'deleteNode').some((step) => step.nodePath === '/Note/1'), true);
 
-  function replaced(walk, before, after) {
+  function replaced(walk, before, after, keep) {
     const api = recordingApi();
     walk(
       { diagramNodePath: '/a/d', lines: [{ id: 'ln', text: before, nodePath: '/Old/1' }], names: {} },
       [{ op: 'updateText', lineId: 'ln', text: after, index: 0 }],
       api
     );
-    assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/Old/1'), true, before);
+    assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/Old/1'), !keep, before);
     return api;
   }
-  replaced(walkClassUpdate, 'class Animal', 'Animal --> Dog : pet');
-  replaced(walkErUpdate, 'Order {', 'Order ||--o{ Line : has');
-  replaced(walkC4Update, 'Person(driver, "Driver", "Ops")', 'Rel(driver, lead, "Uses")');
-  replaced(walkArchitectureUpdate, 'group vehicle(cloud)[Ego]', 'radar:R --> L:hmi');
-  replaced(walkUsecaseUpdate, 'actor Modeler', '(Import Mermaid)');
-  replaced(walkGanttUpdate, 'section Meta', 'Survey :done, a1, 2026-11-01, 3d');
-  replaced(walkRequirementUpdate, 'requirement Safety {', 'risk: high');
+  replaced(walkClassUpdate, 'class Animal', 'Animal --> Dog : pet', true);
+  replaced(walkErUpdate, 'Order {', 'Order ||--o{ Line : has', true);
+  replaced(walkC4Update, 'Person(driver, "Driver", "Ops")', 'Rel(driver, lead, "Uses")', true);
+  replaced(walkArchitectureUpdate, 'group vehicle(cloud)[Ego]', 'radar:R --> L:hmi', false);
+  replaced(walkUsecaseUpdate, 'actor Modeler', '(Import Mermaid)', false);
+  replaced(walkGanttUpdate, 'section Meta', 'Survey :done, a1, 2026-11-01, 3d', false);
+  replaced(walkRequirementUpdate, 'requirement Safety {', 'risk: high', false);
   const earsApi = replaced(walkEarsUpdate, 'REQ-1 [event] risk=low verifymethod=test', 'When it rains, the system shall stop.');
   assert.equal(calls(earsApi, 'createChild').length, 0);
 
@@ -692,10 +908,10 @@ test('the other diagram edits update, retarget, and remove their own elements', 
   assert.equal(calls(stateApi, 'setAttribute').some((step) => step.nodePath === '/State/1' && step.value === 'On'), true);
   assert.equal(calls(stateApi, 'setAttribute').some((step) => step.nodePath === '/Transition/2' && step.name === 'action' && step.value === 'go'), true);
   assert.equal(calls(stateApi, 'setAttribute').some((step) => step.nodePath === '/Note/3' && step.value === ''), true);
-  assert.equal(calls(stateApi, 'deleteNode').some((step) => step.nodePath === '/State/1'), true);
+  assert.equal(calls(stateApi, 'deleteNode').some((step) => step.nodePath === '/State/1'), false);
 
   const classApi = recordingApi();
-  walkClassUpdate(
+  const classWalked = walkClassUpdate(
     {
       diagramNodePath: '/a/d',
       lines: [
@@ -717,7 +933,8 @@ test('the other diagram edits update, retarget, and remove their own elements', 
   );
   assert.equal(calls(classApi, 'setAttribute').some((step) => step.nodePath === '/Relationship/2' && step.name === 'kind' && step.value === 'composition'), true);
   assert.equal(created(classApi, 'Relationship', 'g').attributes.kind, 'aggregation');
-  assert.equal(calls(classApi, 'deleteNode').some((step) => step.nodePath === '/Class/1'), true);
+  assert.equal(calls(classApi, 'deleteNode').some((step) => step.nodePath === '/Class/1'), false);
+  assert.equal(classWalked.names.Beast, '/Class/1');
 
   const erApi = recordingApi();
   walkErUpdate(
@@ -741,6 +958,8 @@ test('the other diagram edits update, retarget, and remove their own elements', 
   );
   assert.equal(calls(erApi, 'setAttribute').some((step) => step.nodePath === '/Relationship/2' && step.name === 'dstCard' && step.value === '|{'), true);
   assert.equal(calls(erApi, 'deleteNode').some((step) => step.nodePath === '/Relationship/2'), true);
+  assert.equal(calls(erApi, 'deleteNode').some((step) => step.nodePath === '/Entity/3'), true);
+  assert.equal(calls(erApi, 'deleteNode').some((step) => step.nodePath === '/Entity/1'), false);
 
   const earsApi = recordingApi();
   walkEarsUpdate(
@@ -792,6 +1011,7 @@ test('the other diagram edits update, retarget, and remove their own elements', 
   assert.equal(calls(reqApi, 'setAttribute').some((step) => step.nodePath === '/Requirement/1' && step.name === 'risk' && step.value === 'low'), true);
   assert.equal(calls(reqApi, 'setAttribute').some((step) => step.nodePath === '/Requirement/1' && step.name === 'risk' && step.value === ''), true);
   assert.equal(calls(reqApi, 'setAttribute').some((step) => step.nodePath === '/Relationship/3' && step.name === 'kind' && step.value === 'satisfies'), true);
+  assert.equal(calls(reqApi, 'deleteNode').some((step) => step.nodePath === '/Requirement/1'), false);
 
   const c4Api = recordingApi();
   walkC4Update(
@@ -818,6 +1038,8 @@ test('the other diagram edits update, retarget, and remove their own elements', 
   assert.equal(calls(c4Api, 'setAttribute').some((step) => step.nodePath === '/Person/1' && step.name === 'alias' && step.value === 'Operator'), true);
   assert.equal(calls(c4Api, 'setAttribute').some((step) => step.nodePath === '/Relation/2' && step.name === 'bidirectional' && step.value === 'true'), true);
   assert.equal(created(c4Api, 'Boundary', 'zone').attributes.label, 'Vehicle');
+  assert.equal(calls(c4Api, 'deleteNode').some((step) => step.nodePath === '/Person/1'), false);
+  assert.equal(calls(c4Api, 'deleteNode').some((step) => step.nodePath === '/System/3'), false);
 
   const archApi = recordingApi();
   walkArchitectureUpdate(
@@ -842,7 +1064,7 @@ test('the other diagram edits update, retarget, and remove their own elements', 
   assert.equal(calls(archApi, 'setAttribute').some((step) => step.nodePath === '/Group/1' && step.name === 'label' && step.value === 'Vehicle'), true);
   assert.equal(calls(archApi, 'setAttribute').some((step) => step.nodePath === '/Service/2' && step.name === 'inGroup' && step.value === 'other'), true);
   assert.equal(calls(archApi, 'setAttribute').some((step) => step.nodePath === '/Edge/3' && step.name === 'srcSide' && step.value === 'L'), true);
-  assert.equal(calls(archApi, 'deleteNode').some((step) => step.nodePath === '/Service/2'), true);
+  assert.equal(calls(archApi, 'deleteNode').some((step) => step.nodePath === '/Service/2'), false);
 
   const useApi = recordingApi();
   walkUsecaseUpdate(
@@ -868,6 +1090,7 @@ test('the other diagram edits update, retarget, and remove their own elements', 
   assert.equal(calls(useApi, 'setAttribute').some((step) => step.name === 'direction' && step.value === 'TD'), true);
   assert.equal(calls(useApi, 'setAttribute').some((step) => step.nodePath === '/Actor/1' && step.name === 'alias' && step.value === 'Engineer'), true);
   assert.equal(calls(useApi, 'setPointer').some((step) => step.nodePath === '/Link/3' && step.name === 'dst'), true);
+  assert.equal(calls(useApi, 'deleteNode').some((step) => step.nodePath === '/Actor/1'), false);
 
   const ganttApi = recordingApi();
   walkGanttUpdate(

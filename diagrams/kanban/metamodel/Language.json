@@ -146,10 +146,18 @@
       "path": "/a",
       "guid": "ae9ed10b-e20f-5fdd-b879-3b43bc12fd29",
       "attributes": {
-        "name": "Column"
+        "name": "Column",
+        "label": "",
+        "order": ""
       },
       "attribute_meta": {
         "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "order": {
           "type": "string"
         }
       },
@@ -168,7 +176,12 @@
       "member_registry": {},
       "member_attributes": {},
       "children": [],
-      "children_meta": null
+      "children_meta": {
+        "99265a58-d7f1-5534-96af-d21989307ec9": {
+          "min": -1,
+          "max": -1
+        }
+      }
     },
     {
       "id": "99265a58-d7f1-5534-96af-d21989307ec9",
@@ -178,7 +191,8 @@
         "name": "Ticket",
         "label": "",
         "assigned": "",
-        "meta": ""
+        "meta": "",
+        "order": ""
       },
       "attribute_meta": {
         "name": {
@@ -191,6 +205,9 @@
           "type": "string"
         },
         "meta": {
+          "type": "string"
+        },
+        "order": {
           "type": "string"
         }
       },
@@ -245,10 +262,6 @@
       "children": [],
       "children_meta": {
         "ae9ed10b-e20f-5fdd-b879-3b43bc12fd29": {
-          "min": -1,
-          "max": -1
-        },
-        "99265a58-d7f1-5534-96af-d21989307ec9": {
           "min": -1,
           "max": -1
         }

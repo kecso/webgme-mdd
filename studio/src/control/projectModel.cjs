@@ -6,7 +6,11 @@
  * concept are the diagrams. Their text is the source attribute.
  */
 
-const { DIAGRAM_CONCEPT, SOURCE_ATTRIBUTE } = require('./diagramNode.cjs');
+const {
+  DIAGRAM_CONCEPT,
+  SOURCE_ATTRIBUTE,
+  bindingsFromValues
+} = require('./diagramNode.cjs');
 
 function domainsFromKind(kind) {
   const raw = String(kind || '');
@@ -32,12 +36,19 @@ async function readDiagrams(api) {
     const diagramType = diagramTypeOf(api.namespace(base), api.name(base));
     if (!diagramType) continue;
     const nodePath = api.id(node);
-    diagrams[nodePath] = {
+    const diagram = {
       name: api.name(node) || diagramType,
       diagramType,
       source: api.attribute(node, SOURCE_ATTRIBUTE) || '',
       nodePath
     };
+    const stored = bindingsFromValues(
+      api.attribute(node, 'lineNodes'),
+      api.attribute(node, 'lineNames')
+    );
+    if (stored.nodePaths.length) diagram.lineNodes = stored.nodePaths;
+    if (Object.keys(stored.names).length) diagram.lineNames = stored.names;
+    diagrams[nodePath] = diagram;
   }
   return diagrams;
 }

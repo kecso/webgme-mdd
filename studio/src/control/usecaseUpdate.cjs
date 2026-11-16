@@ -14,10 +14,12 @@
  *   use case is created from that line. The line's node is the Link.
  * - include, extend, and generalization arrows are not applied. Boundary
  *   rectangles are not applied.
- * - moveLine sets the own attribute order. A kind change deletes the old node.
+ * - moveLine sets the own attribute order. A kind change deletes the old node
+ *   when that node is not a named actor or use case. An actor or use case with
+ *   no remaining declaration or link is deleted at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, dropUnindexed } = require('./lineWalk.cjs');
 
 const ELEMENT = new Set(['actor', 'usecase', 'link']);
 const DIRECTIONS = new Set(['TB', 'TD', 'BT', 'RL', 'LR']);
@@ -121,13 +123,21 @@ function onAdd(ctx, op) {
   }
 }
 
+function liveNames(line, live) {
+  const info = classifyUsecaseLine(line.text);
+  if (info.kind === 'actor' && info.name) live.add('actor:' + info.name);
+  if (info.kind === 'usecase' && info.name) live.add('usecase:' + info.name);
+  if (info.kind === 'link') {
+    if (info.src) live.add('actor:' + info.src);
+    if (info.dst) live.add('usecase:' + info.dst);
+  }
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine || !beforeLine.nodePath) return;
   const info = classifyUsecaseLine(beforeLine.text);
   if (!ELEMENT.has(info.kind)) return;
-  deleteUsecaseElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'actor') forget(ctx.names, 'actor:' + info.name);
-  if (info.kind === 'usecase') forget(ctx.names, 'usecase:' + info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -135,11 +145,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyUsecaseLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteUsecaseElement(ctx.api, nodePath);
-      if (before.kind === 'actor') forget(ctx.names, 'actor:' + before.name);
-      if (before.kind === 'usecase') forget(ctx.names, 'usecase:' + before.name);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -179,7 +185,8 @@ function walkUsecaseUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

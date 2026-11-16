@@ -14,8 +14,9 @@
  *   the alias defaults to the name. kind is actor or participant.
  * - A message may name a participant that has no line yet. That participant is
  *   created on the diagram (kind participant, alias equal to the name). A later
- *   declaration of the same name adopts that node. Removing a message does not
- *   delete participants. Removing a declaration deletes the shared node.
+ *   declaration of the same name adopts that node. Removing a message deletes
+ *   that message. A participant stays while a remaining line defines or names
+ *   it; otherwise it is deleted at the end of the walk.
  * - A message line needs a colon. The arrow is ->>, -->>, ->, -->, -x, --x,
  *   -), or --). A + or - glued to the arrow is Message.activate. The rest of
  *   the line is the label. The line's node is the Message, named by the line id.
@@ -40,7 +41,7 @@
  *   creates the new one.
  */
 
-const { walkLines, bind, remember, forget, writeChanged } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, writeChanged, dropUnindexed } = require('./lineWalk.cjs');
 
 const ELEMENT = new Set(['participant', 'message', 'fragment', 'note']);
 
@@ -283,12 +284,24 @@ function addNote(ctx, op, info, parentPath) {
   return bind(ctx, op.lineId, nodePath);
 }
 
+function liveNames(line, live) {
+  const info = classifySequenceLine(line.text);
+  if (info.kind === 'participant' && info.name) live.add(info.name);
+  if (info.kind === 'message') {
+    if (info.from) live.add(info.from);
+    if (info.to) live.add(info.to);
+  }
+  if (info.kind === 'note') {
+    if (info.start) live.add(info.start);
+    if (info.end) live.add(info.end);
+  }
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine || !beforeLine.nodePath) return;
   const info = classifySequenceLine(beforeLine.text);
   if (!ELEMENT.has(info.kind)) return;
-  deleteSequenceElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'participant') forget(ctx.names, info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -296,10 +309,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifySequenceLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteSequenceElement(ctx.api, nodePath);
-      if (before.kind === 'participant') forget(ctx.names, before.name);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -361,7 +371,8 @@ function walkSequenceUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

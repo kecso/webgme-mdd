@@ -29,6 +29,7 @@ function createSession(source, options) {
   return {
     diagramNodePath: opts.diagramNodePath || null,
     lines,
+    names: Object.assign({}, opts.names || {}),
     edits: [],
     nextId: lines.length + 1
   };

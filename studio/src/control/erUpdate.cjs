@@ -13,10 +13,12 @@
  * - Attribute lines inside the block are not applied. Entity does not contain
  *   Attribute, and Attribute has no owner, so `string id PK` cannot be stored
  *   on its entity. `}` only closes the block.
- * - moveLine sets the own attribute order. A kind change deletes the old node.
+ * - moveLine sets the own attribute order. A kind change deletes the old node
+ *   when that node is not a named entity. An entity with no remaining block or
+ *   relationship is deleted at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget, skip } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, skip, dropUnindexed } = require('./lineWalk.cjs');
 
 const ATTRIBUTE_REASON = 'Entity does not contain attributes, and an attribute has no owner, so this line is not applied.';
 const ELEMENT = new Set(['entity', 'relationship']);
@@ -115,12 +117,20 @@ function onAdd(ctx, op) {
   }
 }
 
+function liveNames(line, live) {
+  const info = classifyErLine(line.text);
+  if (info.kind === 'entity' && info.name) live.add(info.name);
+  if (info.kind === 'relationship') {
+    if (info.src) live.add(info.src);
+    if (info.dst) live.add(info.dst);
+  }
+}
+
 function onRemove(ctx, beforeLine) {
   if (!beforeLine || !beforeLine.nodePath) return;
   const info = classifyErLine(beforeLine.text);
   if (!ELEMENT.has(info.kind)) return;
-  deleteErElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'entity') forget(ctx.names, info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -128,10 +138,7 @@ function onUpdate(ctx, beforeLine, op) {
   const after = classifyErLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteErElement(ctx.api, nodePath);
-      if (before.kind === 'entity') forget(ctx.names, before.name);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -166,7 +173,8 @@ function walkErUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

@@ -3,9 +3,9 @@
 /**
  * Dispatch a diagram's line operations to its walker.
  *
- * Block and kanban are marked needs further design/specification. Their line
- * grammar does not give one element a home in the metamodel: a block row lists
- * several blocks, and a kanban card has no column to belong to.
+ * Block is marked needs further design/specification. A block row lists
+ * several blocks, so one line is not one element. Kanban columns contain
+ * their tickets. Each column line and each ticket line is its own element.
  */
 
 const { walkFlowchartUpdate } = require('./flowchartUpdate.cjs');

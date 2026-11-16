@@ -149,9 +149,9 @@ test('an edge added inside a known subgraph is created there', () => {
   assert.equal(calls(api, 'deleteNode').length, 0);
 });
 
-test('rewriting a node line into an edge deletes the node and creates the edge', () => {
+test('rewriting a node line into an edge keeps the node when the edge still names it', () => {
   const api = recordingApi();
-  walkFlowchartUpdate(
+  const walked = walkFlowchartUpdate(
     {
       diagramNodePath: '/a/d',
       lines: [{ id: 'ln1', text: 'A[Alone]', nodePath: '/a/d/n' }]
@@ -159,10 +159,10 @@ test('rewriting a node line into an edge deletes the node and creates the edge',
     [{ op: 'updateText', lineId: 'ln1', nodePath: '/a/d/n', text: 'A --> B', index: 0 }],
     api
   );
-  assert.equal(api.steps[0].call, 'deleteNode');
-  assert.equal(api.steps[0].nodePath, '/a/d/n');
+  assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/a/d/n'), false);
+  assert.equal(walked.names.A, '/a/d/n');
   assert.ok(calls(api, 'createChild').some((step) => step.baseName === 'Edge'));
-  assert.equal(calls(api, 'setPointer').length, 2);
+  assert.deepEqual(calls(api, 'setPointer').map((step) => step.targetPath), ['/a/d/n', walked.names.B]);
 });
 
 test('a direction edit sets the diagram direction', () => {
@@ -254,11 +254,12 @@ test('an unchanged node and a comment edit leave the model, and a removed edge i
     api
   );
   assert.deepEqual(api.steps.filter((step) => step.call === 'deleteNode'), [
-    { call: 'deleteNode', nodePath: '/a/d/e' }
+    { call: 'deleteNode', nodePath: '/a/d/e' },
+    { call: 'deleteNode', nodePath: '/Node/1' }
   ]);
   assert.equal(calls(api, 'createChild')[0].attributes.name, 'C');
   assert.equal(walked.names.A, '/a/d/n');
-  assert.equal(walked.names.C, '/Node/1');
+  assert.equal(walked.names.C, undefined);
 });
 
 test('retargeting an edge reuses a known node and creates the missing one', () => {
@@ -282,6 +283,44 @@ test('retargeting an edge reuses a known node and creates the missing one', () =
     { call: 'setAttribute', nodePath: '/a/d/e', name: 'lineStyle', value: '-.->' }
   ]);
   assert.equal(calls(api, 'createChild')[0].attributes.shape, 'rect');
+});
+
+test('removing an edge that is the only mention of its ends deletes those nodes', () => {
+  const api = recordingApi();
+  const walked = walkFlowchartUpdate(
+    {
+      diagramNodePath: '/a/d',
+      lines: [{ id: 'ln1', text: 'A --> B', nodePath: '/a/d/e' }],
+      names: { A: '/a/d/a', B: '/a/d/b' }
+    },
+    [{ op: 'removeLine', lineId: 'ln1', text: 'A --> B' }],
+    api
+  );
+  assert.deepEqual(api.steps.filter((step) => step.call === 'deleteNode').map((step) => step.nodePath).sort(), [
+    '/a/d/a',
+    '/a/d/b',
+    '/a/d/e'
+  ]);
+  assert.equal(walked.names.A, undefined);
+  assert.equal(walked.names.B, undefined);
+});
+
+test('retargeting an edge drops the end that no remaining line names', () => {
+  const api = recordingApi();
+  const walked = walkFlowchartUpdate(
+    {
+      diagramNodePath: '/a/d',
+      lines: [{ id: 'ln1', text: 'A --> B', nodePath: '/a/d/e' }],
+      names: { A: '/a/d/a', B: '/a/d/b' }
+    },
+    [{ op: 'updateText', lineId: 'ln1', text: 'A --> C', index: 0 }],
+    api
+  );
+  assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/a/d/b'), true);
+  assert.equal(calls(api, 'deleteNode').some((step) => step.nodePath === '/a/d/a'), false);
+  assert.equal(walked.names.A, '/a/d/a');
+  assert.equal(walked.names.B, undefined);
+  assert.equal(typeof walked.names.C, 'string');
 });
 
 test('an unlinked edge line is created, and a removed subgraph drops its name', () => {

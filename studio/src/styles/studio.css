@@ -417,6 +417,16 @@ button.crumb-label:hover {
   color: var(--muted);
 }
 
+.header-menu-check {
+  cursor: pointer;
+  justify-content: flex-start;
+  gap: 0.55rem;
+}
+
+.header-menu-check input {
+  margin: 0;
+}
+
 .header-menu-sep {
   height: 1px;
   margin: 0.3rem 0.4rem;

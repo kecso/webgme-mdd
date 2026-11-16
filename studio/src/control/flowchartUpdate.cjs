@@ -13,6 +13,10 @@
  * A line that has no WebGME node yet is created from the text of that
  * operation. Lines the edit did not touch are left alone.
  *
+ * An edge can be the only mention of its nodes. At the end of the walk, a
+ * node or subgraph name that the remaining lines neither declare nor use is
+ * deleted. The edge line's own node is deleted with that line.
+ *
  * A new node or edge is created under the open subgraph when that subgraph
  * already has a node path, and under the diagram node otherwise.
  *
@@ -20,6 +24,8 @@
  * that relocates a single unique line. Cutting a line and typing it again
  * later is a removal plus an addition, so the new line gets a new node.
  */
+
+const { dropUnindexed, releaseUnreferenced } = require('./lineWalk.cjs');
 
 const ARROW = /(-?\.?-+>|==+>|=+>|--+|==+)/;
 
@@ -238,19 +244,20 @@ function onAddLine(api, index, op, parentPath, bindings) {
   }
 }
 
+function noteFlowNames(text, live) {
+  const kind = classifyFlowLine(text);
+  if ((kind.kind === 'node' || kind.kind === 'subgraph') && kind.name) live.add(kind.name);
+  if (kind.kind === 'edge') {
+    if (kind.src) live.add(kind.src);
+    if (kind.dst) live.add(kind.dst);
+  }
+}
+
 function onRemoveLine(api, index, beforeLine) {
   if (!beforeLine) return;
   const kind = classifyFlowLine(beforeLine.text);
-  switch (kind.kind) {
-    case 'node':
-    case 'edge':
-    case 'subgraph':
-      if (beforeLine.nodePath) deleteFlowElement(api, beforeLine.nodePath);
-      if (kind.name) index.delete(kind.name);
-      break;
-    default:
-      break;
-  }
+  if (kind.kind !== 'node' && kind.kind !== 'edge' && kind.kind !== 'subgraph') return;
+  dropUnindexed(api, index, beforeLine.nodePath);
 }
 
 function onUpdateText(api, index, beforeLine, op, parentPath, bindings) {
@@ -258,10 +265,7 @@ function onUpdateText(api, index, beforeLine, op, parentPath, bindings) {
   const after = classifyFlowLine(op.text);
   const nodePath = (beforeLine && beforeLine.nodePath) || op.nodePath || null;
   if (before.kind !== after.kind) {
-    if (nodePath && (before.kind === 'node' || before.kind === 'edge' || before.kind === 'subgraph')) {
-      deleteFlowElement(api, nodePath);
-      if (before.name) index.delete(before.name);
-    }
+    dropUnindexed(api, index, nodePath);
     return onAddLine(api, index, op, parentPath, bindings);
   }
   switch (after.kind) {
@@ -364,6 +368,9 @@ function walkFlowchartUpdate(baseline, lineOperations, api) {
     nodePath: line.nodePath || null
   }));
   const names = seedIndex(working);
+  Object.entries(source.names || {}).forEach(([name, nodePath]) => {
+    if (name && nodePath && !names.has(name)) names.set(name, nodePath);
+  });
   const bindings = [];
   const steps = api;
   (lineOperations || []).forEach((op) => {
@@ -400,6 +407,9 @@ function walkFlowchartUpdate(baseline, lineOperations, api) {
     }
     applyWorking(working, op, nodePath);
   });
+  const live = new Set();
+  working.forEach((line) => noteFlowNames(line.text, live));
+  releaseUnreferenced(api, names, live);
   return {
     steps: steps.steps || [],
     bindings,

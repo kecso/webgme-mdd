@@ -5,22 +5,26 @@
  * Control owns model mutation + deciding when to re-render.
  *
  * Apply from Monaco is manual. Keystrokes are collected as editor changes.
- * Apply folds those changes into diagram-level line operations. Reading a
- * line operation as a flowchart edge or a sequence message comes after that.
+ * Apply asks Mermaid to parse the current text, then folds the edits into
+ * diagram-level line operations. The walker for that diagram type runs inside
+ * one WebGME transaction. Text Mermaid rejects is not written.
  */
 
-import { setDiagramSource } from '../data/projectDocument.js';
+import { applyDiagramModel, setDiagramSource } from '../data/projectDocument.js';
 import { isDemoRuntime } from './runtime.js';
+import { inputForApply, sessionHasLinks } from './applyModel.cjs';
+import { checkDiagram } from './diagramCheck.cjs';
 import {
   createSession,
   foldEdits,
   formatDiagramOperation,
-  noteContentChanges
+  noteContentChanges,
+  sourceToLines
 } from './sourceEdits.cjs';
 
 /**
  * @typedef {object} ApplyResult
- * @property {'applied-local'|'pending-delta'|'error'} status
+ * @property {'applied-local'|'pending-delta'|'applied'|'invalid'|'type-change'|'error'} status
  * @property {string} [message]
  * @property {object} [delta]
  * @property {Array<object>} [delta.operations]  diagram-level line operations
@@ -58,13 +62,24 @@ export class DiagramControl {
    * Hiding the editor does not drop edits already collected for this snapshot.
    * @param {string} diagramKey
    * @param {string} source
-   * @param {{ diagramNodePath?: string|null, nodePaths?: Array<string|null> }} [references]
+   * @param {{ diagramNodePath?: string|null, nodePaths?: Array<string|null>, names?: Object<string, string> }} [references]
    */
   openEditor(diagramKey, source, references) {
     const refs = references || {};
     const existing = this._sessions.get(diagramKey);
     if (!existing || (!existing.edits.length && this.getBaseline(diagramKey) !== source)) {
-      this.setBaseline(diagramKey, source, refs);
+      const sameShape = existing && existing.lines.length === sourceToLines(source).length;
+      const incomingPaths = refs.nodePaths || [];
+      const incomingNames = refs.names || {};
+      this.setBaseline(diagramKey, source, {
+        diagramNodePath: refs.diagramNodePath || (existing && existing.diagramNodePath) || null,
+        nodePaths: incomingPaths.length || !sameShape
+          ? incomingPaths
+          : existing.lines.map((line) => line.nodePath),
+        names: Object.keys(incomingNames).length || !existing
+          ? incomingNames
+          : existing.names
+      });
       this._sessions.get(diagramKey).editorOpen = true;
       this._logBaseline(diagramKey);
       return;
@@ -77,6 +92,10 @@ export class DiagramControl {
     const paths = refs.nodePaths || [];
     existing.lines.forEach((line, index) => {
       if (!line.nodePath && paths[index]) line.nodePath = paths[index];
+    });
+    existing.names = existing.names || {};
+    Object.entries(refs.names || {}).forEach(([name, nodePath]) => {
+      if (name && nodePath && !existing.names[name]) existing.names[name] = nodePath;
     });
     if (firstOpen) this._logBaseline(diagramKey);
   }
@@ -129,15 +148,27 @@ export class DiagramControl {
    * @param {string} args.source  editor buffer
    * @returns {Promise<ApplyResult>}
    */
-  async applySource({ diagramKey, domainId, modelingDomainId, name, source }) {
+  async applySource({ diagramKey, domainId, modelingDomainId, name, source, options }) {
     const session = this.sessionFor(diagramKey);
     const baseline = this.getBaseline(diagramKey);
-    if (!session.edits.length && baseline === source) {
+    const linked = sessionHasLinks(session);
+    if (!session.edits.length && baseline === source && (isDemoRuntime() || linked || session.settled)) {
       return { status: 'applied-local', message: 'No changes vs baseline', delta: { operations: [] } };
     }
 
     const folded = foldEdits(session);
-    const operations = folded.operations;
+    const verdict = await checkDiagram(domainId, folded.lines);
+    if (!verdict.ok) {
+      this.onLog(verdict.message);
+      return {
+        status: verdict.code === 'type-change' ? 'type-change' : 'invalid',
+        message: verdict.message,
+        delta: { operations: folded.operations }
+      };
+    }
+    const walked = inputForApply(session, folded);
+    walked.baseline.options = options || {};
+    const operations = walked.operations;
 
     this.onLog(
       `apply requested for ${diagramKey}` +
@@ -168,27 +199,62 @@ export class DiagramControl {
       };
     }
 
-    await setDiagramSource(this.projectId, diagramKey, {
+    if (isDemoRuntime()) {
+      await setDiagramSource(this.projectId, diagramKey, {
+        diagramType: domainId,
+        modelingDomainId,
+        name,
+        source,
+        updatedAt: new Date().toISOString()
+      });
+      this._baselineByDiagram.set(diagramKey, source);
+      session.lines = folded.lines;
+      session.edits = [];
+      this.onViewSource(diagramKey, source);
+      this.onLog('Diagram operations are collected. The demo copy does not write them to elements.');
+      return {
+        status: 'pending-delta',
+        message: `${operations.length} diagram operation${operations.length === 1 ? '' : 's'} collected for ${domainId}.`,
+        delta: { operations }
+      };
+    }
+
+    const diagramNodePath = session.diagramNodePath ||
+      (String(diagramKey).startsWith('/') ? diagramKey : null);
+    if (!diagramNodePath) throw new Error('This diagram has no WebGME node to update.');
+    session.diagramNodePath = diagramNodePath;
+
+    const { outcome } = await applyDiagramModel(this.projectId, diagramKey, {
       diagramType: domainId,
-      modelingDomainId,
-      name,
+      diagramNodePath,
+      baseline: walked.baseline,
+      lineOperations: operations,
       source,
-      updatedAt: new Date().toISOString()
+      lines: folded.lines
     });
-    this._baselineByDiagram.set(diagramKey, source);
-    session.lines = folded.lines;
+
+    session.lines = outcome.lines || folded.lines;
+    session.names = outcome.names || {};
     session.edits = [];
+    session.settled = true;
+    this._baselineByDiagram.set(diagramKey, source);
     this.onViewSource(diagramKey, source);
 
-    this.onLog(
-      isDemoRuntime()
-        ? 'Diagram operations are collected. This diagram type does not apply them to elements yet.'
-        : 'Saved the diagram source. This diagram type does not apply the operations to elements yet.'
-    );
+    if (outcome.status === 'applied') {
+      const notes = (outcome.skipped || []).map((item) => item.reason).filter(Boolean);
+      if (notes.length) this.onLog(notes.join(' '));
+      this.onLog('Committed the diagram source and element operations in one transaction.');
+      return {
+        status: 'applied',
+        message: `Applied the line edits to the ${domainId} model.`,
+        delta: { operations }
+      };
+    }
 
+    this.onLog(outcome.reason || 'Saved the diagram source.');
     return {
       status: 'pending-delta',
-      message: `${operations.length} diagram operation${operations.length === 1 ? '' : 's'} collected for ${domainId}.`,
+      message: outcome.reason || 'Saved the diagram source.',
       delta: { operations }
     };
   }

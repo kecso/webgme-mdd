@@ -17,10 +17,11 @@
  *   have to be requirement or element lines already applied: a name is not
  *   created here, because it could be either concept. A missing end is skipped
  *   and that pointer is left unset. The line's node is the Relationship.
- * - moveLine sets the own attribute order.
+ * - moveLine sets the own attribute order. A requirement or element with no
+ *   remaining declaration or relationship is deleted at the end of the walk.
  */
 
-const { walkLines, bind, remember, forget, skip, lineAt } = require('./lineWalk.cjs');
+const { walkLines, bind, remember, forget, skip, lineAt, dropUnindexed } = require('./lineWalk.cjs');
 
 const FIELD_REASON = 'This field is outside a requirement or element block, so it is not applied.';
 const UNKNOWN_FIELD = 'This field is not an attribute of the open element, so it is not applied.';
@@ -177,8 +178,16 @@ function onRemove(ctx, beforeLine) {
     return;
   }
   if (!beforeLine.nodePath || !ELEMENT.has(info.kind)) return;
-  deleteTraceElement(ctx.api, beforeLine.nodePath);
-  if (info.kind === 'requirement' || info.kind === 'element') forget(ctx.names, info.name);
+  dropUnindexed(ctx.api, ctx.names, beforeLine.nodePath);
+}
+
+function liveNames(line, live) {
+  const info = classifyRequirementLine(line.text);
+  if ((info.kind === 'requirement' || info.kind === 'element') && info.name) live.add(info.name);
+  if (info.kind === 'relationship') {
+    if (info.src) live.add(info.src);
+    if (info.dst) live.add(info.dst);
+  }
 }
 
 function onUpdate(ctx, beforeLine, op) {
@@ -187,10 +196,7 @@ function onUpdate(ctx, beforeLine, op) {
   const nodePath = (beforeLine && beforeLine.nodePath) || null;
   if (before.kind !== after.kind) {
     if (before.kind === 'field' && beforeLine) clearField(ctx, beforeLine, before);
-    if (nodePath && ELEMENT.has(before.kind)) {
-      deleteTraceElement(ctx.api, nodePath);
-      if (before.name) forget(ctx.names, before.name);
-    }
+    dropUnindexed(ctx.api, ctx.names, nodePath);
     return onAdd(ctx, op);
   }
   if (ELEMENT.has(after.kind) && !nodePath) return onAdd(ctx, op);
@@ -232,7 +238,8 @@ function walkRequirementUpdate(baseline, lineOperations, api) {
     add: onAdd,
     remove: onRemove,
     update: onUpdate,
-    move: onMove
+    move: onMove,
+    liveNames
   });
 }
 

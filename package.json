@@ -24,7 +24,7 @@
     "studio:build": "npm run build --workspace=@webgme-mdd/studio",
     "studio:webgme": "npm run webgme --workspace=@webgme-mdd/studio",
     "lean:check": "cd lean && lake env lean Integrating/Domain.lean && lake env lean examples/S1_participant_binds/Example.lean && lake env lean ../diagrams/ears/lean/Domain.lean",
-    "test:mdd": "node --test test/mdd-project.test.js test/memory-metadata.test.js test/diagram-node.test.js test/source-edits.test.js test/flowchart-update.test.js test/diagram-walkers.test.js test/diagram-walker-branches.test.js",
+    "test:mdd": "node --test test/mdd-project.test.js test/memory-metadata.test.js test/diagram-node.test.js test/source-edits.test.js test/flowchart-update.test.js test/diagram-walkers.test.js test/diagram-walker-branches.test.js test/diagram-check.test.js test/apply-model.test.js",
     "test": "npm run test:mdd && npm run validate && npm run test --workspace=@webgme-mdd/router"
   },
   "keywords": [
