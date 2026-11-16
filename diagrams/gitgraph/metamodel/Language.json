@@ -220,7 +220,7 @@
       },
       "pointer_meta": {
         "branch": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
             "min": -1,
@@ -272,7 +272,7 @@
       },
       "pointer_meta": {
         "into": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
             "min": -1,
@@ -292,7 +292,7 @@
           }
         },
         "from": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "d275abd0-5b9d-52fa-84fa-3fd655d9de0c": {
             "min": -1,

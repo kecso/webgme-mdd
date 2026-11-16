@@ -1,7 +1,8 @@
 /**
  * Hideable Monaco panel — Mermaid Live Editor–style source editing.
- * Updates to the model/view are **manual** via Apply (ImportDelta TODO).
- * Draft buffer lives in the parent so Hide does not discard unsaved edits.
+ * Updates to the model/view are manual via Apply.
+ * The draft lives in the parent, so Hide does not discard unsaved edits.
+ * Monaco content changes are reported upward so Apply can fold them.
  */
 import React from 'react';
 import Editor from '@monaco-editor/react';
@@ -18,6 +19,8 @@ import Editor from '@monaco-editor/react';
  * @param {boolean} props.applyBusy
  * @param {string} [props.statusMessage]
  * @param {boolean} props.dirty
+ * @param {(diagramKey: string) => void} [props.onEditorOpen]
+ * @param {(diagramKey: string, event: object) => void} [props.onContentChange]
  */
 export default function SourceEditorPanel({
   open,
@@ -29,7 +32,9 @@ export default function SourceEditorPanel({
   onApply,
   applyBusy,
   statusMessage,
-  dirty
+  dirty,
+  onEditorOpen,
+  onContentChange
 }) {
   if (!open) return null;
 
@@ -51,7 +56,7 @@ export default function SourceEditorPanel({
             className="btn primary"
             disabled={applyBusy || !dirty}
             onClick={() => onApply()}
-            title="Manually re-import into the model (delta TODO) and re-render"
+            title="Fold the edits into diagram operations"
           >
             {applyBusy ? 'Applying…' : 'Apply to model'}
           </button>
@@ -61,8 +66,7 @@ export default function SourceEditorPanel({
         </div>
       </header>
       <p className="source-hint">
-        Live typing does <em>not</em> update WebGME. Apply runs a controlled re-import
-        (TODO: structural delta — not wipe-and-reinsert).
+        Live typing does <em>not</em> update WebGME. Apply folds the edits into diagram operations.
       </p>
       <div className="source-editor">
         <Editor
@@ -70,7 +74,13 @@ export default function SourceEditorPanel({
           language={language}
           theme="vs-dark"
           value={draft}
-          onChange={(v) => onDraftChange(v ?? '')}
+          onMount={() => {
+            if (onEditorOpen) onEditorOpen(diagramKey);
+          }}
+          onChange={(value, event) => {
+            onDraftChange(value ?? '');
+            if (onContentChange && event && !event.isFlush) onContentChange(diagramKey, event);
+          }}
           options={{
             minimap: { enabled: false },
             fontSize: 13,

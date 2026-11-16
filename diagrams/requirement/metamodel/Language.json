@@ -266,7 +266,7 @@
       },
       "pointer_meta": {
         "src": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "6bd52469-5ef2-5284-9a7d-5e1bc3e5cfe1": {
             "min": -1,
@@ -286,7 +286,7 @@
           }
         },
         "dst": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "6bd52469-5ef2-5284-9a7d-5e1bc3e5cfe1": {
             "min": -1,

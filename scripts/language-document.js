@@ -150,8 +150,9 @@ function buildDocument(diagramId, concepts, mainName, validPlugins) {
     const out = {};
     Object.keys(pointerMeta || {}).forEach((ptr) => {
       const def = pointerMeta[ptr] || {};
+      const pointer = (def.max != null ? def.max : 1) === 1;
       const next = {
-        min: def.min != null ? def.min : 0,
+        min: def.min != null ? def.min : (pointer ? 1 : -1),
         max: def.max != null ? def.max : 1
       };
       Object.keys(def.targets || {}).forEach((name) => {
@@ -160,7 +161,7 @@ function buildDocument(diagramId, concepts, mainName, validPlugins) {
         const lim = def.targets[name] || {};
         next[guid] = {
           min: lim.min != null ? lim.min : -1,
-          max: lim.max != null ? lim.max : 1
+          max: lim.max != null ? lim.max : (pointer ? 1 : -1)
         };
       });
       out[ptr] = next;
@@ -394,7 +395,7 @@ function fromConceptMap(diagramId, conceptMap, validPlugins) {
         names.forEach((other) => {
           targets[other] = { min: -1, max: 1 };
         });
-        pointerMeta[ptr] = { min: 0, max: 1, targets };
+        pointerMeta[ptr] = { min: 1, max: 1, targets };
       });
     }
     if (concept.sets && typeof concept.sets === 'object' && !Array.isArray(concept.sets)) {

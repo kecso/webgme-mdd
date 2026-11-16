@@ -150,7 +150,9 @@ export default function ProjectStudio() {
         });
         if (next) setProject({ ...next });
       }
-      control.setBaseline(diagramKey, source);
+      control.setBaseline(diagramKey, source, {
+        diagramNodePath: String(diagramKey).startsWith('/') ? diagramKey : null
+      });
       setViewSource(source);
       setDraftSource(source);
       setSelectedId(null);
@@ -366,6 +368,15 @@ export default function ProjectStudio() {
             draft={draftSource}
             onDraftChange={setDraftSource}
             onApply={onApply}
+            onEditorOpen={(key) => {
+              const inst = project?.diagrams?.[key];
+              const nodePaths = Array.isArray(inst?.lineNodes) ? inst.lineNodes : [];
+              control.openEditor(key, draftSource, {
+                diagramNodePath: inst?.nodePath || (String(key).startsWith('/') ? key : null),
+                nodePaths
+              });
+            }}
+            onContentChange={(key, event) => control.noteContentChange(key, event)}
             applyBusy={applyBusy}
             statusMessage={applyMsg}
             dirty={dirty}

@@ -156,10 +156,12 @@ async function verifyWritten(env, id, outFile, expectedNames) {
   }
 }
 
-async function exportWebgmex(project, gmeConfig, logger, blobClient, outFile) {
+async function exportWebgmex(project, gmeConfig, logger, blobClient, outFile, kind) {
   const storageUtils = webgme.requirejs('common/storage/util');
   const blobUtil = webgme.requirejs('blob/util');
-  const projectJson = await storageUtils.getProjectJson(project, { branchName: BRANCH });
+  const parameters = { branchName: BRANCH };
+  if (typeof kind === 'string') parameters.kind = kind;
+  const projectJson = await storageUtils.getProjectJson(project, parameters);
   const blobHash = await blobUtil.buildProjectPackage(
     logger,
     blobClient,
@@ -182,14 +184,15 @@ async function generateOne(env, id, emptyProject) {
     projectName: id,
     ownerId: guest,
     username: guest,
-    projectId: guest + sep + id
+    projectId: guest + sep + id,
+    kind: id
   });
   const seeded = await env.storageUtils.insertProjectJson(project, emptyProject, {
     branch: BRANCH,
     commitMessage: 'Seed empty project'
   });
   const applied = await applyLanguage(project, env.gmeConfig, env.logger, spec, seeded.hash);
-  await exportWebgmex(project, env.gmeConfig, env.logger, env.blobClient, outFile);
+  await exportWebgmex(project, env.gmeConfig, env.logger, env.blobClient, outFile, id);
   await verifyWritten(env, id, outFile, applied.expected);
   const written = fs.statSync(outFile).size;
   return { id, outFile, concepts: applied.concepts, bytes: written };

@@ -52,7 +52,17 @@
       "pointers": [
         "src",
         "dst"
-      ]
+      ],
+      "pointerTargets": {
+        "src": [
+          "Node",
+          "Subgraph"
+        ],
+        "dst": [
+          "Node",
+          "Subgraph"
+        ]
+      }
     },
     "Subgraph": {
       "attrs": [

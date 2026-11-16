@@ -51,8 +51,8 @@ define([], function () {
         Object.keys(pointerMeta || {}).forEach(function (ptr) {
             const def = pointerMeta[ptr];
             if (!def || typeof core.setPointerMetaTarget !== 'function') return;
-            const min = def.min != null ? def.min : -1;
             const max = def.max != null ? def.max : 1;
+            const min = def.min != null ? def.min : (max === 1 ? 1 : -1);
             Object.keys(def).forEach(function (key) {
                 if (key === 'min' || key === 'max') return;
                 const target = resolve(key);

@@ -236,7 +236,7 @@
       },
       "pointer_meta": {
         "element": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "23154b23-011a-5762-9424-ffe36cce2118": {
             "min": -1,
@@ -244,7 +244,7 @@
           }
         },
         "subject": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "a2e7cddd-199c-50d8-95cf-2acbed5d9ec7": {
             "min": -1,
@@ -354,7 +354,7 @@
       },
       "pointer_meta": {
         "rule": {
-          "min": 0,
+          "min": 1,
           "max": 1,
           "32f53ebf-869b-567f-b582-43faa88657cc": {
             "min": -1,

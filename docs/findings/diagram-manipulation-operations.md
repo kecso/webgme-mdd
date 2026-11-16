@@ -6,6 +6,8 @@ Foundation for a later Mermaid/EARS editor. Operations are those that **preserve
 
 **Out of scope (v1):** arbitrary pixel layout for layout-engine diagrams; editing Mermaid theme CSS as model data; operations Mermaid cannot serialize.
 
+**Line-operation limit:** `moveLine` is recorded only when one editor event removes a whole line and inserts that same text once. The same words typed in a later event are `removeLine` plus `addLine`, and the new line has no WebGME node yet. Two identical removed lines in one event are not a move.
+
 Legend: **S** = structural, **A** = attribute, **R** = relation/edge, **V** = view-only.
 
 ---
