@@ -20,6 +20,8 @@ npm run studio:demo    # local demo → http://127.0.0.1:3947
 
 Open the catalog to filter diagrams and META samples; open **MDSS** for story-centered projects, Mermaid view + Monaco Apply, and **Export book** (browsable Markdown).
 
+Usage: [projects and domains](docs/usage/projects-and-domains.md), and a four-diagram hello world, [the porch light](docs/usage/hello-porch-light.md).
+
 WebGME host (in-memory by default — no Mongo; DSS-style engine + React `appDir`):
 
 ```bash

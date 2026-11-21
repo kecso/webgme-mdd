@@ -289,7 +289,7 @@ export default function ProjectStudio() {
     return (
       <div className="page">
         <p>Unknown project.</p>
-        <Link to="/projects">Back</Link>
+        <Link to="/">Back</Link>
       </div>
     );
   }
@@ -342,7 +342,7 @@ export default function ProjectStudio() {
           setSelectedId(null);
           setMode('overview');
         }}
-        onCloseProject={() => navigate('/projects')}
+        onCloseProject={() => navigate('/')}
         userLabel={userLabel}
       />
       <div className={bodyClass}>

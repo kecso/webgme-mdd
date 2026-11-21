@@ -113,7 +113,7 @@ export default function BookPreview() {
     return (
       <div className="page">
         <p>Project not found.</p>
-        <Link to="/projects">Projects</Link>
+        <Link to="/">Projects</Link>
       </div>
     );
   }

@@ -8,6 +8,7 @@ import {
 } from '../data/projectDocument.js';
 import { plainExportProject } from '../control/plainExport.js';
 import { isDemoRuntime } from '../control/runtime.js';
+import { DRIVING_STORIES, MERMAID_URL, STUDIO_DOCS_URL } from '../data/studioInfo.js';
 import {
   S1_MODELING_DOMAINS,
   diagramLabel,
@@ -47,6 +48,70 @@ function projectMeta(project) {
   return diagrams;
 }
 
+function AboutDialog({ demo, onClose }) {
+  return (
+    <div className="modal-backdrop" role="presentation" onClick={onClose}>
+      <div
+        className="modal about-dialog"
+        role="dialog"
+        aria-label="About"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="about-head">
+          <p className="eyebrow">Markdown System Studio</p>
+          <h2>One system, many diagrams</h2>
+          <p>
+            The studio aims to cover Mermaid markdown diagrams: each
+            <a href={MERMAID_URL} target="_blank" rel="noreferrer"> Mermaid </a>
+            diagram family is one way to describe a system, and a project keeps
+            the diagrams that fit its concerns.
+          </p>
+        </header>
+        <section>
+          <h3>Integration</h3>
+          <p>
+            The main goal is to reason about a system that is described across
+            those diagrams. A repeated name is not yet a connection. Integration
+            semantics — a shared identity, a typed link, and a constraint that
+            can see more than one diagram — are what make the connection
+            detectable and checkable.
+          </p>
+        </section>
+        <section>
+          <h3>Driving stories</h3>
+          <ul className="about-links">
+            {DRIVING_STORIES.map((story) => (
+              <li key={story.id}>
+                <a href={story.href} target="_blank" rel="noreferrer">
+                  <span>{story.id}</span>
+                  {story.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <p className="hint about-note">
+          {demo
+            ? 'This demo keeps projects in the browser.'
+            : 'Projects are stored in WebGME. This host does not ask you to sign in.'}
+          {STUDIO_DOCS_URL ? (
+            <>
+              {' '}
+              <a href={STUDIO_DOCS_URL} target="_blank" rel="noreferrer">
+                How projects and domains work
+              </a>
+            </>
+          ) : null}
+        </p>
+        <footer>
+          <button type="button" className="btn primary" onClick={onClose}>
+            Close
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
+}
 export default function Projects() {
   const demo = isDemoRuntime();
   const [projects, setProjects] = useState([]);
@@ -55,6 +120,7 @@ export default function Projects() {
   const [notice, setNotice] = useState('');
   const [busyId, setBusyId] = useState(null);
   const [creating, setCreating] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const navigate = useNavigate();
 
   const refresh = () => {
@@ -99,10 +165,11 @@ export default function Projects() {
     <div className="page projects">
       <header className="page-head">
         <h1>Projects</h1>
-        <Link to="/" className="btn">
-          Welcome
-        </Link>
+        <button type="button" className="btn" onClick={() => setAboutOpen(true)}>
+          About
+        </button>
       </header>
+      {aboutOpen ? <AboutDialog demo={demo} onClose={() => setAboutOpen(false)} /> : null}
 
       <section className="panel">
         <h2>Open</h2>
